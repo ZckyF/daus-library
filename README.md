@@ -176,4 +176,4 @@ If you have suggestions or questions about this project, feel free to make them 
 
 ## 📄 License
 
-Daus Library is open-sourced software licensed under the [MIT license]('https://github.com/daus-library/blob/4.x/LICENSE.md').
+Daus Library is open-sourced software licensed under the [MIT license]('https://github.com/ZckyF/daus-library/blob/main/LICENSE').
