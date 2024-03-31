@@ -8,6 +8,7 @@
 </head>
 @vite(['resources/js/app.js', 'resources/css/app.css'])
 <body>
+    <x-sidebar-menu />
     <div class="container">
         @yield('content')
     </div>

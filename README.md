@@ -44,13 +44,13 @@ Before you begin, ensure you have met the following requirements:
 1. Clone the repository:
 
     ```bash
-    git clone https://github.com/yourusername/daus-library.git
+    git clone https://github.com/ZckyF/daus-library.git
     ```
 
 2. Navigate to the 'server' folder:
 
     ```bash
-    cd server
+    cd daus-library
     ```
 
 3. Install PHP dependencies using Composer:
