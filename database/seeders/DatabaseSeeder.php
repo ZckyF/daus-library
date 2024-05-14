@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\BookshelfPivot;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -15,7 +17,12 @@ class DatabaseSeeder extends Seeder
         $this->call([
             EmployeeSeeder::class,
             UserSeeder::class,
-            MemberSeeder::class
+            MemberSeeder::class,
+            BookSeeder::class,
+            BookCategorySeeder::class,
+            BookCategoryPivotSeeder::class,
+            BookshelfSeeder::class,
+            BookshelfPivotSeeder::class
         ]);
     }
 }

@@ -65,6 +65,9 @@ class UserSeeder extends Seeder
             'book_category.view_any',
             'book_category.view',
 
+            'bookshelf.view_any',
+            'bookshelf.view',
+
             'user.view',
             'user.update',
 
@@ -94,6 +97,10 @@ class UserSeeder extends Seeder
             'book_category.create',
             'book_category.update',
             'book_category.delete',
+
+            'bookshelf.create',
+            'bookshelf.update',
+            'bookshelf.delete',
         ];
 
         $adminPermissions= [
