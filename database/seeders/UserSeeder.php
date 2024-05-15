@@ -33,7 +33,7 @@ class UserSeeder extends Seeder
         ]);
         // Make staff
         $staff = User::factory()->create([
-            'username' => 'clientCuy',
+            'username' => 'staff_hitam',
             'password' => 'password123', 
             'is_actived' => 1, 
             'avatar_name' => 'default.jpg',

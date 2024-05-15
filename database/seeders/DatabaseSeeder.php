@@ -22,7 +22,9 @@ class DatabaseSeeder extends Seeder
             BookCategorySeeder::class,
             BookCategoryPivotSeeder::class,
             BookshelfSeeder::class,
-            BookshelfPivotSeeder::class
+            BookshelfPivotSeeder::class,
+            BorrowingBookSeeder::class,
+            BorrowingBookPivotSeeder::class
         ]);
     }
 }
