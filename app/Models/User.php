@@ -57,4 +57,6 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(BorrowingBook::class)->using(BorrowingBookPivot::class);
     }
+
+    
 }

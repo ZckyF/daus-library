@@ -24,7 +24,8 @@ class DatabaseSeeder extends Seeder
             BookshelfSeeder::class,
             BookshelfPivotSeeder::class,
             BorrowingBookSeeder::class,
-            BorrowingBookPivotSeeder::class
+            BorrowingBookPivotSeeder::class,
+            FineSeeder::class
         ]);
     }
 }

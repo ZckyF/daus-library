@@ -20,28 +20,32 @@ class EmployeeSeeder extends Seeder
                     'email' => 'johnlawson333@example.com',
                     'number_phone' => '123-456-7770',
                     'address' => '123 Main St',
-                    'nik' => '1234567'
+                    'nik' => '1234567',
+                    // 'user_id' => 1
                 ],
                 [
                     'full_name' => 'Johnny',
                     'email' => 'johny8877@example.com',
                     'number_phone' => '123-456-7880',
                     'address' => '124 Main St',
-                    'nik' => '1233567'
+                    'nik' => '1233567',
+                    // 'user_id' => 1
                 ],
                 [
                     'full_name' => 'Jamal',
                     'email' => 'jamal22@example.com',
                     'number_phone' => '123-456-9990',
                     'address' => '125 Main St',
-                    'nik' => '1235567'
+                    'nik' => '1235567',
+                    // 'user_id' => 1
                 ],
                 [
                     'full_name' => 'Rio',
                     'email' => 'rio33@example.com',
                     'number_phone' => '123-456-8888',
                     'address' => '126 Main St',
-                    'nik' => '1224567'
+                    'nik' => '1224567',
+                    // 'user_id' => 1
                 ] 
             ]
         );

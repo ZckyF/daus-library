@@ -22,6 +22,7 @@ class EmployeeFactory extends Factory
             'number_phone' => $this->faker->phoneNumber,
             'address' => $this->faker->address,
             'nik' => $this->faker->unique()->nik(),
+            // 'user_id' =>  2,
         ];
     }
 }
