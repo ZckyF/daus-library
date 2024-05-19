@@ -12,9 +12,11 @@ class Book extends Model
 {
     use HasFactory,SoftDeletes;
 
-    // i am use guarded,because the field of books more than 10
-    // protected $guarded = ['id'];
-
+        /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
         'isbn',
         'title',
@@ -27,8 +29,27 @@ class Book extends Model
         'user_id',
       ];
 
+
+
+    /**
+     * Returns a belongs to many relationship between Book model and BookCategory model
+     * using BookCategoryPivot as the pivot table.
+     *
+     * @return BelongsToMany
+     */
     public function bookCategories() :BelongsToMany
     {
         return $this->belongsToMany(BookCategory::class)->using(BookCategoryPivot::class);
+    }
+
+    /**
+     * Returns a belongs to many relationship between Book model and Bookshelf model
+     * using BookshelfPivot as the pivot table.
+     *
+     * @return BelongsToMany
+     */
+    public function bookshelves() :BelongsToMany
+    {
+        return $this->belongsToMany(Bookshelf::class)->using(BookshelfPivot::class);
     }
 }

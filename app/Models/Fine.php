@@ -11,6 +11,11 @@ class Fine extends Model
 {
     use HasFactory,SoftDeletes;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
     protected $fillable =[
         'member_id',
         'non_member_name',
@@ -23,11 +28,23 @@ class Fine extends Model
         'user_id'
     ];
 
+
+    /**
+     * Retrieve the associated member for this fine.
+     *
+     * @return BelongsTo The associated member.
+     */
     public function member() :BelongsTo
     {
         return $this->belongsTo(User::class);
     }
+    
 
+    /**
+     * Retrieve the associated user for this model.
+     *
+     * @return BelongsTo The associated user.
+     */
     public function user() :BelongsTo
     {
         return $this->belongsTo(User::class);

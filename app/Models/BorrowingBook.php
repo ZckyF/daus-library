@@ -11,6 +11,11 @@ class BorrowingBook extends Model
 {
     use HasFactory,SoftDeletes;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
         'user_id',
         'member_id',
@@ -22,6 +27,11 @@ class BorrowingBook extends Model
         'quantity',
     ];
 
+    /**
+     * Retrieve the users associated with the current model.
+     *
+     * @return BelongsToMany
+     */
     public function users() :BelongsToMany
     {
         return $this->belongsToMany(User::class)->using(BorrowingBookPivot::class);

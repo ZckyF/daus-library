@@ -9,5 +9,10 @@ class BorrowingBookPivot extends Pivot
 {
     use SoftDeletes;
 
+    /**
+     * Indicates if the model's ID is auto-incrementing.
+     *
+     * @var bool
+     */
     public $incrementing = true;
 }

@@ -48,11 +48,21 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    /**
+     * Retrieve the associated employee for the current user.
+     *
+     * @return BelongsTo
+     */
     public function employee() : BelongsTo 
     {
         return $this->belongsTo(Employee::class);
     }
 
+    /**
+     * Retrieve the borrowing books for this user.
+     *
+     * @return BelongsToMany
+     */
     public function borrowingBooks() :BelongsToMany
     {
         return $this->belongsToMany(BorrowingBook::class)->using(BorrowingBookPivot::class);

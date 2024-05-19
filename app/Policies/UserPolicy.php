@@ -7,36 +7,71 @@ use App\Models\User;
 class UserPolicy
 {
     
-    public function viewAny(User $user) : bool
+       /**
+     * Determine whether the user can view any models.
+     * 
+     * @return bool
+     */
+    public function viewAny(User $user): bool
     {
-        return $user->can('user.view_any');
+        return $user->can('member.view_any');
     }
 
-    public function view(User $user, User $targetUser) : bool
+    /**
+     * Determine whether the user can view the model.
+     * 
+     * @return bool
+     */
+    public function view(User $user, User $targetUser): bool
     {
         return $user->id == $targetUser->id && $user->can('user.view');
     }
 
-    public function create(User $user) : bool
+    /**
+     * Determine whether the user can create models.
+     * 
+     * @return bool
+     */
+    public function create(User $user): bool
     {
-       return $user->can('user.create');
+        return $user->can('member.create');
     }
 
-    public function update(User $user, User $targetUser) : bool
+    /**
+     * Determine whether the user can update the model.
+     * 
+     * @return bool
+     */
+    public function update(User $user, User $targetUser): bool
     {
-        return $user->id == $targetUser->id && $user->can('user.update');
+        return $user->id == $targetUser->id && $user->can('user.view');
     }
 
-    public function delete(User $user, User $targetUser) : bool
+    /**
+     * Determine whether the user can delete the model.
+     * 
+     * @return bool
+     */
+    public function delete(User $user, User $targetUser): bool
     {
-        return  $user->can('user.create');
+        return $user->can('member.delete');
     }
 
+    /**
+     * Determine whether the user can restore the model.
+     * 
+     * @return bool
+     */
     public function restore(User $user, User $targetUser): bool
     {
         return false;
     }
 
+    /**
+     * Determine whether the user can permanently delete the model.
+     * 
+     * @return bool
+     */
     public function forceDelete(User $user, User $targetUser): bool
     {
         return false;

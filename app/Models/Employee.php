@@ -11,6 +11,11 @@ class Employee extends Model
 {
     use HasFactory,SoftDeletes;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
         'full_name',
         'email',
@@ -20,6 +25,11 @@ class Employee extends Model
         'user_id'
     ];
 
+    /**
+     * Retrieve the associated user for this employee.
+     *
+     * @return BelongsTo The associated user.
+     */
     public function users() : BelongsTo 
     {
         return $this->users(User::class);
