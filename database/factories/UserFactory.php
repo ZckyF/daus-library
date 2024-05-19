@@ -25,7 +25,6 @@ class UserFactory extends Factory
         return [
             'username' => $this->faker->unique()->userName,
             'password' => 'password123', 
-            'is_actived' => $this->faker->boolean,
             'avatar_name' => 'default.jpg',
             'employee_id' => $this->faker->unique()->numberBetween(5, 14), 
         ];

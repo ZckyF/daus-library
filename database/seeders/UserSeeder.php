@@ -18,32 +18,28 @@ class UserSeeder extends Seeder
         // Make super admin
         $super_admin = User::factory()->create([
             'username' => 'admin_hebat',
-            'password' => 'password123',
-            'is_actived' => 1, 
+            'password' => 'password123', 
             'avatar_name' => 'default.jpg',
             'employee_id' => 1,
         ]);
         // Make admin
         $admin = User::factory()->create([
             'username' => 'admin_hitam',
-            'password' => 'password123', 
-            'is_actived' => 1, 
+            'password' => 'password123',  
             'avatar_name' => 'default.jpg',
             'employee_id' => 2,
         ]);
         // Make staff
         $staff = User::factory()->create([
             'username' => 'staff_hitam',
-            'password' => 'password123', 
-            'is_actived' => 1, 
+            'password' => 'password123',  
             'avatar_name' => 'default.jpg',
             'employee_id' => 3,
         ]);
         // Make staff
         $librarian = User::factory()->create([
             'username' => 'librarian123',
-            'password' => 'password123', 
-            'is_actived' => 1, 
+            'password' => 'password123',  
             'avatar_name' => 'default.jpg',
             'employee_id' => 4,
         ]);

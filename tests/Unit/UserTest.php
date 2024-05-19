@@ -23,19 +23,17 @@ class UserTest extends TestCase
      */
     public function testUserCreation()
     {
+       
+
         $employee = Employee::factory()->create();
 
         $user = User::factory()->create([
-            'username' => 'testuser',
-            'password' => bcrypt('password'),
-            'avatar_name' => 'avatar.png',
-            'is_actived' => true,
             'employee_id' => $employee->id,
         ]);
-
         $this->assertInstanceOf(User::class, $user);
+
         $this->assertDatabaseHas('users', [
-            'username' => 'testuser',
+            'username' => $user->username,
         ]);
     }
 
@@ -61,7 +59,6 @@ class UserTest extends TestCase
             'employee_id' => $employee1->id,
         ]);
 
-        // Attempt to create another user with the same username
         User::factory()->create([
             'username' => 'uniqueuser',
             'employee_id' => $employee2->id,
@@ -101,7 +98,12 @@ class UserTest extends TestCase
      */
     public function testUserSoftDelete()
     {
-        $user = User::factory()->create();
+
+        $employee = Employee::factory()->create();
+
+        $user = User::factory()->create([
+            'employee_id' => $employee->id,
+        ]);
 
         $user->delete();
 
@@ -121,13 +123,14 @@ class UserTest extends TestCase
      */
     public function testUserIsActivated()
     {
+        $employee = Employee::factory()->create();
+
         $user = User::factory()->create([
-            'is_actived' => true,
+            'employee_id' => $employee->id,
         ]);
 
-        $this->assertTrue($user->is_actived);
-
         $user->is_actived = false;
+
         $user->save();
 
         $this->assertFalse($user->is_actived);

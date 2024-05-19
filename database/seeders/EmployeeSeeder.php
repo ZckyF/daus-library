@@ -49,6 +49,6 @@ class EmployeeSeeder extends Seeder
                 ] 
             ]
         );
-        Employee::factory(10)->create();
+        Employee::factory(5)->create();
     }
 }
