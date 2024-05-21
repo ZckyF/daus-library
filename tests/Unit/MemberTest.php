@@ -55,6 +55,8 @@ class MemberTest extends TestCase
     {
         $this->expectException(QueryException::class);
 
+        // $employee = Employee::factory()->create();
+
         $user1 = User::factory()->create();
         $user2 = User::factory()->create();
 
@@ -85,6 +87,8 @@ class MemberTest extends TestCase
     {
         $this->expectException(QueryException::class);
 
+        // $employee = Employee::factory()->create();
+
         $user1 = User::factory()->create();
         $user2 = User::factory()->create();
 
@@ -113,6 +117,8 @@ class MemberTest extends TestCase
     public function testPhoneNumberMustBeUnique()
     {
         $this->expectException(QueryException::class);
+
+        // $employee = Employee::factory()->create();
 
         $user1 = User::factory()->create();
         $user2 = User::factory()->create();
@@ -155,14 +161,12 @@ class MemberTest extends TestCase
     }
 
     /**
-     * Test the soft delete functionality of the Member model.
+     * Test the soft deletion of a member .
      *
-     * This test case creates a new user and a member associated with the user,
-     * and then deletes the member. It asserts that the member is soft deleted
-     * by checking if the member's ID exists in the 'members' table with the
-     * 'deleted_at' column set to a non-null value.
-     *
-     * @throws PHPUnit\Framework\ExpectationFailedException if the assertion fails
+     * This test creates an member using the factory method, then deletes the employee.
+     * It asserts that the member is soft deleted by checking if the member's record
+     * is present in the 'members' table with a deleted_at timestamp.
+     * 
      * @return void
      */
     public function testMemberSoftDelete()
