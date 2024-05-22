@@ -25,6 +25,17 @@ class BookCategoryTest extends TestCase
     'user_id',
 ];
 
+    /**
+     * Test the creation of a BookCategory model.
+     *
+     * This test creates a new Employee model, a new User model with the Employee
+     * model as its employee_id, and a new BookCategory model with the User model
+     * as its user_id. It then asserts that the BookCategory model is an instance of
+     * the BookCategory class and that the BookCategory model is present in the
+     * 'book_categories' database table.
+     *
+     * @return void
+     */
     public function testBookCategoryCreation(): void
     {
         $employee = Employee::factory()->create();
@@ -41,6 +52,16 @@ class BookCategoryTest extends TestCase
         ]);
     }
 
+    /**
+     * Test the required fields of the BookCategory model.
+     *
+     * This function creates a new instance of the BookCategory model and sets each
+     * required field to null. It then expects a QueryException to be thrown when
+     * the model is saved.
+     *
+     * @throws QueryException If any of the required fields are not set
+     * @return void
+     */
     public function testRequiredFields(): void
     {
         $bookCategory = new BookCategory();
@@ -53,6 +74,17 @@ class BookCategoryTest extends TestCase
         $bookCategory->save();
     }
 
+    /**
+     * Test that the category name must be unique for each user.
+     *
+     * This function creates a new Employee model, a new User model with the Employee
+     * model as its employee_id, and a new BookCategory model with the User model
+     * as its user_id. It then creates another BookCategory model with the same
+     * category name and user_id, which should throw a QueryException.
+     *
+     * @throws QueryException If the category name is not unique for the user
+     * @return void
+     */
     public function testCategoryNameIsUnique(): void
     {
         $employee = Employee::factory()->create();
@@ -71,6 +103,17 @@ class BookCategoryTest extends TestCase
         ]);
     }
 
+    /**
+     * Test that a BookCategory belongs to a User.
+     *
+     * This function creates a new Employee model, a new User model with the Employee
+     * model as its employee_id, and a new BookCategory model with the User model
+     * as its user_id. It then asserts that the BookCategory model belongs to the
+     * User model and that the user_id of the BookCategory model is equal to the
+     * id of the User model.
+     *
+     * @return void
+     */
     public function testBookCategoryBelongsToUser(): void
     {
         $employee = Employee::factory()->create();
@@ -81,6 +124,17 @@ class BookCategoryTest extends TestCase
         $this->assertEquals($user->id, $bookCategory->user->id);
     }
 
+    /**
+     * Test that a BookCategory belongs to many Books.
+     *
+     * This function creates a new Employee model, a new User model with the Employee
+     * model as its employee_id, and a new BookCategory model with the User model
+     * as its user_id. It then creates two Book models with the same user_id and
+     * attaches them to the BookCategory model. Finally, it asserts that the
+     * BookCategory model belongs to the first and second Book models.
+     *
+     * @return void
+     */
     public function testBookCategoryBelongsToManyBooks(): void
     {
         $employee = Employee::factory()->create();
@@ -100,6 +154,17 @@ class BookCategoryTest extends TestCase
         
     }
 
+    /**
+     * Test the soft deletion of a BookCategory model.
+     *
+     * This test creates a new Employee model, a new User model with the Employee
+     * model as its employee_id, and a new BookCategory model with the User model
+     * as its user_id. It then deletes the BookCategory model and asserts that it
+     * has been soft deleted by checking that it is present in the 'book_categories'
+     * database table with a deleted_at timestamp.
+     *
+     * @return void
+     */
     public function testBookCategorySoftDeletes(): void
     {
         $employee = Employee::factory()->create();
