@@ -11,7 +11,19 @@ use Illuminate\Database\QueryException;
 class UserTest extends TestCase
 {
     use RefreshDatabase;
-
+     /**
+     * The required fields for an Employee model.
+     * 
+     * @var array
+     */
+    private array $requiredFields = [  
+        'username',
+        'password',
+        'avatar_name',
+        'is_actived',
+        'employee_id',
+        'quantity_now',
+    ];
     /**
      * Test the creation of a user with the given parameters.
      *
@@ -21,7 +33,7 @@ class UserTest extends TestCase
      *
      * @return void
      */
-    public function testUserCreation()
+    public function testUserCreation() :void
     {
        
 
@@ -38,6 +50,71 @@ class UserTest extends TestCase
     }
 
     /**
+     * Test that all required fields for the User model are required.
+     *
+     * This function creates a new User instance and sets all required fields to null.
+     * It then attempts to save the user, which should result in a QueryException.
+     *
+     * @throws QueryException If any required field is null.
+     * @return void
+     */
+    public function testRequiredFields() :void
+    {
+        $user = new User();
+ 
+        foreach ($this->requiredFields as $field) {
+            $user->{$field} = null;
+        }
+ 
+        $this->expectException(QueryException::class);
+        $user->save();
+    }
+
+    /**
+     * Test that the avatar image name is nullable.
+     *
+     * This function creates an employee using the factory method, then creates a user
+     * with the specified parameters. It asserts that the avatar image name is null
+     * by checking if the user's avatar_name attribute is null.
+     *
+     * @return void
+     */
+    public function testAvatarNameIsNullable() :void
+    {
+         $employee = Employee::factory()->create();
+ 
+         $user = User::factory()->create([
+             'employee_id' => $employee->id,
+             'avatar_name' => null
+         ]);
+ 
+         $this->assertNull($user->avatar_name);
+    }
+
+    /**
+     * Test the default value of the is_actived field.
+     *
+     * This function creates an employee using the factory method, then creates a user
+     * with the specified parameters. It saves the user and retrieves it from the database.
+     * Finally, it asserts that the is_actived field of the user is equal to 1.
+     *
+     * @return void
+     */
+    public function testIsActivedFieldDefaultIsTrue() :void 
+    {
+        $employee = Employee::factory()->create();
+ 
+        $user = User::factory()->create([
+            'employee_id' => $employee->id,
+        ]);
+         $user->save();
+
+         $userFind = User::find($user->id);
+        
+        $this->assertEquals(1,$userFind->is_actived);
+    }
+
+    /**
      * Test that a username must be unique.
      *
      * This test creates two employees using the factory method and then creates a user
@@ -47,7 +124,7 @@ class UserTest extends TestCase
      * @throws QueryException If a user with the same username already exists.
      * @return void
      */
-    public function testUsernameMustBeUnique()
+    public function testUsernameMustBeUnique() :void
     {
         $this->expectException(QueryException::class);
 
@@ -75,7 +152,7 @@ class UserTest extends TestCase
      *
      * @return void
      */
-    public function testUserBelongsToEmployee()
+    public function testUserBelongsToEmployee() :void
     {
         $employee = Employee::factory()->create();
 
@@ -96,7 +173,7 @@ class UserTest extends TestCase
      *
      * @return void
      */
-    public function testUserSoftDelete()
+    public function testUserSoftDelete() :void
     {
 
         $employee = Employee::factory()->create();
@@ -121,7 +198,7 @@ class UserTest extends TestCase
      *
      * @return void
      */
-    public function testUserIsActivated()
+    public function testUserIsActivated() :void
     {
         $employee = Employee::factory()->create();
 

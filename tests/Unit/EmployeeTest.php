@@ -9,7 +9,19 @@ use Illuminate\Database\QueryException;
 class EmployeeTest extends TestCase
 {
     use RefreshDatabase;
-
+    /**
+     * The required fields for an Employee model.
+     * 
+     * @var array
+     */
+    private array $requiredFields = [  
+        'full_name',
+        'email',
+        'number_phone',
+        'address',
+        'nik',
+        'quantity_now',
+   ];
     /**
      * Test the creation of an employee.
      *
@@ -19,7 +31,7 @@ class EmployeeTest extends TestCase
      *
      * @return void
      */
-    public function testEmployeeCreation()
+    public function testEmployeeCreation() :void
     {
         $employee = Employee::factory()->create();
 
@@ -27,6 +39,28 @@ class EmployeeTest extends TestCase
         $this->assertDatabaseHas('employees', [
             'full_name' => $employee->full_name,
         ]);
+    }
+
+    /**
+     * Test that all required fields for the Employee model are required.
+     *
+     * This test creates a new Employee instance and sets all required fields to null.
+     * It then attempts to save the instance, which should result in a QueryException
+     * due to the required fields being null.
+     *
+     * @throws QueryException If any required field is null.
+     * @return void
+     */
+    public function testRequiredFields() :void
+    {
+        $employee = new Employee();
+ 
+        foreach ($this->requiredFields as $field) {
+            $employee->{$field} = null;
+        }
+ 
+        $this->expectException(QueryException::class);
+        $employee->save();
     }
 
     /**
@@ -39,7 +73,7 @@ class EmployeeTest extends TestCase
      * @throws QueryException If an employee with the same email already exists.
      * @return void
      */
-    public function testEmailMustBeUnique()
+    public function testEmailMustBeUnique() : void
     {
         $this->expectException(QueryException::class);
 
@@ -62,7 +96,7 @@ class EmployeeTest extends TestCase
      * @throws QueryException If an employee with the same NIK already exists.
      * @return void
      */
-    public function testNIKMustBeUnique()
+    public function testNIKMustBeUnique() :void
     {
         $this->expectException(QueryException::class);
 
@@ -85,7 +119,7 @@ class EmployeeTest extends TestCase
      *
      * @return void
      */
-    public function testEmployeeSoftDelete()
+    public function testEmployeeSoftDelete() :void
     {
         $employee = Employee::factory()->create();
 

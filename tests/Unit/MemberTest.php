@@ -13,7 +13,20 @@ use Illuminate\Database\QueryException;
 class MemberTest extends TestCase
 {
     use RefreshDatabase;
-
+    /**
+    * An array of required fields for the Member model.
+    *
+    * @var array
+    */
+    private array $requiredFields = [  
+        'number_card',
+        'full_name',
+        'email',
+        'phone_number',
+        'address',
+        'image_name',
+        'user_id',
+    ];
 
     /**
      * Test the creation of a member.
@@ -24,7 +37,7 @@ class MemberTest extends TestCase
      *
      * @return void
      */
-    public function testMemberCreation()
+    public function testMemberCreation() :void
     {
         $employee = Employee::factory()->create();
         
@@ -43,6 +56,28 @@ class MemberTest extends TestCase
     }
 
     /**
+     * Test that required fields for Member model are not nullable.
+     *
+     * This function creates a new instance of the Member model and sets each of the
+     * required fields to null. It then attempts to save the model, expecting a
+     * QueryException to be thrown due to the null values.
+     *
+     * @throws QueryException if any of the required fields are null
+     * @return void
+     */
+    public function testRequiredFields() :void
+    {
+        $member = new Member();
+ 
+        foreach ($this->requiredFields as $field) {
+            $member->{$field} = null;
+        }
+ 
+        $this->expectException(QueryException::class);
+        $member->save();
+    }
+
+    /**
      * Test that the number_card is unique.
      *
      * This test case verifies that the number_card field must be unique for each member.
@@ -51,7 +86,7 @@ class MemberTest extends TestCase
      *
      * @return void
      */
-    public function testNumberCardMustBeUnique()
+    public function testNumberCardMustBeUnique() :void
     {
         $this->expectException(QueryException::class);
 
@@ -83,7 +118,7 @@ class MemberTest extends TestCase
      * @throws QueryException if the email is not unique
      * @return void
      */
-    public function testEmailMustBeUnique()
+    public function testEmailMustBeUnique() :void
     {
         $this->expectException(QueryException::class);
 
@@ -114,7 +149,7 @@ class MemberTest extends TestCase
      * @throws QueryException if the phone_number is not unique
      * @return void
      */
-    public function testPhoneNumberMustBeUnique()
+    public function testPhoneNumberMustBeUnique() :void
     {
         $this->expectException(QueryException::class);
 
@@ -145,7 +180,7 @@ class MemberTest extends TestCase
      *
      * @return void
      */
-    public function testMemberBelongsToUser()
+    public function testMemberBelongsToUser() :void
     {
         $employee = Employee::factory()->create();
         $user = User::factory()->create([
@@ -169,7 +204,7 @@ class MemberTest extends TestCase
      * 
      * @return void
      */
-    public function testMemberSoftDelete()
+    public function testMemberSoftDelete() :void
     {
 
         $employee = Employee::factory()->create();

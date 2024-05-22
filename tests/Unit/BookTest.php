@@ -16,19 +16,21 @@ class BookTest extends TestCase
 {
    use RefreshDatabase;
 
-   protected function requiredFields()
-   {
-       return [
-           'isbn',
-           'title',
-           'published_year',
-           'price_per_book',
-           'quantity',
-           'quantity_now',
-           'description',
-           'user_id',
-       ];
-   }
+   /**
+    * An array of required fields for the Book model.
+    *
+    * @var array
+    */
+   private array $requiredFields = [  
+        'isbn',
+        'title',
+        'published_year',
+        'price_per_book',
+        'quantity',
+        'quantity_now',
+        'description',
+        'user_id',
+   ];
 
     /**
      * Test the creation of a book.
@@ -38,24 +40,24 @@ class BookTest extends TestCase
      * with the correct id.
      *
      * @return void
-     */
-   public function testBookCreation()
-   {
-        $employee = Employee::factory()->create();
-
-       $user = User::factory()->create([
-        'employee_id' => $employee->id
-       ]);
-
-       $book = Book::factory()->create([
-           'user_id' => $user->id,
-       ]);
-
-       $this->assertInstanceOf(Book::class, $book);
-       $this->assertDatabaseHas('books', [
-           'id' => $book->id,
-       ]);
-   }
+     */ 
+    public function testBookCreation() :void
+    {
+         $employee = Employee::factory()->create();
+ 
+        $user = User::factory()->create([
+         'employee_id' => $employee->id
+        ]);
+ 
+        $book = Book::factory()->create([
+            'user_id' => $user->id,
+        ]);
+ 
+        $this->assertInstanceOf(Book::class, $book);
+        $this->assertDatabaseHas('books', [
+            'id' => $book->id,
+        ]);
+    }  
 
     /**
      * Test that all required fields for the Book model are set.
@@ -67,11 +69,11 @@ class BookTest extends TestCase
      * @throws QueryException If any of the required fields are not set
      * @return void
      */
-   public function testRequiredFields()
+   public function testRequiredFields() :void
    {
        $book = new Book();
 
-       foreach ($this->requiredFields() as $field) {
+       foreach ($this->requiredFields as $field) {
            $book->{$field} = null;
        }
 
@@ -87,7 +89,7 @@ class BookTest extends TestCase
      *
      * @return void
      */
-   public function testCoverImageNameIsNullable()
+   public function testCoverImageNameIsNullable() :void
    {
         $employee = Employee::factory()->create();
 
@@ -112,7 +114,7 @@ class BookTest extends TestCase
      * @throws QueryException If the 'price_per_book' field is not a valid decimal value
      * @return void
      */
-   public function testPricePerBookIsDecimal()
+   public function testPricePerBookIsDecimal() :void
    {
         $employee = Employee::factory()->create();
 
@@ -148,7 +150,7 @@ class BookTest extends TestCase
      * @throws QueryException If the ISBN is not unique
      * @return void
      */
-   public function testIsbnMustBeUnique()
+   public function testIsbnMustBeUnique() :void
    {
        $this->expectException(QueryException::class);
 
@@ -176,7 +178,7 @@ class BookTest extends TestCase
      *
      * @return void
      */
-   public function testBookBelongsToUser()
+   public function testBookBelongsToUser() :void
    {
        $employee = Employee::factory()->create();
 
@@ -201,7 +203,7 @@ class BookTest extends TestCase
      *
      * @return void
      */
-   public function testBookBelongsToManyBookCategories()
+   public function testBookBelongsToManyBookCategories() :void
    {
        
        $employee = Employee::factory()->create();
@@ -235,7 +237,7 @@ class BookTest extends TestCase
      *
      * @return void
      */
-   public function testBookBelongsToManyBookshelves()
+   public function testBookBelongsToManyBookshelves() :void
    {
        $employee = Employee::factory()->create();
        $user = User::factory()->create(['employee_id' => $employee->id]);
@@ -266,7 +268,7 @@ class BookTest extends TestCase
      *
      * @return void
      */
-   public function testBookSoftDelete()
+   public function testBookSoftDelete() :void
    {
 
        $employee = Employee::factory()->create();
