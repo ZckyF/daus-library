@@ -254,7 +254,7 @@ class BookTest extends TestCase
        $book = $book->fresh();
 
        // Assert the relationships
-       $this->assertInstanceOf(Book::class, $book);
+       $this->assertInstanceOf(Bookshelf::class, $book->bookshelves->first());
        $this->assertTrue($book->bookshelves->contains($shelf1));
        $this->assertTrue($book->bookshelves->contains($shelf2));
    }

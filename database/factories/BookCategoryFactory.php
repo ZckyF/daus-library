@@ -17,7 +17,7 @@ class BookCategoryFactory extends Factory
     public function definition(): array
     {
         return [
-            'name_category' => $this->faker->unique()->words(2,true),
+            'category_name' => $this->faker->unique()->words(2,true),
             'description' => $this->faker->unique()->text(),
             'user_id' => 4
         ];
