@@ -12,7 +12,6 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('borrowing_book_pivot', function (Blueprint $table) {
-            $table->id();
             $table->foreignId('borrowing_book_id')->constrained('borrowing_books')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('book_id')->constrained('books')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();

@@ -14,5 +14,5 @@ class BorrowingBookPivot extends Pivot
      *
      * @var bool
      */
-    public $incrementing = true;
+    public $incrementing = false;
 }
