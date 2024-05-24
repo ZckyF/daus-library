@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
@@ -26,7 +27,18 @@ class Bookshelf extends Model
      */
     public function books() :BelongsToMany
     {
-        return $this->belongsToMany(Book::class)->using(BookshelfPivot::class);
+        return $this->belongsToMany(Book::class,'bookshelf_pivot')->using(BookshelfPivot::class);
     }
+
+     /**
+     * Retrieve the user that owns the current book category.
+     *
+     * @return BelongsTo 
+     */
+
+     public function user() :BelongsTo
+     {
+         return $this->belongsTo(User::class);
+     }
     
 }

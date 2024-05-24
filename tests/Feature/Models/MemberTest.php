@@ -1,7 +1,7 @@
 <?php
 // tests/Unit/MemberTest.php
 
-namespace Tests\Unit;
+namespace Tests\Feature\Models;
 
 use App\Models\Employee;
 use Tests\TestCase;

@@ -35,6 +35,12 @@ class BookCategory extends Model
         return $this->belongsToMany(Book::class,'book_category_pivot')->using(BookCategoryPivot::class);
     }
 
+     /**
+     * Retrieve the user that owns the current book category.
+     *
+     * @return BelongsTo 
+     */
+
     public function user() :BelongsTo
     {
         return $this->belongsTo(User::class);

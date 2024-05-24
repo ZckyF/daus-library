@@ -1,5 +1,5 @@
 <?php
-namespace Tests\Unit;
+namespace Tests\Feature\Models;
 
 use Tests\TestCase;
 use App\Models\Employee;
