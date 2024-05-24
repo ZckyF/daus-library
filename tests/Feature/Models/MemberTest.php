@@ -16,7 +16,7 @@ class MemberTest extends TestCase
     /**
     * An array of required fields for the Member model.
     *
-    * @var array
+    * @var array<string>
     */
     private array $requiredFields = [  
         'number_card',

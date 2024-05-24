@@ -17,7 +17,7 @@ class BookCategoryTest extends TestCase
    /**
     * An array of required fields for the BookCategory model.
     *
-    * @var array
+    * @var array<string>
     */
    private array $requiredFields = [  
     'category_name',

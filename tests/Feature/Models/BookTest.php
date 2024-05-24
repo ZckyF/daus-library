@@ -19,7 +19,7 @@ class BookTest extends TestCase
    /**
     * An array of required fields for the Book model.
     *
-    * @var array
+    * @var array<string>
     */
    private array $requiredFields = [  
         'isbn',

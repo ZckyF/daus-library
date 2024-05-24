@@ -12,7 +12,7 @@ class EmployeeTest extends TestCase
     /**
      * The required fields for an Employee model.
      * 
-     * @var array
+     * @var array<string>
      */
     private array $requiredFields = [  
         'full_name',

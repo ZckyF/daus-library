@@ -18,7 +18,7 @@ class BookshelfTest extends TestCase
     /**
     * An array of required fields for the Bookshelf model.
     *
-    * @var array
+    * @var array<string>
     */
     private array $requiredFields = [  
         'bookshelf_number',

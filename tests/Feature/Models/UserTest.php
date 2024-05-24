@@ -14,7 +14,7 @@ class UserTest extends TestCase
      /**
      * The required fields for an Employee model.
      * 
-     * @var array
+     * @var array<string>
      */
     private array $requiredFields = [  
         'username',
