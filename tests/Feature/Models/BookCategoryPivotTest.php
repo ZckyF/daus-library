@@ -22,7 +22,7 @@ class BookCategoryPivotTest extends TestCase
      *
      * @return void
      */
-    public function testAttachBookToCategory(): void
+    public function testAttachBookToBookCategory(): void
     {
         $employee = Employee::factory()->create();
         $user = User::factory()->create(['employee_id' => $employee->id]);
@@ -47,7 +47,7 @@ class BookCategoryPivotTest extends TestCase
      *
      * @return void
      */
-    public function testDetachBookFromCategory(): void
+    public function testDetachBookFromBookCategory(): void
     {
         $employee = Employee::factory()->create();
         $user = User::factory()->create(['employee_id' => $employee->id]);

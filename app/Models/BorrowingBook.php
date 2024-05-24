@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class BorrowingBook extends Model
@@ -28,13 +29,33 @@ class BorrowingBook extends Model
     ];
 
     /**
-     * Retrieve the users associated with the current model.
+     * Retrieve the associated member for this model.
      *
-     * @return BelongsToMany
+     * @return BelongsTo The associated member.
      */
-    public function users() :BelongsToMany
+    public function member() : BelongsTo 
     {
-        return $this->belongsToMany(User::class)->using(BorrowingBookPivot::class);
+        return $this->belongsTo(Member::class);    
+    }
+
+    /**
+     * Retrieve the associated user for this model.
+     *
+     * @return BelongsTo The associated user.
+     */
+    public function user() : BelongsTo 
+    {
+        return $this->belongsTo(User::class);    
+    }
+    /**
+     * Retrieve the books associated with this model through the borrowing_book_pivot table.
+     *
+     * @return BelongsToMany The books associated with this model.
+     */
+    public function books(): BelongsToMany
+    {
+        return $this->belongsToMany(Book::class, 'borrowing_book_pivot')
+            ->using(BorrowingBookPivot::class);
     }
     
 }
