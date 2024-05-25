@@ -36,7 +36,7 @@ class Fine extends Model
      */
     public function member() :BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Member::class);
     }
     
 

@@ -19,7 +19,7 @@ class FineFactory extends Factory
         return [
             'fine_code' => $this->faker->unique()->numerify('FC##########'),
             'member_id'=> $this->faker->numberBetween(1, 10),
-            'non_member_name' => '',
+            'non_member_name' => null,
             'amount' => $this->faker->randomFloat(2,1,1000),
             'amount_paid' => 0,
             'change_amount' => 0,

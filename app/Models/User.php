@@ -58,15 +58,5 @@ class User extends Authenticatable
         return $this->belongsTo(Employee::class);
     }
 
-    /**
-     * Retrieve the borrowing books for this user.
-     *
-     * @return BelongsToMany
-     */
-    public function borrowingBooks() :BelongsToMany
-    {
-        return $this->belongsToMany(BorrowingBook::class)->using(BorrowingBookPivot::class);
-    }
-
     
 }
