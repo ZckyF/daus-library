@@ -1,7 +1,9 @@
-@extends('layouts.app')
-    
-
-
-@section('content')
-    {{-- <h1>Halo</h1> --}}
-@endsection
+<div>
+    <h1>Dashboard</h1>
+    <form action="{{ route('logout') }}" method="post">
+      @csrf
+        <button type="submit" class="btn btn-primary">
+          Log out
+        </button>
+    </form>
+</div>

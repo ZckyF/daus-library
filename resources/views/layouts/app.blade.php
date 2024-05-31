@@ -9,12 +9,12 @@
 </head>
 @vite(['resources/js/app.js', 'resources/sass/app.scss'])
 <body>
-    <x-sidebar-menu />
+    {{-- <x-sidebar-menu /> --}}
 
 
 
     <div class="container">
-        {{-- {{ $slot }} --}}
+        {{ $slot }}
     </div>
 
     <script src="{{ asset('js/sidebar.js') }}"></script>
