@@ -3,6 +3,12 @@
     <div class="text-align mt-5 px-4 py-4 w-50">
         <h1 class="mb-1  text-center ">Login</h1>
         <p class="text-center mb-3 cl">Welcome to Dasbry </p>
+        @if (session()->has('success'))
+        <div class="alert alert-success alert-dismissible" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        @endif
         @if (session()->has('error'))
         <div class="alert alert-danger alert-dismissible" role="alert">
             {{ session('error') }}

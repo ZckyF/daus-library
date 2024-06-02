@@ -3,6 +3,7 @@
 use App\Livewire\Auth\ForgotPassword;
 use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Logout;
+use App\Livewire\Auth\ResetPassword;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,7 +26,13 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware('guest')->group(function () {
     Route::get('/login',Login::class)->name('login');
+
     Route::get('/forgot-password',ForgotPassword::class)->name('forgot-password');
+    Route::get('/reset-password/{email}/{token}', ResetPassword::class)->middleware('check.reset.password.token')->name('reset-password');
+});
+
+Route::get('/email-reset-password',function () {
+    return view('livewire.emails.reset-password');
 });
 
 

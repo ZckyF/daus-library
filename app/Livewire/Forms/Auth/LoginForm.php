@@ -31,7 +31,7 @@ class LoginForm extends Form
                 
                 $user = User::where('employee_id', $employee->id)->first();
             } else {
-                session()->flash('error', 'Invalid email or password');
+                session()->flash('error', 'The provided credentials does not match records.');
                 return;
             }
         } else {
@@ -39,7 +39,7 @@ class LoginForm extends Form
         }
 
         if ($user && Auth::attempt(['username' => $user->username, 'password' => $this->password])) {
-            session()->flash('message', 'Login successful');
+            session()->flash('message', 'Login successful.');
             return redirect()->intended();
         } else {
             session()->flash('error', 'The provided credentials does not match records.');
