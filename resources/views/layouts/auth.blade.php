@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{{ $title ?? config( 'app.name') }}</title>
+    <link rel="icon" href="{{ asset('logo-dasbry.png') }}">
 </head>
 @vite(['resources/js/app.js', 'resources/sass/app.scss'])
 <body>

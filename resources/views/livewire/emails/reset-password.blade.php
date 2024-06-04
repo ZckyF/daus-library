@@ -49,14 +49,13 @@
 <body>
     <div class="container">
         <div class="header">
-            <img src="path/to/your/logo.png" alt="Company Logo" class="mb-3" style="max-width: 150px;">
+            <img src="{{ asset('logo-dasbry.png') }}" alt="Company Logo" class="mb-3" >
             <h1>Reset Password Request</h1>
         </div>
         <div class="content">
             <p>Hello,</p>
             <p>We received a request to reset the password for your account. Please click the button below to reset your password. This link will expire in 3 hours.</p>
-            <p><a href="/" class="button">Reset Password</a></p>
-            {{-- <p><a href="{{ $link }}" class="button">Reset Password</a></p> --}}
+            <p><a href="{{ $link }}" class="button">Reset Password</a></p>
             <p>If you did not request a password reset, please ignore this email or contact support if you have any questions.</p>
             <p>Thank you,<br>Your Company Name</p>
         </div>
