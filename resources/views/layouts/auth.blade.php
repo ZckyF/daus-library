@@ -10,8 +10,12 @@
 @vite(['resources/js/app.js', 'resources/sass/app.scss'])
 <body>
 
-    <div class="container">
-        {{ $slot }}
+    <div class="container-fluid">
+        <div class="d-flex justify-content-center">  
+            <div class="col col-md-8  col-lg-4 py-4 rounded"> 
+                {{ $slot }}
+            </div>
+        </div>
     </div>
    
 

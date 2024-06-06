@@ -1,4 +1,4 @@
-<div style="height: 10000px">
+<div >
     <h1>Dashboard</h1>
     <form action="{{ route('logout') }}" method="post">
       @csrf

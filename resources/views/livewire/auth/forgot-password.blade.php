@@ -1,5 +1,5 @@
-<div class="d-flex justify-content-center  ">
-    <div class="text-align mt-5  px-4 py-4   w-50 ">
+<div>
+
         <h1 class="mb-4  text-center ">Forgot Password</h1>
 
         @if (session()->has('error'))
@@ -39,7 +39,7 @@
                 </button>
             </div>
         </form>
-    </div>
+    
 </div>
  
 
