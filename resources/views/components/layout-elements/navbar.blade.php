@@ -21,6 +21,16 @@
       <img src="{{ asset('logo-dasbry.png') }}" alt="Logo" class="d-inline-block align-text-top">
     </a>
 
-    <a class="navbar-brand" href="#">Navbar</a>
+    <div class="dropdown">
+      <button class="btn dropdown-toggle d-flex align-items-center" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+        <img src="https://via.placeholder.com/40" alt="Avatar" class="avatar me-2 shadow-sm">
+        <span class="me-2 fw-medium">Username</span>
+      
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+        <li><a class="dropdown-item" href="#">Profile</a></li>
+        <li><a class="dropdown-item" href="#">Logout</a></li>
+      </ul>
+    </div>
   </div>
 </nav>
