@@ -14,6 +14,7 @@
     box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
     background-color: white;
     display: block !important;
+    transition: transform 0.3s ease; 
   }
 
   @media (max-width: 767.98px) {
@@ -38,8 +39,8 @@
   .sidebar-sticky {
     height: calc(100vh - 48px);
     overflow-x: hidden;
-    overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
-    scrollbar-color: rgba(0, 0, 0, 0.3) #e0e0e0; /* Black thumb, light gray track */
+    overflow-y: auto; 
+    scrollbar-color: rgba(0, 0, 0, 0.3) #e0e0e0; 
     scrollbar-width: none;
   }
 
