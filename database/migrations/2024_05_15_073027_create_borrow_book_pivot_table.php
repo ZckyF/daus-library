@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('borrowing_book_pivot', function (Blueprint $table) {
-            $table->foreignId('borrowing_book_id')->constrained('borrowing_books')->onUpdate('cascade')->onDelete('cascade');
+        Schema::create('borrow_book_pivot', function (Blueprint $table) {
+            $table->foreignId('borrow_book_id')->constrained('borrow_books')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('book_id')->constrained('books')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
             $table->softDeletes();
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('borrowing_book_pivot');
+        Schema::dropIfExists('borrow_book_pivot');
     }
 };

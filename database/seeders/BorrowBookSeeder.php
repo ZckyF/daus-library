@@ -2,17 +2,17 @@
 
 namespace Database\Seeders;
 
-use App\Models\BorrowingBook;
+use App\Models\BorrowBook;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class BorrowingBookSeeder extends Seeder
+class BorrowBookSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        BorrowingBook::factory(10)->create();
+        BorrowBook::factory(10)->create();
     }
 }

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\BorrowingBook>
  */
-class BorrowingBookFactory extends Factory
+class BorrowBookFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,7 +17,7 @@ class BorrowingBookFactory extends Factory
     public function definition()
     {
         return [
-            'borrowing_number' => $this->faker->unique()->numerify('BN#########'),
+            'borrow_number' => $this->faker->unique()->numerify('BN#########'),
             'member_id' => $this->faker->numberBetween(1, 10),
             'borrow_date' => $this->faker->dateTime(),
             'return_date' => $this->faker->dateTime(),

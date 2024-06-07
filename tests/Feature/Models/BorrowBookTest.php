@@ -3,7 +3,7 @@
 namespace Tests\Feature\Models;
 
 use App\Models\Book;
-use App\Models\BorrowingBook;
+use App\Models\BorrowBook;
 use App\Models\Employee;
 use Tests\TestCase;
 use App\Models\User;
@@ -12,7 +12,7 @@ use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class BorrowingBookTest extends TestCase
+class BorrowBookTest extends TestCase
 {
     use RefreshDatabase;
     /**
@@ -21,7 +21,7 @@ class BorrowingBookTest extends TestCase
      * @var array<string>
      */
     private array $requiredFields = [
-        'borrowing_number',
+        'borrow_number',
         'member_id',
         'user_id',
         'status',
@@ -29,37 +29,37 @@ class BorrowingBookTest extends TestCase
     
     
     /**
-     * Test the creation of a borrowing book.
+     * Test the creation of a borrow book.
      *
      * This function creates a new employee, user, and member using factories.
-     * It then creates a borrowing book with the provided member and user IDs.
-     * Finally, it asserts that the created borrowing book is an instance of the BorrowingBook class
-     * and that it exists in the 'borrowing_books' table in the database.
+     * It then creates a borrow book with the provided member and user IDs.
+     * Finally, it asserts that the created borrow book is an instance of the BorrowBook class
+     * and that it exists in the 'borrow_books' table in the database.
      *
      * @return void
      */
-    public function testBorrowingBookCreation(): void
+    public function testBorrowBookCreation(): void
     {
         $employee = Employee::factory()->create();
         $user = User::factory()->create(['employee_id' => $employee->id]);
         $member = Member::factory()->create(['user_id' => $user->id]);
         
 
-        $borrowingBook = BorrowingBook::factory()->create([
+        $borrowBook = BorrowBook::factory()->create([
             'member_id' => $member->id,
             'user_id' => $user->id,
         ]);
 
-        $this->assertInstanceOf(BorrowingBook::class, $borrowingBook);
-        $this->assertDatabaseHas('borrowing_books', [
-            'id' => $borrowingBook->id,
+        $this->assertInstanceOf(BorrowBook::class, $borrowBook);
+        $this->assertDatabaseHas('borrow_books', [
+            'id' => $borrowBook->id,
         ]);
     }
 
     /**
-     * Test that all required fields for the BorrowingBook model are required.
+     * Test that all required fields for the BorrowngBook model are required.
      *
-     * This function creates a new BorrowingBook instance and sets all required fields to null.
+     * This function creates a new BorrowBook instance and sets all required fields to null.
      * It then attempts to save the instance, which should result in a QueryException
      * due to the required fields being null.
      *
@@ -68,21 +68,21 @@ class BorrowingBookTest extends TestCase
      */
     public function testRequiredFields(): void
     {
-        $borrowingBook = new BorrowingBook();
+        $borrowBook = new BorrowBook();
 
         foreach ($this->requiredFields as $field) {
-            $borrowingBook->{$field} = null;
+            $borrowBook->{$field} = null;
         }
 
         $this->expectException(QueryException::class);
-        $borrowingBook->save();
+        $borrowBook->save();
     }
 
     /**
-     * Test that the timestamp fields in the BorrowingBook model can be nullable.
+     * Test that the timestamp fields in the BorrowBook model can be nullable.
      *
      * This function creates a new employee, user, and member using factories.
-     * It then creates a borrowing book with the provided member and user IDs,
+     * It then creates a borrow book with the provided member and user IDs,
      * and sets the borrow_date, return_date, and returned_date fields to null.
      * Finally, it asserts that all three timestamp fields are null.
      *
@@ -94,7 +94,7 @@ class BorrowingBookTest extends TestCase
         $user = User::factory()->create(['employee_id' => $employee->id]);
         $member = Member::factory()->create(['user_id' => $user->id]);
 
-        $borrowingBook = BorrowingBook::factory()->create([
+        $borrowBook = BorrowBook::factory()->create([
             'member_id' => $member->id,
             'user_id' => $user->id,
             'borrow_date' => null,
@@ -102,24 +102,24 @@ class BorrowingBookTest extends TestCase
             'returned_date' => null,
         ]);
 
-        $this->assertNull($borrowingBook->borrow_date);
-        $this->assertNull($borrowingBook->return_date);
-        $this->assertNull($borrowingBook->returned_date);
+        $this->assertNull($borrowBook->borrow_date);
+        $this->assertNull($borrowBook->return_date);
+        $this->assertNull($borrowBook->returned_date);
     }
 
     /**
-     * Test that the borrowing number must be unique.
+     * Test that the borrow number must be unique.
      *
      * This function expects a QueryException to be thrown when attempting to create
-     * two records with the same borrowing number. It creates a new employee, user,
-     * and member using factories, and then creates a borrowing book with a unique
-     * borrowing number. It then attempts to create another record with the same
-     * borrowing number, which should result in a QueryException.
+     * two records with the same borrow number. It creates a new employee, user,
+     * and member using factories, and then creates a borrow book with a unique
+     * borrow number. It then attempts to create another record with the same
+     * borrow number, which should result in a QueryException.
      *
-     * @throws QueryException If attempting to create two records with the same borrowing number.
+     * @throws QueryException If attempting to create two records with the same borrow number.
      * @return void
      */
-    public function testBorrowingNumberMustBeUnique(): void
+    public function testBorrowNumberMustBeUnique(): void
     {
         $this->expectException(QueryException::class);
 
@@ -127,27 +127,27 @@ class BorrowingBookTest extends TestCase
         $user = User::factory()->create(['employee_id' => $employee->id]);
         $member = Member::factory()->create(['user_id' => $user->id]);
 
-        BorrowingBook::factory()->create([
-            'borrowing_number' => 'unique_number',
+        BorrowBook::factory()->create([
+            'borrow_number' => 'unique_number',
             'member_id' => $member->id,
             'user_id' => $user->id,
         ]);
 
-        // Attempt to create another record with the same borrowing_number
-        BorrowingBook::factory()->create([
-            'borrowing_number' => 'unique_number',
+        // Attempt to create another record with the same borrow_number
+        BorrowBook::factory()->create([
+            'borrow_number' => 'unique_number',
             'member_id' => $member->id,
             'user_id' => $user->id,
         ]);
     }
 
     /**
-     * Test that the default status of a borrowing book is 'borrowed'.
+     * Test that the default status of a borrow book is 'borrowed'.
      *
      * This function creates a new employee, user, and member using factories.
-     * It then creates a borrowing book with a random borrowing number, borrow date,
+     * It then creates a borrow book with a random borrow number, borrow date,
      * return date, and quantity. The member and user IDs are set to the newly created
-     * member and user, respectively. The returned borrowing book is then found using
+     * member and user, respectively. The returned borrow book is then found using
      * its ID and its status is asserted to be 'borrowed'.
      *
      * @return void
@@ -158,8 +158,8 @@ class BorrowingBookTest extends TestCase
         $user = User::factory()->create(['employee_id' => $employee->id]);
         $member = Member::factory()->create(['user_id' => $user->id]);
 
-        $borrowingBook = BorrowingBook::create([
-            'borrowing_number' => 'BN' . mt_rand(100000000, 999999999),
+        $borrowBook = BorrowBook::create([
+            'borrow_number' => 'BN' . mt_rand(100000000, 999999999),
             'borrow_date' => Carbon::now()->subDays(mt_rand(1, 30)),
             'return_date' => Carbon::now()->addDays(mt_rand(1, 30)),
             'returned_date' => null,
@@ -167,131 +167,131 @@ class BorrowingBookTest extends TestCase
             'member_id' => $member->id,
             'user_id' => $user->id,
         ]);
-        $borrowingBookFind = BorrowingBook::find($borrowingBook->id);
+        $borrowBookFind = BorrowBook::find($borrowBook->id);
 
-        $this->assertEquals('borrowed', $borrowingBookFind->status);
+        $this->assertEquals('borrowed', $borrowBookFind->status);
     }
 
     /**
-     * Test that a borrowing book belongs to a member.
+     * Test that a borrow book belongs to a member.
      *
      * This function creates a new employee, user, and member using factories.
-     * It then creates a borrowing book with the provided member and user IDs.
-     * Finally, it asserts that the created borrowing book belongs to the member
+     * It then creates a borrow book with the provided member and user IDs.
+     * Finally, it asserts that the created borrow book belongs to the member
      * and that the member IDs match.
      *
      * @return void
      */
-    public function testBorrowingBookBelongsToMember(): void
+    public function testBorrowBookBelongsToMember(): void
     {
         $employee = Employee::factory()->create();
         $user = User::factory()->create(['employee_id' => $employee->id]);
         $member = Member::factory()->create(['user_id' => $user->id]);
 
-        $borrowingBook = BorrowingBook::factory()->create([
+        $borrowBook = BorrowBook::factory()->create([
             'member_id' => $member->id,
             'user_id' => $user->id,
         ]);
 
-        $this->assertInstanceOf(Member::class, $borrowingBook->member);
-        $this->assertEquals($member->id, $borrowingBook->member->id);
+        $this->assertInstanceOf(Member::class, $borrowBook->member);
+        $this->assertEquals($member->id, $borrowBook->member->id);
     }
 
     /**
-     * Test that a borrowing book belongs to a user.
+     * Test that a borrow book belongs to a user.
      *
      * This function creates a new employee, user, and member using factories.
-     * It then creates a borrowing book with the provided member and user IDs.
-     * Finally, it asserts that the created borrowing book belongs to the user
+     * It then creates a borrowbook with the provided member and user IDs.
+     * Finally, it asserts that the created borrow book belongs to the user
      * and that the user IDs match.
      *
      * @return void
      */
-    public function testBorrowingBookBelongsToUser(): void
+    public function testBorrowBookBelongsToUser(): void
     {
         $employee = Employee::factory()->create();
         $user = User::factory()->create(['employee_id' => $employee->id]);
         $member = Member::factory()->create(['user_id' => $user->id]);
 
-        $borrowingBook = BorrowingBook::factory()->create([
+        $borrowBook = BorrowBook::factory()->create([
             'member_id' => $member->id,
             'user_id' => $user->id,
         ]);
 
-        $this->assertInstanceOf(User::class, $borrowingBook->user);
-        $this->assertEquals($user->id, $borrowingBook->user->id);
+        $this->assertInstanceOf(User::class, $borrowBook->user);
+        $this->assertEquals($user->id, $borrowBook->user->id);
     }
 
     /**
-     * Test that a borrowing book belongs to many books.
+     * Test that a borrow book belongs to many books.
      *
      * This function creates a new employee, user, and member using factories.
-     * It then creates a borrowing book with the provided member and user IDs.
+     * It then creates a borrow book with the provided member and user IDs.
      * Next, it creates two books with the same user ID.
-     * The books are then attached to the borrowing book.
+     * The books are then attached to the borrow book.
      * The relationships are reloaded.
-     * The function then tests the user and borrowing book relationship,
-     * the borrowing book and books relationship,
+     * The function then tests the user and borrow book relationship,
+     * the borrow book and books relationship,
      * and the reverse relationship.
      *
      * @return void
      */
-    public function testBorrowingBookBelongsToManyBooks(): void
+    public function testBorrowBookBelongsToManyBooks(): void
     {
         $employee = Employee::factory()->create();
         $user = User::factory()->create(['employee_id' => $employee->id]);
         $member = Member::factory()->create(['user_id' => $user->id]);
-        $borrowingBook = BorrowingBook::factory()->create([
+        $borrowBook = BorrowBook::factory()->create([
             'member_id' => $member->id,
             'user_id' => $user->id,
         ]);
         $book1 = Book::factory()->create(['user_id' => $user->id]);
         $book2 = Book::factory()->create(['user_id' => $user->id]);
 
-        // Attach books to the borrowing book
-        $borrowingBook->books()->attach([$book1->id, $book2->id]);
+        // Attach books to the borrow book
+        $borrowBook->books()->attach([$book1->id, $book2->id]);
 
         // Reload relationships
-        $borrowingBook = $borrowingBook->fresh();
+        $borrowBook = $borrowBook->fresh();
 
-        // Test user and borrowing book relationship
-        $this->assertInstanceOf(User::class, $borrowingBook->user);
-        $this->assertEquals($user->id, $borrowingBook->user->id);
+        // Test user and borrow book relationship
+        $this->assertInstanceOf(User::class, $borrowBook->user);
+        $this->assertEquals($user->id, $borrowBook->user->id);
 
-        // Test borrowing book and books relationship
-        $this->assertTrue($borrowingBook->books->contains($book1));
-        $this->assertTrue($borrowingBook->books->contains($book2));
+        // Test borrow book and books relationship
+        $this->assertTrue($borrowBook->books->contains($book1));
+        $this->assertTrue($borrowBook->books->contains($book2));
 
         // Test reverse relationship
-        $this->assertTrue($book1->borrowingBooks->contains($borrowingBook));
-        $this->assertTrue($book2->borrowingBooks->contains($borrowingBook));
+        $this->assertTrue($book1->borrowBooks->contains($borrowBook));
+        $this->assertTrue($book2->borrowBooks->contains($borrowBook));
     }
 
     /**
-     * Test the soft delete functionality of the BorrowingBook model.
+     * Test the soft delete functionality of the BorrowngBook model.
      *
      * This function creates a new employee, user, and member using factories.
-     * It then creates a borrowing book with the provided member and user IDs.
-     * The borrowing book is soft deleted and the function asserts that the
-     * borrowing book is soft deleted in the 'borrowing_books' table.
+     * It then creates a borrow book with the provided member and user IDs.
+     * The borrow book is soft deleted and the function asserts that the
+     * borrow book is soft deleted in the 'borrow_books' table.
      *
      * @return void
      */
-    public function testBorrowingBookSoftDelete(): void
+    public function testBorrowBookSoftDelete(): void
     {
         $employee = Employee::factory()->create();
         $user = User::factory()->create(['employee_id' => $employee->id]);
         $member = Member::factory()->create(['user_id' => $user->id]);
 
-        $borrowingBook = BorrowingBook::factory()->create([
+        $borrowBook = BorrowBook::factory()->create([
             'member_id' => $member->id,
             'user_id' => $user->id,
         ]);
 
-        $borrowingBook->delete();
+        $borrowBook->delete();
 
-        $this->assertSoftDeleted('borrowing_books', [
-            'id' => $borrowingBook->id,
+        $this->assertSoftDeleted('borrow_books', [
+            'id' => $borrowBook->id,
         ]);
     }
 }

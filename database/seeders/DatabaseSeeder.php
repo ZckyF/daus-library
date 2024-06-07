@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-use App\Models\BookshelfPivot;
+
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -23,8 +23,8 @@ class DatabaseSeeder extends Seeder
             BookCategoryPivotSeeder::class,
             BookshelfSeeder::class,
             BookshelfPivotSeeder::class,
-            BorrowingBookSeeder::class,
-            BorrowingBookPivotSeeder::class,
+            BorrowBookSeeder::class,
+            BorrowBookPivotSeeder::class,
             FineSeeder::class
         ]);
     }

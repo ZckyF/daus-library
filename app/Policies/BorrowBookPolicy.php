@@ -2,11 +2,12 @@
 
 namespace App\Policies;
 
+use App\Models\BorrowBook;
 use App\Models\BorrowingBook;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class BorrowingBookPolicy
+class BorrowBookPolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -15,7 +16,7 @@ class BorrowingBookPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('borrowing_book.view_any');
+        return $user->can('borrow_book.view_any');
     }
 
     /**
@@ -23,9 +24,9 @@ class BorrowingBookPolicy
      * 
      * @return bool
      */
-    public function view(User $user, BorrowingBook $borrowingBook): bool
+    public function view(User $user, BorrowBook $borrowBook): bool
     {
-        return $user->can('borrowing_book.view');
+        return $user->can('borrow_book.view');
     }
 
     /**
@@ -35,7 +36,7 @@ class BorrowingBookPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('borrowing_book.create');
+        return $user->can('borrow_book.create');
     }
 
     /**
@@ -43,9 +44,9 @@ class BorrowingBookPolicy
      * 
      * @return bool
      */
-    public function update(User $user, BorrowingBook $borrowingBook): bool
+    public function update(User $user, BorrowBook $borrowBook): bool
     {
-        return $user->can('borrowing_book.update');
+        return $user->can('borrow_book.update');
     }
 
     /**
@@ -53,9 +54,9 @@ class BorrowingBookPolicy
      * 
      * @return bool
      */
-    public function delete(User $user, BorrowingBook $borrowingBook): bool
+    public function delete(User $user, BorrowBook $borrowBook): bool
     {
-        return $user->can('borrowing_book.delete');
+        return $user->can('borrow_book.delete');
     }
 
     /**
@@ -63,7 +64,7 @@ class BorrowingBookPolicy
      * 
      * @return bool
      */
-    public function restore(User $user, BorrowingBook $borrowingBook): bool
+    public function restore(User $user, BorrowBook $borrowBook): bool
     {
         return false;
     }
@@ -73,7 +74,7 @@ class BorrowingBookPolicy
      * 
      * @return bool
      */
-    public function forceDelete(User $user, BorrowingBook $borrowingBook): bool
+    public function forceDelete(User $user, BorrowBook $borrowBook): bool
     {
         return false;
     }

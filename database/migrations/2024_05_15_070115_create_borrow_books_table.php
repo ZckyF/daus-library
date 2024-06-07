@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
 
-        Schema::create('borrowing_books', function (Blueprint $table) {
+        Schema::create('borrow_books', function (Blueprint $table) {
             $table->id();
-            $table->string('borrowing_number')->unique();
+            $table->string('borrow_number')->unique();
             $table->foreignId('member_id')->constrained('members')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamp('borrow_date')->nullable();
             $table->timestamp('return_date')->nullable();
@@ -32,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('borrowing_books');
+        Schema::dropIfExists('borrow_books');
     }
 };

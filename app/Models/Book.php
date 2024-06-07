@@ -56,14 +56,14 @@ class Book extends Model
 
     /**
      * Returns a belongs to many relationship between the current model and 
-     * the BorrowingBook model using the BorrowingBookPivot model as the pivot table.
+     * the BorrowBook model using the BorrowBookPivot model as the pivot table.
      *
      * @return BelongsToMany
      */
-    public function borrowingBooks(): BelongsToMany
+    public function borrowBooks(): BelongsToMany
     {
-        return $this->belongsToMany(BorrowingBook::class, 'borrowing_book_pivot')
-            ->using(BorrowingBookPivot::class);
+        return $this->belongsToMany(BorrowBook::class, 'borrow_book_pivot')
+            ->using(BorrowBookPivot::class);
     }
 
     /**

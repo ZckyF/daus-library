@@ -72,11 +72,11 @@ class UserSeeder extends Seeder
         ];
         
         $staffServicePermissions = [
-            'borrowing_book.view_any',
-            'borrowing_book.create',
-            'borrowing_book.view',
-            'borrowing_book.update',
-            'borrowing_book.delete',
+            'borrow_book.view_any',
+            'borrow_book.create',
+            'borrow_book.view',
+            'borrow_book.update',
+            'borrow_book.delete',
 
             'fine.view_any',
             'fine.create',

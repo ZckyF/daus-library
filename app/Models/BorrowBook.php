@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class BorrowingBook extends Model
+class BorrowBook extends Model
 {
     use HasFactory,SoftDeletes;
 
@@ -20,8 +20,8 @@ class BorrowingBook extends Model
     protected $fillable = [
         'user_id',
         'member_id',
-        'borrowing_number',
-        'borrowing_date',
+        'borrow_number',
+        'borrow_date',
         'return_date',
         'status',
         'returned_date',
@@ -48,14 +48,14 @@ class BorrowingBook extends Model
         return $this->belongsTo(User::class);    
     }
     /**
-     * Retrieve the books associated with this model through the borrowing_book_pivot table.
+     * Retrieve the books associated with this model through the borrow_book_pivot table.
      *
      * @return BelongsToMany The books associated with this model.
      */
     public function books(): BelongsToMany
     {
-        return $this->belongsToMany(Book::class, 'borrowing_book_pivot')
-            ->using(BorrowingBookPivot::class);
+        return $this->belongsToMany(Book::class, 'borrow_book_pivot')
+            ->using(BorrowBookPivot::class);
     }
     
 }
