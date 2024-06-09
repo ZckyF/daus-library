@@ -10,9 +10,9 @@
 
 <style>
   @media (max-width: 767.98px) { 
-    .container-fluid .row-active {
+    /* .container-fluid .row-active {
         background-color: rgba(0, 0, 0, 0.8);
-        position: fixed;
+        position: absolute;
         height: 100%;
         top: 0;
         bottom: 0;
@@ -20,7 +20,7 @@
         left: 0;
         transition: background-color 0.3s ease; 
         z-index: 9999;
-    }
+    } */
     .row main {
       margin-top: 60px;
       
@@ -36,7 +36,9 @@
       object-fit: cover;
     }
 </style>
+@stack('styles')
 @vite(['resources/js/app.js', 'resources/sass/app.scss'])
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <body>
     
 
@@ -53,7 +55,7 @@
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    
     <script>
       $(document).ready(function() {
         const $mySidebar = $('.sidebar');
@@ -76,6 +78,7 @@
         });
       });
     </script>
+    @stack('scripts')
     
     
 </body>
