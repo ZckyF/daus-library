@@ -35,6 +35,12 @@
     </div>
     <canvas id="borrowBookChart" class="bg-white rounded-3 shadow"></canvas>
   </div>
+  <div class="row mt-5">
+    <div class="col">
+        <h3>Simple Table</h3>
+    </div>
+  </div>
+  
 </div>
 
 @push('scripts')
