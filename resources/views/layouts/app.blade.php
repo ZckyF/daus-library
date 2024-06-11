@@ -41,9 +41,7 @@
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <body>
     
-
   <x-layout-elements.navbar />
-
     <div class="container-fluid">
         <div class="row">
           <x-layout-elements.sidebar-menu />
@@ -52,6 +50,11 @@
             <hr>
             {{ $slot }}
           </main>
+          <footer class="bg-light fw-medium col-md-9 ms-sm-auto col-lg-10 px-md-4 py-3">
+            <div class="container">
+                <span class="text-muted">&copy; {{ date('Y') }} Dasbry. All rights reserved.</span>
+            </div>
+          </footer>
         </div>
     </div>
 

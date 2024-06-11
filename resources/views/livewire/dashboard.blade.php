@@ -38,34 +38,18 @@
   <div class="row mt-5">
     <h3 class="mb-4">Top 10 Tables</h3>
     <div class="col-lg-6">
-        <table class="table table-striped"> 
-            <thead>
+        <x-tables.table tableClass="table-striped" :columns="['Rank', 'Full Name', 'Borrow Count']"> 
+            @foreach($topMembers as $index => $member)
                 <tr>
-                    <th>Rank</th>
-                    <th>Member Name</th>
-                    <th>Borrow Count</th>
+                    <td>{{ $index + 1 }}</td>
+                    <td>{{ $member->member->full_name }}</td>
+                    <td>{{ $member->borrow_count }}</td>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach($topMembers as $index => $member)
-                    <tr>
-                        <td>{{ $index + 1 }}</td>
-                        <td>{{ $member->member->full_name }}</td>
-                        <td>{{ $member->borrow_count }}</td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
+            @endforeach
+        </x-tables.table>
     </div>
     <div class="col-lg-6">    
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Rank</th>
-                    <th>Book Title</th>
-                    <th>Borrow Count</th>
-                </tr>
-            </thead>
+        <x-tables.table tableClass="table-striped" :columns="['Rank', 'Title', 'Borrow Count']">
             <tbody>
                 @foreach($topBooks as $index => $book)
                     <tr>
@@ -75,13 +59,13 @@
                     </tr>
                 @endforeach
             </tbody>
-        </table>
+        </x-tables.table>
     </div>
   </div>
 </div>
 
 
-</div>
+
 
 @push('scripts')
     @assets
