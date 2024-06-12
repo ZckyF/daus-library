@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('isbn')->unique();
             $table->string('title');
             $table->string('cover_image_name')->nullable();     
+            $table->string('author');     
             $table->integer('published_year');
             $table->decimal('price_per_book', 10, 2);
             $table->integer('quantity');

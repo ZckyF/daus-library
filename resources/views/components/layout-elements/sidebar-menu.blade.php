@@ -69,6 +69,7 @@
         padding: 7px;
         border-radius: 10px;
         color: #838383;
+        transition:  .3s ease; 
     }
     .sidebar .bi.active {
         background-color: #9370db;

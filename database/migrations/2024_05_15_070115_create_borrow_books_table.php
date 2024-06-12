@@ -20,7 +20,7 @@ return new class extends Migration
             $table->timestamp('return_date')->nullable();
             $table->timestamp('returned_date')->nullable();
             $table->integer('quantity');
-            $table->enum('status', ['borrowed', 'due', 'returned'])->default('borrowed');
+            $table->enum('status', ['borrowed', 'due', 'returned','damaged','lost'])->default('borrowed');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
             $table->softDeletes();

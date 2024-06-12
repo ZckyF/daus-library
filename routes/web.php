@@ -4,6 +4,7 @@ use App\Livewire\Auth\ForgotPassword;
 use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Logout;
 use App\Livewire\Auth\ResetPassword;
+use App\Livewire\Book\Index as Book;
 use App\Livewire\Dashboard;
 use Illuminate\Support\Facades\Route;
 
@@ -20,6 +21,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')->group(function () {
     Route::get('/', Dashboard::class)->name('dashboard');
+
+    Route::get('/books', Book::class)->name('books');
+    
     Route::post('/logout', [Logout::class,'logout'])->name('logout');
 });
 

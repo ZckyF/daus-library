@@ -24,6 +24,7 @@ class BookTest extends TestCase
    private array $requiredFields = [  
         'isbn',
         'title',
+        'author',
         'published_year',
         'price_per_book',
         'quantity',

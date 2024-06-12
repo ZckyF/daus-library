@@ -22,13 +22,14 @@ class Book extends Model
         'isbn',
         'title',
         'cover_image_name',
+        'author',
         'published_year',
         'price_per_book',
         'quantity',
         'quantity_now',
         'description',
         'user_id',
-      ];
+    ];
 
 
 

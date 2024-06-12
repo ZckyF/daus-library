@@ -23,7 +23,7 @@ class BorrowBookFactory extends Factory
             'return_date' => $this->faker->dateTime(),
             'returned_date' => $this->faker->dateTime(),
             'quantity' => $this->faker->randomNumber(),
-            'status' => $this->faker->randomElement(['borrowed', 'due', 'returned']),
+            'status' => $this->faker->randomElement(['borrowed', 'due', 'returned','damaged','lost']),
             'user_id' => 3,
         ];
     }
