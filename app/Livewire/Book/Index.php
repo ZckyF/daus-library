@@ -32,7 +32,9 @@ class Index extends Component
         }
 
         if ($this->category) {
-            $query->where('category_id', $this->category);
+            $query->whereHas('bookCategories', function ($q) {
+                $q->where('book_category_id', $this->category);
+            });
         }
 
         if ($this->sortBy == 'title-asc') {
@@ -49,6 +51,14 @@ class Index extends Component
     }
 
     public function updatedSearch() 
+    {
+        $this->fetchBooks();
+    }
+    public function updatedCategory() 
+    {
+        $this->fetchBooks();
+    }
+    public function updatedSortBy() 
     {
         $this->fetchBooks();
     }
