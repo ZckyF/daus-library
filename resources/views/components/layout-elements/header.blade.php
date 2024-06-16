@@ -1,5 +1,7 @@
 <header class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-4 mb-3">
-    <h1 class="h1">{{ Request::path() == '/' ? 'Dashboard' : ucwords(str_replace('-', ' ', Request::path())) }}</h1>
+    <h1 class="h1">
+        {{ Request::segment(1) == '' ? 'Dashboard' : ucwords(str_replace('-', ' ', Request::segment(1))) }}
+    </h1>
     <div class="dropdown dropdown-header">
         <button class=" btn dropdown-toggle d-flex align-items-center" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
           <img src="https://via.placeholder.com/40" alt="Avatar" class="avatar me-2 shadow-sm">

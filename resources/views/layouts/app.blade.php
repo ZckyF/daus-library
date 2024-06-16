@@ -36,21 +36,6 @@
       object-fit: cover;
   }
 
-  .container-fluid {
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
-    }
-
-    .row.flex-grow-1 {
-        flex-grow: 1;
-    }
-
-    footer {
-        background-color: #f8f9fa;
-        font-weight: 500;
-        margin-top: auto; /* Ensures the footer is pushed to the bottom */
-    }
 </style>
 @stack('styles')
 @vite(['resources/js/app.js', 'resources/sass/app.scss'])
@@ -61,16 +46,14 @@
     <div class="container-fluid">
         <div class="row">
           <x-layout-elements.sidebar-menu />
+
           <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
             <x-layout-elements.header />
             <hr>
             {{ $slot }}
           </main>
-          <footer class="bg-light fw-medium col-md-9 ms-sm-auto col-lg-10 px-md-4 py-3">
-            <div class="">
-                <span class="text-muted">&copy; {{ date('Y') }} Dasbry. All rights reserved.</span>
-            </div>
-          </footer>
+          
+          <x-layout-elements.footer />
         </div>
     </div>
 

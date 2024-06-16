@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Book;
+namespace App\Livewire\Books;
 
 use App\Models\Book;
 use App\Models\BookCategory;
@@ -10,9 +10,10 @@ class Index extends Component
 {
     public $search = '';
     public $category = '';
-    public $sortBy = 'title-asc';
+    public $sortBy = 'newest';
     public $categories;
     public $books;
+    
     
 
     public function mount()
@@ -69,6 +70,6 @@ class Index extends Component
     // }
     public function render()
     {
-        return view('livewire.book.index');
+        return view('livewire.books.index');
     }
 }

@@ -12,6 +12,9 @@
             animation: fadeInUp 0.5s forwards;
             cursor: pointer;
         }
+        .button-add:hover a {
+            color: white;
+        }
         @keyframes fadeInUp {
             to {
                 opacity: 1;
@@ -33,30 +36,38 @@
 <div class="mt-5">
     <div class="row">
         <!-- Input Search -->
-        <div class="col-md-4 col-4">
+        <div class="col-md-4 col-sm-5 col-12 mb-3">
             <div class="input-group">
                 <input type="text" class="form-control rounded-4 shadow-sm" placeholder="Search book..." wire:model.live.debounce.300ms="search">
             </div>
         </div>
-        <!-- Middle Column is empty -->
-        <div class="col-lg-4 col-md-2 col-2"></div>
-        <!-- Dropdown Categories -->
-        <div class="col-lg-2 col-md-3 col-3">
-            <select class="form-control rounded-4 shadow-sm" wire:model.live="category">
-                <option value="">All Categories</option>
-                @foreach ($categories as $category)
-                    <option value="{{ $category->id }}">{{ $category->category_name }}</option>
-                @endforeach
-            </select>
-        </div>
-        <!-- Dropdown Sortir -->
-        <div class="col-lg-2 col-md-3 col-3">
-            <select class="form-control rounded-4 shadow-sm" wire:model.live="sortBy">
-                <option value="title-asc">Title A-Z</option>
-                <option value="title-desc">Title Z-A</option>
-                <option value="newest">Newest</option>
-                <option value="oldest">Oldest</option>
-            </select>
+        <div class="col-md-8 col-sm-7 col-12 jus">
+            <div class="d-flex justify-content-sm-end justify-content-center align-items-md-end gap-3">
+                <div class="dropdown-categories">
+                    <select class="form-control rounded-4 shadow-sm" wire:model.live="category" style="cursor: pointer;">
+                        <option value="">All Categories</option>
+                        @foreach ($categories as $category)
+                            <option value="{{ $category->id }}">{{ $category->category_name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                
+                <div class="dropdown-sort">
+                    <select class="form-control rounded-4 shadow-sm" wire:model.live="sortBy" style="cursor: pointer;">
+                        <option value="newest">Newest</option>
+                        <option value="oldest">Oldest</option>
+                        <option value="title-asc">Title A-Z</option>
+                        <option value="title-desc">Title Z-A</option>
+                    </select>
+                </div>
+
+                <div class="button-add">
+                    <a href="{{ route('books.create') }}" class="btn btn-outline-primary fw-bold shadow-sm">
+                        <i class="bi bi-plus-lg"></i>
+                    </a>
+                </div>
+            </div>
+            
         </div>
     </div>
 
@@ -78,6 +89,9 @@
                 </div>
             @endforeach
         @endif
+    </div>
+    <div wire:loading wire:target="loadMore" class="text-center mt-2">
+        <p>Loading...</p>
     </div>
 </div>
 
