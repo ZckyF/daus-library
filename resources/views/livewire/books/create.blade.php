@@ -1,7 +1,10 @@
 @push('styles')
     <style>
-        .cover-image {
-            position: relative;
+        .file-img {
+            display: none;
+        }
+
+        .image-avatar {
             position: relative;
             overflow: hidden;
             transition: background-color 0.3s ease;
@@ -9,14 +12,22 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            background-color: #e9ecef; /* Background color for placeholder */
+            width: 100%;
+            height: 400px;
+            border-radius: 10px;
         }
-        .cover-image img {
+
+        .image-avatar img {
             object-fit: contain;
             border-radius: 10px;
             background-position: center;
-            max-height: 300px; 
+            max-height: 400px;
+            /* width: 40%; */
+            
         }
-        .cover-image  .icon-image {
+
+        .image-avatar .icon-image {
             position: absolute;
             display: flex;
             align-items: center;
@@ -25,14 +36,20 @@
             background-color: rgba(0, 0, 0, 0.7);
             width: 100%;
             height: 100%;
-            top: 100%;
-            transition: top 0.3s ease, opacity 0.3s ease;
+            bottom: 100%;
+            transition: all 0.3s ease;
             opacity: 0;
         }
-        .cover-image .icon-image {
-            top: 0;
+
+        .image-avatar:hover .icon-image {
+            bottom: 0;
             opacity: 1;
         }
+        .image-avatar .add-image-icon {
+            width: 50px;
+            color: white
+        }
+
     </style>
 @endpush
 
@@ -46,18 +63,20 @@
     <form wire:submit.prevent="save" class="form-floating">
         <div class="row">
             <div class="mb-3 col-md-12">
-                <label for="cover_image" class="form-label">
-                    <div class="cover-image">
-                        <img src="{{ $selectedImage ? $selectedImage : 'default.jpg' }}" alt="" alt="cover-book">
-                        <span class="icon-cover">
-                            <i class="bi bi-plus-lg add-image-icon"></i>
-                        </span>
-                        <input type="file" class="form-control file-cover" id="cover_image" wire:model="selectedImage" accept="image/png, image/gif, image/jpeg" style="display: none;">
-                        @error('cover_image') <span class="text-danger">{{ $message }}</span> @enderror
-                    </div>  
-                </label>   
-            </div>
+                <label for="cover_image" class="form-label py-5 image-avatar">
+
+                    <img id="cover-preview" src="{{ $form->cover_image ? $form->cover_image->temporaryUrl() : '' }}" />
+                    <span class="icon-image">
+                        <i class="bi bi-plus add-image-icon"></i>
+                    </span>
+                    
+                    
+                </label>
+                <input type="file" class="form-control file-img" id="cover_image"  accept="image/png, image/gif, image/jpeg" wire:model="form.cover_image" style="display: none">
+                @error('cover_image') <span class="text-danger">{{ $message }}</span> @enderror
             
+            </div>
+              
             <div class="mb-3 col-md-4">
                         <label for="isbn" class="form-label">ISBN</label>
                         <input type="text" class="form-control" id="isbn" wire:model="isbn">
@@ -97,7 +116,7 @@
                 <label for="categroeis" class="form-label">Categories</label>
                 <div class="d-flex gap-4">
                     <!-- Input text for selected categories -->
-                    <input type="text" class="form-control" id="selected_categories" wire:model="selectedCategories" readonly>
+                    <input type="text" class="form-control" id="selected_categories" wire:model="form.selectedCategories" readonly>
                     
                     <!-- Dropdown with multi-select checkboxes -->
                     <div class="dropdown">
@@ -121,7 +140,7 @@
                 <label for="bookshelves" class="form-label">Bookshelves</label>
                 <div class="d-flex gap-4">
                     <!-- Input text for selected categories -->
-                    <input type="text" class="form-control" id="selected_categories" wire:model="selectedBookshelves" readonly>
+                    <input type="text" class="form-control" id="selected_categories" wire:model="form.selectedBookshelves" readonly>
                     
                     <!-- Dropdown with multi-select checkboxes -->
                     <div class="dropdown">
@@ -132,7 +151,7 @@
                             @foreach ($bookshelves as $bookshelf)
                                 <li>
                                     <label class="dropdown-item">
-                                        <input type="checkbox" wire:model.live="selectedDropdownBookshelves" value="{{ $bookshelf->id }}"> {{ $bookshelf->bookshelf_number }}
+                                        <input type="checkbox" wire:model.live="form.selectedDropdownBookshelves" value="{{ $bookshelf->id }}"> {{ $bookshelf->bookshelf_number }}
                                     </label>
                                 </li>
                             @endforeach
@@ -156,23 +175,27 @@
 
 @push('scripts')
 <script>
-    // $(document).ready(function() {
-    //     $('#image-preview').on('click', function() {
-    //         $('#cover_image').click();
-    //     });
+    $(document).ready(function() {
+        $('.image-avatar').on('click', function() {
+            $('#cover_image').click();
+        });
 
-    //     $('#cover_image').on('change', function(event) {
-    //         const input = event.target;
-    //         if (input.files && input.files[0]) {
-    //             const reader = new FileReader();
-    //             reader.onload = function(e) {
-    //                 $('#image-preview').addClass('has-image');
-    //                 $('#image-preview img').attr('src', e.target.result);
-    //             };
-    //             reader.readAsDataURL(input.files[0]);
-    //         }
-    //     });
-    // });
+        $('#cover_image').on('change', function(event) {
+            const input = event.target;
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#cover-preview').attr('src', e.target.result);
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        });
+
+        $('categoryDropdown').next('.dropdown-menu').on('click', function(e) {
+            e.stopPropagation();
+        });
+    });
 </script>
 @endpush
+
 
