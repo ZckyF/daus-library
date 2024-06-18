@@ -33,6 +33,7 @@ class Create extends Component
                                 ->pluck('category_name')
                                 ->toArray();
 
+        $this->form->selectedCategoriesId = $this->selectedDropdownCategories;
         $this->form->selectedCategories = implode(', ', $selectedCategoryNames);
     }
 
@@ -41,12 +42,16 @@ class Create extends Component
         $selectedBookshelvesNumber = $this->bookshelves->whereIn('id', $this->selectedDropdownBookshelves)
         ->pluck('bookshelf_number')
         ->toArray();
-
+        $this->form->selectedBookshelvesId = $this->selectedDropdownBookshelves;
         $this->form->selectedBookshelves = implode(', ', $selectedBookshelvesNumber);
+
     }
 
+    public function save()
+    {
+        $this->form->store();
+    }
 
-    
 
 
     public function render()

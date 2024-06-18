@@ -20,7 +20,7 @@
             <!-- Tambahkan field form di sini -->
             <div class="form-group mb-3">
                 <label for="email" class="form-label">Email</label>
-                <input type="email" wire:model="form.email" class="form-control bg-transparent @error('form.email') is-invalid @enderror" id="email" placeholder="Enter your email">
+                <input type="email" wire:model="form.email" class="form-control @error('form.email') is-invalid @enderror" id="email" placeholder="Enter your email">
                 @error('form.email')
                 <div id="email" class="invalid-feedback">
                     {{ $message }}
@@ -34,8 +34,9 @@
             </div>
             
             <div class="d-grid gap-1">
-                <button class="btn btn-primary" type="submit" >
-                    <span class="text-white"> <strong>Send</strong> </span>  
+                <button class="btn btn-primary text-white fw-bold shadow-sm" type="submit">
+                    <span wire:loading wire:target="forgotPassword" class="spinner-border spinner-border-sm me-1"></span>
+                    <span wire:loading.remove wire:target="forgotPassword">Send</span>
                 </button>
             </div>
         </form>

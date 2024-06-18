@@ -22,7 +22,7 @@
 
         <div class="form-group mb-3">
             <label for="usernameOrEmail" class="form-label text-center">Username Or Email</label>
-            <input type="text" wire:model="form.usernameOrEmail" class="form-control bg-transparent @error('form.usernameOrEmail') is-invalid @enderror" id="usernameOrEmail" placeholder="Enter your username or email" />
+            <input type="text" wire:model="form.usernameOrEmail" class="form-control @error('form.usernameOrEmail') is-invalid @enderror" id="usernameOrEmail" placeholder="Enter your username or email" />
 
             @error('form.usernameOrEmail')
             <div id="usernameOrEmail" class="invalid-feedback">
@@ -33,7 +33,7 @@
 
         <div class="form-group mb-3">
             <label for="password" class="form-label text-center">Password</label>
-            <input type="password" wire:model="form.password" class="form-control bg-transparent @error('form.password') is-invalid @enderror" id="password" placeholder="Enter your password">
+            <input type="password" wire:model="form.password" class="form-control @error('form.password') is-invalid @enderror" id="password" placeholder="Enter your password">
 
             @error('form.password')
             <div id="password" class="invalid-feedback">
@@ -47,8 +47,9 @@
         </div>
 
         <div class="d-grid ">
-            <button class="btn btn-primary" type="submit">
-            <span class="text-white"><strong>Login</strong></span>
+            <button class="btn btn-primary text-white fw-bold shadow-sm" type="submit">
+                <span wire:loading wire:target="login" class="spinner-border spinner-border-sm me-1"></span>
+                <span wire:loading.remove wire:target="login">Login</span>
             </button>
         </div>
         </form>

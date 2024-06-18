@@ -62,7 +62,7 @@
                 </div>
 
                 <div class="button-add">
-                    <a href="{{ route('books.create') }}" class="btn btn-outline-primary fw-bold shadow-sm">
+                    <a href="{{ route('books.create') }}" class="btn btn-outline-primary fw-bold shadow-sm" >
                         <i class="bi bi-plus-lg"></i>
                     </a>
                 </div>
@@ -72,6 +72,12 @@
     </div>
 
     <div class="row mt-5" id="books-container">
+        @if (session()->has('success'))
+        <div class="alert alert-success alert-dismissible" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        @endif
         @if($books->isEmpty())
             <div class="col-12">
                 <p class="text-center">No books found.</p>
