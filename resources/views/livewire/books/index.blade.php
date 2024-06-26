@@ -83,17 +83,21 @@
                 <p class="text-center">No books found.</p>
             </div>
         @else
-            @foreach ($books as $book)
-                <div class="col-lg-3 col-md-6 col-sm-6 col-12 mb-4 g-2 book-card">
-                    <div class="card shadow-sm rounded-4">
-                        <img src="{{ asset('storage/covers/' . $book->cover_image_name) }}" class="card-img-top rounded-top-4" alt="{{ $book->title }}">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ Str::limit($book->title, 20) }}</h5>
-                            <p class="card-text">{{ $book->author }}</p>
-                        </div>
+        @foreach ($books as $book)
+            @php
+                $titleSlug = str_replace(' ', '-', $book->title);
+                $authorSlug = str_replace(' ', '-', $book->author);
+            @endphp
+            <div class="col-lg-3 col-md-6 col-sm-6 col-12 mb-4 g-2 book-card">
+                <a wire:navigate class="card shadow-sm rounded-4 text-decoration-none" href="{{ route('books.update', ['title' => $titleSlug, 'author' => $authorSlug]) }}">
+                    <img loading="lazy" src="{{ asset('storage/covers/' . $book->cover_image_name) }}" class="card-img-top rounded-top-4" alt="{{ $book->title }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ Str::limit($book->title, 20) }}</h5>
+                        <p class="card-text">{{ $book->author }}</p>
                     </div>
-                </div>
-            @endforeach
+                </a>
+            </div>
+        @endforeach
         @endif
     </div>
     <div wire:loading wire:target="loadMore" class="text-center mt-2">

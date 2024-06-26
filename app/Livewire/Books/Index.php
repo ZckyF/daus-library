@@ -47,6 +47,7 @@ class Index extends Component
         } elseif ($this->sortBy == 'oldest') {
             $query->orderBy('published_year', 'asc');
         }
+
         $this->books = $query->get();
     }
 

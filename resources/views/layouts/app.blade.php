@@ -36,6 +36,11 @@
       object-fit: cover;
   }
 
+  footer {
+      position: static;
+      bottom: 0;
+  }
+
 </style>
 @stack('styles')
 @vite(['resources/js/app.js', 'resources/sass/app.scss'])

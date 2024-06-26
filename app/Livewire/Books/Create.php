@@ -50,6 +50,7 @@ class Create extends Component
     public function save()
     {
         $this->form->store();
+        $this->redirectRoute('books'); 
     }
 
 

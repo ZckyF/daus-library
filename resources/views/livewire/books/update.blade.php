@@ -54,12 +54,12 @@
 @endpush
 
 <div class="mt-5">
-    <h3 class="mb-4">Create New Book</h3>
+    <h3 class="mb-4">Update Book</h3>
     @if (session()->has('success'))
-    <div class="alert alert-success alert-dismissible" role="alert">
-        {{ session('success') }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
+        <div class="alert alert-success alert-dismissible" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
     @endif
     <form wire:submit.prevent="save">
         @csrf
@@ -69,7 +69,7 @@
 
 @push('scripts')
 <script>
-    $(document).ready(function() {
+    $(document).ready(() => {
         // $('.image-avatar').on('click', function() {
         //     $('#cover_image').click();
         // });
@@ -82,6 +82,9 @@
                     $('#cover-preview').attr('src', e.target.result);
                 };
                 reader.readAsDataURL(input.files[0]);
+                
+                let file = input.files[0];
+                @this.upload('form.cover_image_name', file);
             }
         });
 

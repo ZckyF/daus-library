@@ -10,12 +10,12 @@ use Livewire\Form;
 
 class BookForm extends Form
 {
-    #[Rule('required|max:13|unique:books,isbn')]
+    #[Rule('required|max:13')]
     public $isbn;
     #[Rule('required|string|max:255')]
     public $title;
-    #[Rule('required|image|mimes:jpeg,png,jpg,gif|max:2048')]
-    public $cover_image;
+    // #[Rule('nullable|image|mimes:jpeg,png,jpg,gif|max:2048')]
+    public $cover_image_name;
     #[Rule('required|string|max:255')]
     public $author;
     #[Rule('required|integer')]
@@ -29,39 +29,29 @@ class BookForm extends Form
     #[Rule('required|string')]
     public $description;
     #[Rule('required|string')]
-    public $selectedCategories ;
+    public $selectedCategories;
     #[Rule('required|string')]
-    public $selectedBookshelves ;
+    public $selectedBookshelves;
 
+    public $selectedImage;
 
     public $selectedBookshelvesId;
     public $selectedCategoriesId;
     
+
     public function store()
     {
-        // Validate the form data
-        $this->validate();
+        
 
-        if ($this->cover_image) {
-            $fileName = $this->cover_image->hashName(); 
-            $this->cover_image->storeAs('covers', $fileName, 'public');
-        } else {
-            $fileName = 'default.jpg'; 
-        }
-
-        // Create the book record
-        $book = Book::create([
-            'isbn' => $this->isbn,
-            'title' => $this->title,
+        if ($this->cover_image_name) {
+            $validatedData = array_merge($this->validate(), ['cover_image_name' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048']);
+            $fileName = $this->cover_image_name->hashName(); 
+            $this->cover_image_name->storeAs('covers', $fileName, 'public');
+        } 
+        $book = Book::create(array_merge($validatedData, [
             'cover_image_name' => $fileName,
-            'author' => $this->author,
-            'published_year' => $this->published_year,
-            'price_per_book' => $this->price_per_book,
-            'quantity' => $this->quantity,
-            'quantity_now' => $this->quantity_now,
-            'description' => $this->description,
             'user_id' => Auth::user()->id,
-        ]);
+        ]));
  
         $book->bookCategories()->sync($this->selectedCategoriesId);
         $book->bookshelves()->sync($this->selectedBookshelvesId);
@@ -74,11 +64,41 @@ class BookForm extends Form
         return redirect()->to('/books');
     }
 
+    public function update()
+    {
+        
+        $book = Book::where('isbn', $this->isbn)->firstOrFail();
+
+        if ($this->cover_image_name !== $book->cover_image_name) {
+            $validatedData = array_merge($this->validate(), ['cover_image_name' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048']);
+            
+            $fileName = $this->cover_image_name->hashName(); 
+            $this->cover_image_name->storeAs('covers', $fileName, 'public');
+        } else {
+            $validatedData = array_merge($this->validate(), ['cover_image_name' => 'required|max:2048']);
+            $fileName = $book->cover_image_name;
+        }
+
+        $book->update(array_merge($validatedData, [
+            'cover_image_name' => $fileName,
+            'user_id' => Auth::user()->id,
+        ]));
+
+        $book->bookCategories()->sync($this->selectedCategoriesId);
+        $book->bookshelves()->sync($this->selectedBookshelvesId);
+
+        $this->resetForm();
+
+        session()->flash('success', 'Book successfully updated.');
+    }
+
+
+
     public function resetForm()
     {
         $this->isbn = '';
         $this->title = '';
-        $this->cover_image = null;
+        $this->cover_image_name = null;
         $this->author = '';
         $this->published_year = '';
         $this->price_per_book = '';
