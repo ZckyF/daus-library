@@ -64,10 +64,6 @@ class Index extends Component
         $this->fetchBooks();
     }
 
-    // public function updated($property)
-    // {
-    //     $this->fetchBooks();
-    // }
     public function render()
     {
         return view('livewire.books.index');

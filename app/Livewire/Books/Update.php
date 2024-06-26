@@ -18,6 +18,7 @@ class Update extends Component
     public $bookshelves;
     public $isDirty = false;
     public $bookData;
+    public $bookId;
 
     public $selectedDropdownCategories = [];
     public $selectedDropdownBookshelves = [];
@@ -32,6 +33,7 @@ class Update extends Component
 
         $book = Book::where('title', $title)->where('author', $author)->firstOrFail();
 
+        $this->bookId = $book->id;
         $this->bookData = $book->toArray();
 
         $this->form->isbn = $book->isbn;
@@ -95,6 +97,13 @@ class Update extends Component
     {
         
         $this->form->update();
+        $this->redirectRoute('books');
+    }
+
+    public function delete()
+    {
+        Book::destroy($this->bookId);
+        session()->flash('success', 'Book deleted successfully');
         $this->redirectRoute('books');
     }
     public function render()

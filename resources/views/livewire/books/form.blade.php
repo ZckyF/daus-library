@@ -108,12 +108,19 @@
             <span class="me-1"><i class="bi bi-arrow-left"></i></span>
             <span>Back</span>
         </a>
-        <button type="submit" class="btn btn-primary text-white fw-bold shadow-sm">
+        @if (request()->routeIs('books.update'))
+            <button type="button" class="btn btn-danger shadow-sm" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <span class="me-1"><i class="bi bi-trash"></i></span>
+                <span>Delete</span>
+            </button> 
+        @endif
+        
+        <button type="submit" class="btn btn-primary text-white  shadow-sm">
             <span wire:loading wire:target="save" class="spinner-border spinner-border-sm me-1"></span>
             <span wire:loading.remove wire:target="save" class="me-1"><i class="bi bi-floppy"></i></span>
             <span>Save</span>
         </button>
-        
     </div>
+<x-notifications.modal title="Delete Confirmation" message="Are you sure you want to delete this book?" buttonText="Yes" action="delete" />
 </div>
 
