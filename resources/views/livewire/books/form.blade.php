@@ -104,7 +104,7 @@
         @error('form.description') <span class="text-danger">{{ $message }}</span> @enderror
     </div>
     <div class="d-flex justify-content-end gap-3 px-5">
-        <a href="{{ route('books') }}" class="btn btn-outline-secondary shadow-sm">
+        <a wire:navigate href="{{ route('books') }}" class="btn btn-outline-secondary shadow-sm">
             <span class="me-1"><i class="bi bi-arrow-left"></i></span>
             <span>Back</span>
         </a>

@@ -13,6 +13,7 @@ class Index extends Component
     public $sortBy = 'newest';
     public $categories;
     public $books;
+    public $take = 8;
     
     
 
@@ -48,7 +49,7 @@ class Index extends Component
             $query->orderBy('published_year', 'asc');
         }
 
-        $this->books = $query->get();
+        $this->books = $query->get()->take($this->take);
     }
 
     public function updatedSearch() 
@@ -61,6 +62,12 @@ class Index extends Component
     }
     public function updatedSortBy() 
     {
+        $this->fetchBooks();
+    }
+
+    public function loadMore()
+    {
+        $this->take += $this->take;
         $this->fetchBooks();
     }
 

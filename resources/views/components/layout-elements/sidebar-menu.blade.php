@@ -18,7 +18,7 @@
       transition: transform 0.3s ease; 
     }
 
-    @media (max-width: 767.98px) {
+    @media (max-width: 992px) {
       .sidebar {
         background-color: white;
         transform: translateX(-100%);

@@ -9,7 +9,7 @@
 </head>
 
 <style>
-  @media (max-width: 767.98px) { 
+  @media (max-width: 992px) { 
     /* .container-fluid .row-active {
         background-color: rgba(0, 0, 0, 0.8);
         position: absolute;
@@ -37,7 +37,7 @@
   }
 
   footer {
-      position: static;
+      position: sticky;
       bottom: 0;
   }
 
@@ -52,7 +52,7 @@
         <div class="row">
           <x-layout-elements.sidebar-menu />
 
-          <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+          <main class="col-md-auto ms-sm-auto col-lg-10 px-md-4">
             <x-layout-elements.header />
             <hr>
             {{ $slot }}

@@ -15,6 +15,9 @@
         .button-add:hover a {
             color: white;
         }
+        .button-add:active a {
+            color: white !important;
+        }
         @keyframes fadeInUp {
             to {
                 opacity: 1;
@@ -35,14 +38,13 @@
 
 <div class="mt-5">
     <div class="row">
-        <!-- Input Search -->
         <div class="col-md-4 col-sm-5 col-12 mb-3">
             <div class="input-group">
                 <input type="text" class="form-control rounded-4 shadow-sm" placeholder="Search book..." wire:model.live.debounce.300ms="search">
             </div>
         </div>
         <div class="col-md-8 col-sm-7 col-12 jus">
-            <div class="d-flex justify-content-sm-end justify-content-center align-items-md-end gap-3">
+            <div class="d-flex justify-content-sm-end justify-content-end align-items-md-end gap-3">
                 <div class="dropdown-categories">
                     <select class="form-control rounded-4 shadow-sm" wire:model.live="category" style="cursor: pointer;">
                         <option value="">All Categories</option>
@@ -73,17 +75,17 @@
 
     <div class="row mt-5" id="books-container">
         @if (session()->has('success'))
-        <div class="alert alert-success alert-dismissible" role="alert">
-            {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
+            <div class="alert alert-success alert-dismissible" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
         @endif
         @if($books->isEmpty())
-            <div class="col-12">
-                <p class="text-center">No books found.</p>
-            </div>
-        @else
-        @foreach ($books as $book)
+                <div class="col-12">
+                    <p class="text-center">No books found.</p>
+                </div>
+            @else
+            @foreach ($books as $book)
             @php
                 $titleSlug = str_replace(' ', '-', $book->title);
                 $authorSlug = str_replace(' ', '-', $book->author);
@@ -97,11 +99,25 @@
                     </div>
                 </a>
             </div>
-        @endforeach
+            @endforeach
+
+            
+            <div class="d-flex justify-content-center">
+                <button wire:click="loadMore" class="btn btn-primary btn-sm text-white rounded-5 shadow-sm">
+                    <span wire:loading wire:target="loadMore" class="spinner-border spinner-border-sm"></span>
+                    <span wire:loading.remove wire:target="loadMore"><i class="bi bi-arrow-down"></i></span>
+                </button>
+            </div>
         @endif
     </div>
-    <div wire:loading wire:target="loadMore" class="text-center mt-2">
-        <p>Loading...</p>
+    <div class="row">
+
+        <div class="d-flex justify-content-center mt-3">
+            <div wire:loading wire:target="fetchBooks" class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
     </div>
+
 </div>
 

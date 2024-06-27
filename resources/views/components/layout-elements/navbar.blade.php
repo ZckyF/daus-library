@@ -1,6 +1,6 @@
 
 <style>
-  @media (min-width: 767.98px) {  /* Targets screens larger than or equal to lg  */
+  @media (min-width: 992px) {  /* Targets screens larger than or equal to lg  */
   .navbar {
     display: none !important;
     
