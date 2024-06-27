@@ -75,10 +75,7 @@
 
     <div class="row mt-5" id="books-container">
         @if (session()->has('success'))
-            <div class="alert alert-success alert-dismissible" role="alert">
-                {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
+            <x-notifications.alert class="alert-success" :message="session('success')" />
         @endif
         @if($books->isEmpty())
                 <div class="col-12">

@@ -5,6 +5,9 @@
         height: 50px;
         border-radius: 50%;
     }
+    .selected-year {
+        cursor: pointer;
+    }
     </style>
 @endpush
 
@@ -27,7 +30,7 @@
   <div class="row mt-5">
     <div class="d-flex justify-content-between align-items-center mb-3">
       <h3>Chart Borrow Book</h3>
-      <select wire:model.live="selectedYear" class="form-select w-auto border-0 shadow-sm">
+      <select wire:model.live="selectedYear" class="selected-year form-select w-auto border-0 shadow-sm">
           @foreach($years as $year)
               <option class="border-0" value="{{ $year }}">{{ $year }}</option>
           @endforeach

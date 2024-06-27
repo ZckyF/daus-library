@@ -3,10 +3,7 @@
         <h1 class="mb-4  text-center ">Reset Password</h1>
 
         @if (session()->has('error'))
-        <div class="alert alert-danger alert-dismissible" role="alert">
-            {{ session('error') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
+            <x-notifications.alert class="alert-danger" :message="session('error')" />
         @endif
 
         <form wire:submit="resetPassword" class="p-2  rounded">

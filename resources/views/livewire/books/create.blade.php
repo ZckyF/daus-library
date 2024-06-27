@@ -56,10 +56,7 @@
 <div class="mt-5">
     <h3 class="mb-4">Create New Book</h3>
     @if (session()->has('success'))
-    <div class="alert alert-success alert-dismissible" role="alert">
-        {{ session('success') }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
+        <x-notifications.alert class="alert-success" :message="session('success')" />
     @endif
     <form wire:submit.prevent="save">
         @csrf

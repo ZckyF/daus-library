@@ -2,17 +2,12 @@
 
         <h1 class="mb-4  text-center ">Forgot Password</h1>
 
-        @if (session()->has('error'))
-        <div class="alert alert-danger alert-dismissible" role="alert">
-            {{ session('error') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-        @endif
         @if (session()->has('success'))
-        <div class="alert alert-success alert-dismissible" role="alert">
-            {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
+            <x-notifications.alert class="alert-success" :message="session('success')" />
+        @endif
+
+        @if (session()->has('error'))
+            <x-notifications.alert class="alert-danger" :message="session('error')" />
         @endif
 
         <form wire:submit="forgotPassword" class="p-2  rounded">
