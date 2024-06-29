@@ -6,6 +6,7 @@ use App\Livewire\Forms\BookForm;
 use App\Models\Book;
 use App\Models\BookCategory;
 use App\Models\Bookshelf;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -17,8 +18,8 @@ class Update extends Component
     public $categories;
     public $bookshelves;
     public $isDirty = false;
-    public $bookData;
     public $bookId;
+    public $user;
 
     public $selectedDropdownCategories = [];
     public $selectedDropdownBookshelves = [];
@@ -34,8 +35,8 @@ class Update extends Component
         $book = Book::where('title', $title)->where('author', $author)->firstOrFail();
 
         $this->bookId = $book->id;
-        $this->bookData = $book->toArray();
-
+        $this->user = $book->user->username;
+        
         $this->form->isbn = $book->isbn;
         $this->form->title = $book->title;
         $this->form->cover_image_name = $book->cover_image_name;
@@ -102,10 +103,26 @@ class Update extends Component
 
     public function delete()
     {
-        Book::destroy($this->bookId);
-        session()->flash('success', 'Book deleted successfully');
-        $this->redirectRoute('books');
+        $book = Book::find($this->bookId);
+    
+        if ($book) {
+            $coverImage = $book->cover_image_name;
+    
+            $book->delete();
+    
+        
+            if ($coverImage && $coverImage !== 'default.jpg') {
+                Storage::disk('public')->delete('covers/' . $coverImage);
+            }
+    
+            session()->flash('success', 'Book deleted successfully');
+            
+            $this->redirectRoute('books');
+        } else {
+            session()->flash('error', 'Book not found');
+        }
     }
+    
     public function render()
     {
         return view('livewire.books.update');

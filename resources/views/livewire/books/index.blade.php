@@ -87,7 +87,7 @@
                 $titleSlug = str_replace(' ', '-', $book->title);
                 $authorSlug = str_replace(' ', '-', $book->author);
             @endphp
-            <div class="col-lg-3 col-md-6 col-sm-6 col-12 mb-4 g-2 book-card">
+            <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4 g-2 book-card">
                 <a wire:navigate class="card shadow-sm rounded-4 text-decoration-none" href="{{ route('books.update', ['title' => $titleSlug, 'author' => $authorSlug]) }}">
                     <img loading="lazy" src="{{ asset('storage/covers/' . $book->cover_image_name) }}" class="card-img-top rounded-top-4" alt="{{ $book->title }}">
                     <div class="card-body">
@@ -108,9 +108,8 @@
         @endif
     </div>
     <div class="row">
-
         <div class="d-flex justify-content-center mt-3">
-            <div wire:loading wire:target="fetchBooks" class="spinner-border text-primary" role="status">
+            <div wire:loading wire:target="search,category,sortBy" class="spinner-border text-primary" role="status">
               <span class="visually-hidden">Loading...</span>
             </div>
         </div>

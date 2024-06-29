@@ -44,9 +44,9 @@ class Index extends Component
         } elseif ($this->sortBy == 'title-desc') {
             $query->orderBy('title', 'desc');
         } elseif ($this->sortBy == 'newest') {
-            $query->orderBy('published_year', 'desc');
+            $query->orderBy('created_at', 'desc');
         } elseif ($this->sortBy == 'oldest') {
-            $query->orderBy('published_year', 'asc');
+            $query->orderBy('created_at', 'asc');
         }
 
         $this->books = $query->get()->take($this->take);

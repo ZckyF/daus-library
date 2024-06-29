@@ -98,6 +98,12 @@
         </div>
         @error('form.selectedCategories') <span class="text-danger">{{ $message }}</span> @enderror
     </div>
+    @if(request()->routeIs('books.update'))
+    <div class="mb-3 col-12">
+        <label for="user">Last Added Or Edited By</label>
+        <input type="text" class="form-control" value="{{ $user }}" disabled>
+    </div>
+    @endif
     <div class="mb-3 col-12">
         <label for="description" class="form-label">Description</label>
         <textarea class="form-control @error('form.description') is-invalid @enderror" id="description" rows="5" wire:model="form.description"></textarea>

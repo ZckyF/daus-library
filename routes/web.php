@@ -4,9 +4,15 @@ use App\Livewire\Auth\ForgotPassword;
 use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Logout;
 use App\Livewire\Auth\ResetPassword;
+
+
 use App\Livewire\Books\Index as BookIndex;
 use App\Livewire\Books\Create as BookCreate;
 use App\Livewire\Books\Update as BookUpdate;
+
+use App\Livewire\BookCategories\Index as BookCategoriesIndex;
+
+
 use App\Livewire\Dashboard;
 use Illuminate\Support\Facades\Route;
 
@@ -25,10 +31,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/', Dashboard::class)->name('dashboard');
 
     Route::get('/books', BookIndex::class)->name('books');
-
     Route::get('/books/create', BookCreate::class)->name('books.create');
-
     Route::get('/books/{title}/{author}', BookUpdate::class)->name('books.update');
+
+    Route::get('/book-categories',BookCategoriesIndex::class)->name('book-categories');
     
     Route::post('/logout', [Logout::class,'logout'])->name('logout');
 });
