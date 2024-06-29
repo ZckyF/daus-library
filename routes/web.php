@@ -11,6 +11,7 @@ use App\Livewire\Books\Create as BookCreate;
 use App\Livewire\Books\Update as BookUpdate;
 
 use App\Livewire\BookCategories\Index as BookCategoriesIndex;
+use App\Livewire\BookCategories\Create as BookCategoriesCreate;
 
 
 use App\Livewire\Dashboard;
@@ -35,6 +36,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/books/{title}/{author}', BookUpdate::class)->name('books.update');
 
     Route::get('/book-categories',BookCategoriesIndex::class)->name('book-categories');
+    Route::get('/book-categories/create',BookCategoriesCreate::class)->name('book-categories.create');
     
     Route::post('/logout', [Logout::class,'logout'])->name('logout');
 });

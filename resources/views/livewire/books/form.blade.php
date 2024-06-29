@@ -100,7 +100,7 @@
     </div>
     @if(request()->routeIs('books.update'))
     <div class="mb-3 col-12">
-        <label for="user">Last Added Or Edited By</label>
+        <label for="user" class="form-label">Last Added Or Edited By</label>
         <input type="text" class="form-control" value="{{ $user }}" disabled>
     </div>
     @endif

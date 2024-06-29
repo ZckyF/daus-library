@@ -34,7 +34,7 @@
                     </select>
                 </div>
                 <div class="button-add">
-                    <a href="{{ route('book-categories') }}" class="btn btn-outline-primary fw-bold shadow-sm text-center">
+                    <a wire:navigate href="{{ route('book-categories.create') }}" class="btn btn-outline-primary fw-bold shadow-sm text-center">
                         <i class="bi bi-plus-lg"></i>
                     </a>
                 </div>

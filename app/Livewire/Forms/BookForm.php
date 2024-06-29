@@ -61,7 +61,6 @@ class BookForm extends Form
 
         
         session()->flash('success', 'Book successfully created.');
-        return redirect()->to('/books');
     }
 
     public function update()
@@ -96,17 +95,8 @@ class BookForm extends Form
 
     public function resetForm()
     {
-        $this->isbn = '';
-        $this->title = '';
-        $this->cover_image_name = null;
-        $this->author = '';
-        $this->published_year = '';
-        $this->price_per_book = '';
-        $this->quantity = '';
-        $this->quantity_now = '';
-        $this->description = '';
-        $this->selectedCategories = [];
-        $this->selectedBookshelves = [];
+
+        $this->reset('isbn', 'title', 'cover_image_name', 'author', 'published_year', 'price_per_book', 'quantity', 'quantity_now', 'description', 'selectedCategories', 'selectedBookshelves');
     }
     
 
