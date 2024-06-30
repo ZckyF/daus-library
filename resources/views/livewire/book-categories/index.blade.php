@@ -17,7 +17,7 @@
             </div>
         </div>
         <div class="col-md-8 col-sm-7 col-12">
-            <div class="d-flex justify-content-sm-end justify-content-center align-items-md-end gap-3">
+            <div class="d-flex justify-content-sm-end justify-content-end align-items-md-end gap-3">
                 <div class="dropdown-sort">
                     <select class="form-control rounded-4 shadow-sm" wire:model.live="sortBy" style="cursor: pointer;">
                         <option value="newest">Newest</option>
@@ -41,21 +41,27 @@
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="data-table">
+        @if (session()->has('success'))
+            <x-notifications.alert class="alert-success" :message="session('success')" />
+        @endif
         <x-tables.table tableClass="table-striped shadow-sm" :columns="['#','Category Name','Added or Edited','Actions']"> 
             @if($categories->isEmpty())
                 <x-tables.not-found />    
             @else
                @foreach ($categories as $index => $category)
+                @php
+                    $categorySlug = str_replace(' ', '-', $category->category_name);
+                @endphp
                        <tr>
                            <td>{{ $categories->firstItem() + $index }}</td>
                            <td>{{ $category->category_name }}</td>
                            <td>{{ $category->user->username }}</td>
                            <td>
-                                <a class="btn btn-info btn-sm rounded-3 text-white">
+                                <a wire:navigate href="{{ route('book-categories.update',['category_name' => $categorySlug]) }}" class="btn btn-info btn-sm rounded-3 text-white">
                                     <span><i class="bi bi-pencil"></i></span>
                                 </a>
-                               <button class="btn btn-danger btn-sm rounded-3">
+                               <button class="btn btn-danger btn-sm rounded-3" data-bs-toggle="modal" data-bs-target="#deleteModal">
                                     <span><i class="bi bi-trash"></i></span>
                                </button>
                                
@@ -66,7 +72,7 @@
         </x-tables.table>
         {{ $categories->links() }}
     </div>
-    
+    <x-notifications.modal title="Delete Confirmation" message="Are you sure you want to delete this category?" buttonText="Yes" action="delete" targetModal="deleteModal" />
 </div>
 
 

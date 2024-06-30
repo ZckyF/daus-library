@@ -98,7 +98,7 @@
         </div>
         @error('form.selectedCategories') <span class="text-danger">{{ $message }}</span> @enderror
     </div>
-    @if(request()->routeIs('books.update'))
+    @if(isset($isUpdatePage) && $isUpdatePage)
     <div class="mb-3 col-12">
         <label for="user" class="form-label">Last Added Or Edited By</label>
         <input type="text" class="form-control" value="{{ $user }}" disabled>
@@ -114,8 +114,8 @@
             <span class="me-1"><i class="bi bi-arrow-left"></i></span>
             <span>Back</span>
         </a>
-        @if (request()->routeIs('books.update'))
-            <button type="button" class="btn btn-danger shadow-sm" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        @if (isset($isUpdatePage) && $isUpdatePage)
+            <button type="button" class="btn btn-danger shadow-sm" data-bs-toggle="modal" data-bs-target="#deleteModal">
                 <span class="me-1"><i class="bi bi-trash"></i></span>
                 <span>Delete</span>
             </button> 
@@ -127,6 +127,6 @@
             <span>Save</span>
         </button>
     </div>
-<x-notifications.modal title="Delete Confirmation" message="Are you sure you want to delete this book?" buttonText="Yes" action="delete" />
+<x-notifications.modal title="Delete Confirmation" message="Are you sure you want to delete this book?" buttonText="Yes" action="delete" targetModal="deleteModal" />
 </div>
 

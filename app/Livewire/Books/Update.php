@@ -97,7 +97,7 @@ class Update extends Component
     public function save()
     {
         
-        $this->form->update();
+        $this->form->update($this->bookId);
         $this->redirectRoute('books');
     }
 
@@ -125,6 +125,7 @@ class Update extends Component
     
     public function render()
     {
-        return view('livewire.books.update');
+        $isUpdatePage = true;
+        return view('livewire.books.update',compact('isUpdatePage'));
     }
 }

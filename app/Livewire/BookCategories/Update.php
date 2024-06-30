@@ -1,0 +1,50 @@
+<?php
+
+namespace App\Livewire\BookCategories;
+
+use App\Livewire\Forms\BookCategoryForm;
+use App\Models\BookCategory;
+use Livewire\Component;
+
+class Update extends Component
+{
+    public $bookCategoryId;
+    public $user;
+
+    public BookCategoryForm $form;
+
+    public function mount($category_name)
+    {
+        $categoryNameSlug = str_replace('-', ' ', $category_name);
+        $category = BookCategory::where('category_name', $categoryNameSlug)->firstOrFail();
+
+        $this->bookCategoryId = $category->id;
+        $this->user = $category->user->username;
+
+
+        $this->form->category_name = $category->category_name;
+        $this->form->description = $category->description;
+
+
+    }
+
+    public function save()
+    {
+        $this->form->update($this->bookCategoryId);
+        $this->redirectRoute('book-categories');
+    }
+
+    public function delete()
+    {
+        $book = BookCategory::find($this->bookCategoryId);
+        $book->delete();
+        session()->flash('success','Book Category deleted successfully');
+        $this->redirectRoute('book-categories');
+    }
+
+    public function render()
+    {
+        $isUpdatePage = true;
+        return view('livewire.book-categories.update',compact('isUpdatePage'));
+    }
+}

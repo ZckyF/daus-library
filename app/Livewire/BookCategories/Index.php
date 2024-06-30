@@ -30,7 +30,7 @@ class Index extends Component
         $this->resetPage();
     }
 
-    public function fetchBooks()
+    public function fetchCBookCategories()
     {
         $query = BookCategory::query();
 
@@ -53,7 +53,7 @@ class Index extends Component
 
     public function render()
     {
-        $categories = $this->fetchBooks();
+        $categories = $this->fetchCBookCategories();
         $optionPages = ['10','20','40','50','100'];
 
         return view('livewire.book-categories.index', 

@@ -4,50 +4,59 @@ namespace App\Livewire\Forms;
 
 use App\Models\Book;
 use Illuminate\Support\Facades\Auth;
-use Livewire\Attributes\Rule;
+use Illuminate\Validation\Rule;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
 class BookForm extends Form
 {
-    #[Rule('required|max:13')]
     public $isbn;
-    #[Rule('required|string|max:255')]
     public $title;
-    // #[Rule('nullable|image|mimes:jpeg,png,jpg,gif|max:2048')]
     public $cover_image_name;
-    #[Rule('required|string|max:255')]
     public $author;
-    #[Rule('required|integer')]
     public $published_year;
-    #[Rule('required|numeric|min:0')]
     public $price_per_book;
-    #[Rule('required|integer|min:0')]
     public $quantity;
-    #[Rule('required|integer|min:0')]
     public $quantity_now;
-    #[Rule('required|string')]
     public $description;
-    #[Rule('required|string')]
     public $selectedCategories;
-    #[Rule('required|string')]
     public $selectedBookshelves;
 
     public $selectedImage;
 
     public $selectedBookshelvesId;
     public $selectedCategoriesId;
+
+    protected function rules()
+    {
+        return [
+            'isbn' => 'required|max:13',
+            'title' => 'required|string|max:255',
+            'cover_image_name' => 'required|max:2048',
+            'author' => 'required|string|max:255',
+            'published_year' => 'required|integer',
+            'price_per_book' => 'required|numeric|min:0',
+            'quantity' => 'required|integer|min:0',
+            'quantity_now' => 'required|integer|min:0',
+            'description' => 'required|string',
+            'selectedCategories' => 'required|string',
+            'selectedBookshelves' => 'required|string',
+        ];
+    }
     
 
     public function store()
     {
         
+        $rules = $this->rules();
+        $rules['isbn'] .= '|unique:books,isbn';
+        $rules['cover_image_name'] .= '|image|mimes:jpeg,png,jpg,gif';
+        
+        $validatedData = $this->validate($rules);
 
-        if ($this->cover_image_name) {
-            $validatedData = array_merge($this->validate(), ['cover_image_name' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048']);
-            $fileName = $this->cover_image_name->hashName(); 
-            $this->cover_image_name->storeAs('covers', $fileName, 'public');
-        } 
+        $fileName = $this->cover_image_name->hashName(); 
+        $this->cover_image_name->storeAs('covers', $fileName, 'public');
+         
         $book = Book::create(array_merge($validatedData, [
             'cover_image_name' => $fileName,
             'user_id' => Auth::user()->id,
@@ -63,20 +72,22 @@ class BookForm extends Form
         session()->flash('success', 'Book successfully created.');
     }
 
-    public function update()
+    public function update($bookId)
     {
         
-        $book = Book::where('isbn', $this->isbn)->firstOrFail();
-
+        $book = Book::findOrfail($bookId);
+        $rules = $this->rules();
         if ($this->cover_image_name !== $book->cover_image_name) {
-            $validatedData = array_merge($this->validate(), ['cover_image_name' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048']);
+            $rules['cover_image_name'] .= '|image|mimes:jpeg,png,jpg,gif|max:2048';
+            $rules['isbn'] .= '|'.Rule::unique('books', 'isbn')->ignore($book->id);
             
             $fileName = $this->cover_image_name->hashName(); 
             $this->cover_image_name->storeAs('covers', $fileName, 'public');
         } else {
-            $validatedData = array_merge($this->validate(), ['cover_image_name' => 'required|max:2048']);
+            $rules['isbn'] .= '|'.Rule::unique('books', 'isbn')->ignore($book->id);
             $fileName = $book->cover_image_name;
         }
+        $validatedData = $this->validate($rules);
 
         $book->update(array_merge($validatedData, [
             'cover_image_name' => $fileName,
@@ -93,9 +104,8 @@ class BookForm extends Form
 
 
 
-    public function resetForm()
+    protected function resetForm()
     {
-
         $this->reset('isbn', 'title', 'cover_image_name', 'author', 'published_year', 'price_per_book', 'quantity', 'quantity_now', 'description', 'selectedCategories', 'selectedBookshelves');
     }
     
