@@ -18,6 +18,13 @@
         </div>
         <div class="col-md-8 col-sm-7 col-12">
             <div class="d-flex justify-content-sm-end justify-content-end align-items-md-end gap-3">
+                @if ($showDeleteSelected)
+                    <div class="button-delete-selected">
+                        <button type="button" class="btn btn-danger fw-bold shadow-sm text-center rounded-4" data-bs-toggle="modal" data-bs-target="#deleteSelectedModal">
+                            <i class="bi bi-trash"></i> Delete Selected
+                        </button>
+                    </div>
+                @endif
                 <div class="dropdown-sort">
                     <select class="form-control rounded-4 shadow-sm" wire:model.live="sortBy" style="cursor: pointer;">
                         <option value="newest">Newest</option>
@@ -45,7 +52,7 @@
         @if (session()->has('success'))
             <x-notifications.alert class="alert-success" :message="session('success')" />
         @endif
-        <x-tables.table tableClass="table-striped shadow-sm" :columns="['#','Category Name','Added or Edited','Actions']"> 
+        <x-tables.table tableClass="table-striped shadow-sm" :columns="$columns"> 
             @if($categories->isEmpty())
                 <x-tables.not-found />    
             @else
@@ -54,6 +61,9 @@
                     $categorySlug = str_replace(' ', '-', $category->category_name);
                 @endphp
                        <tr>
+                           <td>
+                                <input type="checkbox" class="form-check-input" wire:model.live="selectedCategories" value="{{ $category->id }}">
+                           </td>
                            <td>{{ $categories->firstItem() + $index }}</td>
                            <td>{{ $category->category_name }}</td>
                            <td>{{ $category->user->username }}</td>
@@ -61,7 +71,7 @@
                                 <a wire:navigate href="{{ route('book-categories.update',['category_name' => $categorySlug]) }}" class="btn btn-info btn-sm rounded-3 text-white">
                                     <span><i class="bi bi-pencil"></i></span>
                                 </a>
-                               <button class="btn btn-danger btn-sm rounded-3" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                               <button class="btn btn-danger btn-sm rounded-3" data-bs-toggle="modal" data-bs-target="#deleteModal" wire:click="changeBookCategoryId({{ $category->id }})">
                                     <span><i class="bi bi-trash"></i></span>
                                </button>
                                
@@ -73,9 +83,18 @@
         {{ $categories->links() }}
     </div>
     <x-notifications.modal title="Delete Confirmation" message="Are you sure you want to delete this category?" buttonText="Yes" action="delete" targetModal="deleteModal" />
+    <x-notifications.modal title="Delete Selected Confirmation" message="Are you sure you want to delete these categories?" buttonText="Yes" action="deleteSelected" targetModal="deleteSelectedModal" />
 </div>
 
 
-@push('script')
-    <script></script>
+@push('scripts')
+    <script>
+        $(document).ready(function (){
+            
+            window.addEventListener('closeModal', function (event){
+                $('#deleteModal').modal('hide');
+                $('#deleteSelectedModal').modal('hide');
+            })
+        })
+    </script>
 @endpush

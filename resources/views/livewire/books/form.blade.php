@@ -61,7 +61,7 @@
                 <button class="btn bg-white shadow-sm rounded-3 dropdown-toggle" type="button" id="categoryDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                     Select Categories
                 </button>
-                <ul class="dropdown-menu px-2" aria-labelledby="categoryDropdown" style="max-height: 200px; overflow-y: auto;">
+                <ul class="dropdown-menu px-2" aria-labelledby="categoryDropdown" style="max-height: 200px; overflow-y: auto;" wire:ignore>
                     @foreach ($categories as $category)
                         <li>
                             <label class="dropdown-item">
@@ -82,14 +82,14 @@
             
             <!-- Dropdown with multi-select checkboxes -->
             <div class="dropdown">
-                <button class="btn bg-white shadow-sm rounded-3 dropdown-toggle" type="button" id="bookshelfDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <button class="btn bg-white shadow-sm rounded-3 dropdown-toggle" type="button" id="bookshelfDropdown" data-bs-toggle="dropdown" aria-expanded="false" >
                     Select Bookshelves
                 </button>
-                <ul class="dropdown-menu px-2" aria-labelledby="bookshelfDropdown" style="max-height: 200px; overflow-y: auto;">
+                <ul class="dropdown-menu px-2" aria-labelledby="bookshelfDropdown" style="max-height: 200px; overflow-y: auto;" wire:ignore>
                     @foreach ($bookshelves as $bookshelf)
                         <li>
-                            <label class="dropdown-item">
-                                <input type="checkbox" wire:model.live="selectedDropdownBookshelves" value="{{ $bookshelf->id }}"> {{ $bookshelf->bookshelf_number }}
+                            <label class="dropdown-item" for="{{ $bookshelf->id }}">
+                                <input id="{{ $bookshelf->id }}" type="checkbox" wire:model.live="selectedDropdownBookshelves" value="{{ $bookshelf->id }}"> {{ $bookshelf->bookshelf_number }}
                             </label>
                         </li>
                     @endforeach

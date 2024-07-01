@@ -113,7 +113,7 @@
       }
 
       window.addEventListener('updateChart', function(event) {
-        console.log(@json($topMembers) );
+            
           renderChart(event.detail[0]);
       });
 

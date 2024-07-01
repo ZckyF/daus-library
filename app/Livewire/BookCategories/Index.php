@@ -13,6 +13,9 @@ class Index extends Component
     public $search = '';
     public $sortBy = 'newest';
     public $perPage = 10;
+    public $bookCategoryId;
+    public $selectedCategories = [];
+    public $showDeleteSelected = false;
 
 
     public function updatedSearch()
@@ -28,6 +31,40 @@ class Index extends Component
     public function updatedPerPage()
     {
         $this->resetPage();
+    }
+
+    public function updatedSelectedCategories()
+    {
+        
+        if(count($this->selectedCategories) > 0) {
+            $this->showDeleteSelected = true;
+        } else {
+            $this->showDeleteSelected = false;
+        }
+       
+    }
+    public function changeBookCategoryId($bookCategoryId)
+    {
+        $this->bookCategoryId = $bookCategoryId;
+    }
+
+    public function delete()
+    {
+       BookCategory::destroy($this->bookCategoryId);
+       session()->flash('success', 'Book Category successfully deleted.');
+
+       $this->dispatch('closeModal');
+    }
+
+    public function deleteSelected()
+    {
+        BookCategory::whereIn('id', $this->selectedCategories)->delete();
+        session()->flash('success', 'Selected Book Categories successfully deleted.');
+        $this->selectedCategories = [];
+
+        $this->showDeleteSelected = false;
+        $this->dispatch('closeModal');
+        
     }
 
     public function fetchCBookCategories()
@@ -55,9 +92,10 @@ class Index extends Component
     {
         $categories = $this->fetchCBookCategories();
         $optionPages = ['10','20','40','50','100'];
-
+        $columns = ['','#','Category Name','Added or Edited','Actions'];
+        
         return view('livewire.book-categories.index', 
-            compact('categories','optionPages')
+            compact('categories','optionPages','columns')
         );
     }
 }
