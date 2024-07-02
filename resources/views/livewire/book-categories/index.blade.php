@@ -11,13 +11,13 @@
 
 <div class="mt-5">
     <div class="row mb-3">
-        <div class="col-md-4 col-sm-5 col-12 mb-3">
+        <div class="col-md-4 col-12 mb-3">
             <div class="input-group">
                 <input type="text" class="form-control rounded-4 shadow-sm" placeholder="Search categories..." wire:model.live.debounce.300ms="search">
             </div>
         </div>
-        <div class="col-md-8 col-sm-7 col-12">
-            <div class="d-flex justify-content-sm-end justify-content-end align-items-md-end gap-3">
+        <div class="col-md-8 col-12">
+            <div class="d-flex justify-content-sm-end justify-content-end align-items-md-end gap-2">
                 @if ($showDeleteSelected)
                     <div class="button-delete-selected">
                         <button type="button" class="btn btn-danger fw-bold shadow-sm text-center rounded-4" data-bs-toggle="modal" data-bs-target="#deleteSelectedModal">
@@ -52,11 +52,8 @@
         @if (session()->has('success'))
             <x-notifications.alert class="alert-success" :message="session('success')" />
         @endif
-        <x-tables.table tableClass="table-striped shadow-sm" :columns="$columns"> 
-            @if($categories->isEmpty())
-                <x-tables.not-found />    
-            @else
-               @foreach ($categories as $index => $category)
+        <x-tables.table tableClass="table-striped shadow-sm" :columns="$columns" :useCheckboxColumn="true"> 
+            @foreach ($categories as $index => $category)
                 @php
                     $categorySlug = str_replace(' ', '-', $category->category_name);
                 @endphp
@@ -71,14 +68,13 @@
                                 <a wire:navigate href="{{ route('book-categories.update',['category_name' => $categorySlug]) }}" class="btn btn-info btn-sm rounded-3 text-white">
                                     <span><i class="bi bi-pencil"></i></span>
                                 </a>
-                               <button class="btn btn-danger btn-sm rounded-3" data-bs-toggle="modal" data-bs-target="#deleteModal" wire:click="changeBookCategoryId({{ $category->id }})">
+                               <button class="btn btn-danger btn-sm rounded-3" data-bs-toggle="modal" data-bs-target="#deleteModal" wire:click="setBookCategoryId({{ $category->id }})">
                                     <span><i class="bi bi-trash"></i></span>
                                </button>
                                
                            </td>
                        </tr>
-               @endforeach
-           @endif
+            @endforeach
         </x-tables.table>
         {{ $categories->links() }}
     </div>

@@ -16,6 +16,7 @@ class Index extends Component
     public $bookCategoryId;
     public $selectedCategories = [];
     public $showDeleteSelected = false;
+    public $selectAllCheckbox = false;
 
 
     public function updatedSearch()
@@ -43,9 +44,20 @@ class Index extends Component
         }
        
     }
-    public function changeBookCategoryId($bookCategoryId)
+    public function setBookCategoryId($bookCategoryId)
     {
         $this->bookCategoryId = $bookCategoryId;
+    }
+
+    public function toggleSelectAll()
+    {
+        if ($this->selectAllCheckbox) {
+            $this->selectedCategories = BookCategory::pluck('id')->toArray();
+            $this->showDeleteSelected = true;
+        } else {
+            $this->selectedCategories = [];
+            $this->showDeleteSelected = false;
+        }
     }
 
     public function delete()
@@ -92,7 +104,7 @@ class Index extends Component
     {
         $categories = $this->fetchCBookCategories();
         $optionPages = ['10','20','40','50','100'];
-        $columns = ['','#','Category Name','Added or Edited','Actions'];
+        $columns = ['#','Category Name','Added or Edited','Actions'];
         
         return view('livewire.book-categories.index', 
             compact('categories','optionPages','columns')
