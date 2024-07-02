@@ -97,7 +97,7 @@
     }
 
   </style>
-<aside id="sidebarMenu" class="col-md-3 col-5 col-lg-2 sidebar collapse">
+<aside id="sidebarMenu" class="col-md-4 col-6 col-lg-2 sidebar collapse">
     <div class="position-sticky  sidebar-sticky">
       <div class="nav-header ms-3 mb-3">
         <a href="/" class="text-decoration-none">

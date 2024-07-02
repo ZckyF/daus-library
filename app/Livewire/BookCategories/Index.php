@@ -48,7 +48,13 @@ class Index extends Component
     {
         $this->bookCategoryId = $bookCategoryId;
     }
+    public function delete()
+    {
+       BookCategory::destroy($this->bookCategoryId);
+       session()->flash('success', 'Book Category successfully deleted.');
 
+       $this->dispatch('closeModal');
+    }
     public function toggleSelectAll()
     {
         if ($this->selectAllCheckbox) {
@@ -58,14 +64,6 @@ class Index extends Component
             $this->selectedCategories = [];
             $this->showDeleteSelected = false;
         }
-    }
-
-    public function delete()
-    {
-       BookCategory::destroy($this->bookCategoryId);
-       session()->flash('success', 'Book Category successfully deleted.');
-
-       $this->dispatch('closeModal');
     }
 
     public function deleteSelected()
@@ -79,7 +77,7 @@ class Index extends Component
         
     }
 
-    public function fetchCBookCategories()
+    public function fetchBookCategories()
     {
         $query = BookCategory::query();
 
@@ -102,7 +100,7 @@ class Index extends Component
 
     public function render()
     {
-        $categories = $this->fetchCBookCategories();
+        $categories = $this->fetchBookCategories();
         $optionPages = ['10','20','40','50','100'];
         $columns = ['#','Category Name','Added or Edited','Actions'];
         

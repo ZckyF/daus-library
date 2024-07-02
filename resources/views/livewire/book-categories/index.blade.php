@@ -66,7 +66,7 @@
                            <td>{{ $category->user->username }}</td>
                            <td>
                                 <a wire:navigate href="{{ route('book-categories.update',['category_name' => $categorySlug]) }}" class="btn btn-info btn-sm rounded-3 text-white">
-                                    <span><i class="bi bi-pencil"></i></span>
+                                    <span><i class="bi bi-info-circle"></i></span>
                                 </a>
                                <button class="btn btn-danger btn-sm rounded-3" data-bs-toggle="modal" data-bs-target="#deleteModal" wire:click="setBookCategoryId({{ $category->id }})">
                                     <span><i class="bi bi-trash"></i></span>

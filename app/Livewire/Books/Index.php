@@ -5,23 +5,18 @@ namespace App\Livewire\Books;
 use App\Models\Book;
 use App\Models\BookCategory;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class Index extends Component
 {
+    use WithPagination;
     public $search = '';
     public $category = '';
     public $sortBy = 'newest';
-    public $categories;
-    public $books;
-    public $take = 8;
+    public $perPage = 10;
+    public $bookId;
     
     
-
-    public function mount()
-    {
-        $this->categories = BookCategory::all();
-        $this->fetchBooks();
-    }
 
     public function fetchBooks()
     {
@@ -29,8 +24,10 @@ class Index extends Component
         $query = Book::query();
 
         if ($this->search) {
-            $query->where('title', 'like', '%' . $this->search . '%')
-            ->orWhere('author', 'like', '%' . $this->search . '%');
+            $query->where(function ($query) {
+                $query->where('title', 'like', '%' . $this->search . '%')
+                      ->orWhere('author', 'like', '%' . $this->search . '%');
+            });
         }
 
         if ($this->category) {
@@ -49,30 +46,43 @@ class Index extends Component
             $query->orderBy('created_at', 'asc');
         }
 
-        $this->books = $query->get()->take($this->take);
+        return $query->paginate($this->perPage);
     }
 
     public function updatedSearch() 
     {
-        $this->fetchBooks();
+        $this->resetPage();
     }
     public function updatedCategory() 
     {
-        $this->fetchBooks();
+        $this->resetPage();
     }
     public function updatedSortBy() 
     {
-        $this->fetchBooks();
+        $this->resetPage();
     }
 
-    public function loadMore()
+    public function updatedPerPage() 
     {
-        $this->take += $this->take;
-        $this->fetchBooks();
+        $this->resetPage();
+    }
+    public function setBookId($bookId)
+    {
+        $this->bookId = $bookId;
+    }
+    public function delete()
+    {
+       Book::destroy($this->bookId);
+       session()->flash('success', 'Book successfully deleted.');
+
+       $this->dispatch('closeModal');
     }
 
     public function render()
     {
-        return view('livewire.books.index');
+        $categories = BookCategory::all();
+        $books = $this->fetchBooks();
+        $optionPages = ['12','24','48','84','108'];
+        return view('livewire.books.index', compact('books', 'categories', 'optionPages'));
     }
 }

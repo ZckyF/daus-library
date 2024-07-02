@@ -10,7 +10,7 @@
             opacity: 0;
             transform: translateY(10px);
             animation: fadeInUp 0.5s forwards;
-            cursor: pointer;
+            /* cursor: pointer; */
         }
         .button-add:hover a {
             color: white;
@@ -24,13 +24,13 @@
                 transform: translateY(0);
             }
         }
-        .card {
+        /* .card {
             transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out; 
         }
         .card:hover {
             transform: translateY(-10px);
             opacity: 0.8;
-        }
+        } */
 
     </style>
 @endpush
@@ -62,6 +62,13 @@
                         <option value="title-desc">Title Z-A</option>
                     </select>
                 </div>
+                <div class="dropdown-per-page">
+                    <select class="form-control rounded-4 shadow-sm" wire:model.live="perPage" style="cursor: pointer;">
+                        @foreach ($optionPages as $option)
+                            <option value="{{ $option }}">{{ $option }}</option>
+                        @endforeach
+                    </select>
+                </div>
 
                 <div class="button-add">
                     <a href="{{ route('books.create') }}" class="btn btn-outline-primary fw-bold shadow-sm" >
@@ -71,6 +78,7 @@
             </div>
             
         </div>
+        
     </div>
 
     <div class="row mt-5" id="books-container">
@@ -88,23 +96,34 @@
                 $authorSlug = str_replace(' ', '-', $book->author);
             @endphp
             <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4 g-2 book-card">
-                <a wire:navigate class="card shadow-sm rounded-4 text-decoration-none" href="{{ route('books.update', ['title' => $titleSlug, 'author' => $authorSlug]) }}">
+                <div class="card shadow-sm rounded-4 text-decoration-none" href="{{ route('books.update', ['title' => $titleSlug, 'author' => $authorSlug]) }}">
                     <img loading="lazy" src="{{ asset('storage/covers/' . $book->cover_image_name) }}" class="card-img-top rounded-top-4" alt="{{ $book->title }}">
                     <div class="card-body">
                         <h5 class="card-title">{{ Str::limit($book->title, 20) }}</h5>
                         <p class="card-text">{{ $book->author }}</p>
                     </div>
-                </a>
+                    <div class="card-footer bg-transparent border-0 d-flex justify-content-between align-items-center">
+                        <input type="checkbox" class="form-check-input ">
+            
+                        <div class="button-group">
+                            <button type="button" class="btn btn-danger btn-sm text-white rounded-3" data-bs-toggle="modal" data-bs-target="#deleteModal" wire:click="setBookId({{ $book->id }})" >
+                                <i class="bi bi-trash"></i>
+                            </button>
+                           
+                            <a wire:navigate href="{{ route('books.update', ['title' => $titleSlug, 'author' => $authorSlug]) }}"     type="button" class="btn btn-info btn-sm text-white rounded-3">
+                                <i class="bi bi-info-circle"></i>
+                            </a>
+                            <button type="button" class="btn btn-primary btn-sm text-white rounded-3">
+                                <i class="bi bi-cart"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
             @endforeach
 
+            {{ $books->links() }}
             
-            <div class="d-flex justify-content-center">
-                <button wire:click="loadMore" class="btn btn-primary btn-sm text-white rounded-5 shadow-sm">
-                    <span wire:loading wire:target="loadMore" class="spinner-border spinner-border-sm"></span>
-                    <span wire:loading.remove wire:target="loadMore"><i class="bi bi-arrow-down"></i></span>
-                </button>
-            </div>
         @endif
     </div>
     <div class="row">
@@ -114,6 +133,19 @@
             </div>
         </div>
     </div>
-
+    <x-notifications.modal title="Delete Confirmation" message="Are you sure you want to delete this book?" buttonText="Yes" action="delete" targetModal="deleteModal" />
 </div>
+
+@push('scripts')
+
+    <script>
+        $(document).ready(() => {
+            window.addEventListener('closeModal', () => {
+                $('#deleteModal').modal('hide');
+                $('#deleteSelectedModal').modal('hide');
+            })
+        })
+    </script>
+    
+@endpush
 
