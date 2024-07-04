@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
-class Update extends Component
+class Edit extends Component
 {
 
     use WithFileUploads;
@@ -125,7 +125,7 @@ class Update extends Component
     
     public function render()
     {
-        $isUpdatePage = true;
-        return view('livewire.books.update',compact('isUpdatePage'));
+        $isEditPage = true;
+        return view('livewire.books.edit',compact('isEditPage'));
     }
 }

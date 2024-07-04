@@ -54,7 +54,7 @@
 @endpush
 
 <div class="mt-5">
-    <h3 class="mb-4">Update Book</h3>
+    <h3 class="mb-4">Edit Book</h3>
     @if (session()->has('success'))
         <x-notifications.alert class="alert-success" :message="session('success')" />
     @endif

@@ -6,7 +6,7 @@ use App\Livewire\Forms\BookCategoryForm;
 use App\Models\BookCategory;
 use Livewire\Component;
 
-class Update extends Component
+class Edit extends Component
 {
     public $bookCategoryId;
     public $user;
@@ -44,7 +44,7 @@ class Update extends Component
 
     public function render()
     {
-        $isUpdatePage = true;
-        return view('livewire.book-categories.update',compact('isUpdatePage'));
+        $isEditPage = true;
+        return view('livewire.book-categories.edit',compact('isEditPage'));
     }
 }

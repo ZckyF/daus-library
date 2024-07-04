@@ -109,6 +109,49 @@ class Index extends Component
         }
     }
 
+    public function addToCart($bookId)
+    {
+        // Ambil data cart dari session, jika tidak ada maka buat array kosong
+        $cart = session()->get('cart', []);
+    
+        // Hitung total buku dalam cart
+        $totalBooksInCart = array_sum(array_column($cart, 'quantity'));
+    
+        // Cek jika sudah ada 3 buku dalam cart
+        if ($totalBooksInCart >= 3) {
+            session()->flash('error', 'You can only add up to 3 books to the cart.');
+            return;
+        }
+    
+        // Cek jika item sudah ada dalam cart
+        if (isset($cart[$bookId])) {
+            $cart[$bookId]['quantity'] += 1; // Tambah jumlah buku
+        } else {
+            // Tambahkan buku baru ke dalam cart
+            $cart[$bookId] = [
+                'quantity' => 1,
+                // Data tambahan lain yang perlu disimpan bisa ditambahkan di sini
+            ];
+        }
+    
+        // Simpan cart yang telah diperbarui ke dalam session
+        session()->put('cart', $cart);
+
+        // Berikan pesan sukses ke pengguna
+        session()->flash('success', 'Book added to cart.');
+    }
+    // public function showCart()
+    // {
+    //     // Ambil data cart dari session
+    //     $cart = session()->get('cart', []);
+
+    //     // Ambil detail produk dari database berdasarkan ID di cart
+    //     return Book::whereIn('id', array_keys($cart))->get();
+
+    // }
+
+    
+
 
     public function render()
     {

@@ -98,7 +98,7 @@
         </div>
         @error('form.selectedCategories') <span class="text-danger">{{ $message }}</span> @enderror
     </div>
-    @if(isset($isUpdatePage) && $isUpdatePage)
+    @if(isset($isEditPage) && $isEditPage)
     <div class="mb-3 col-12">
         <label for="user" class="form-label">Last Added Or Edited By</label>
         <input type="text" class="form-control" value="{{ $user }}" disabled>
@@ -114,7 +114,7 @@
             <span class="me-1"><i class="bi bi-arrow-left"></i></span>
             <span>Back</span>
         </a>
-        @if (isset($isUpdatePage) && $isUpdatePage)
+        @if (isset($isEditPage) && $isEditPage)
             <button type="button" class="btn btn-danger shadow-sm" data-bs-toggle="modal" data-bs-target="#deleteModal">
                 <span class="me-1"><i class="bi bi-trash"></i></span>
                 <span>Delete</span>

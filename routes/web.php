@@ -8,11 +8,11 @@ use App\Livewire\Auth\ResetPassword;
 
 use App\Livewire\Books\Index as BookIndex;
 use App\Livewire\Books\Create as BookCreate;
-use App\Livewire\Books\Update as BookUpdate;
+use App\Livewire\Books\Edit as BookEdit;
 
 use App\Livewire\BookCategories\Index as BookCategoriesIndex;
 use App\Livewire\BookCategories\Create as BookCategoriesCreate;
-use App\Livewire\BookCategories\Update as BookCategoriesUpdate;
+use App\Livewire\BookCategories\Edit as BookCategoriesEdit;
 
 
 use App\Livewire\Dashboard;
@@ -34,11 +34,11 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/books', BookIndex::class)->name('books');
     Route::get('/books/create', BookCreate::class)->name('books.create');
-    Route::get('/books/{title}/{author}', BookUpdate::class)->name('books.update');
+    Route::get('/books/{title}/{author}', BookEdit::class)->name('books.edit');
 
     Route::get('/book-categories',BookCategoriesIndex::class)->name('book-categories');
     Route::get('/book-categories/create',BookCategoriesCreate::class)->name('book-categories.create');
-    Route::get('/book-categories/{category_name}',BookCategoriesUpdate::class)->name('book-categories.update');
+    Route::get('/book-categories/{category_name}',BookCategoriesEdit::class)->name('book-categories.edit');
     
     Route::post('/logout', [Logout::class,'logout'])->name('logout');
 });

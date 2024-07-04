@@ -38,12 +38,12 @@
 
 <div class="mt-5">
     <div class="row">
-        <div class="col-md-4 col-sm-5 col-12 mb-3">
+        <div class="col-md-4 col-12 mb-3">
             <div class="input-group">
                 <input type="text" class="form-control rounded-4 shadow-sm" placeholder="Search book..." wire:model.live.debounce.300ms="search">
             </div>
         </div>
-        <div class="col-md-8 col-sm-7 col-12 jus">
+        <div class="col-md-8 col-12">
             <div class="d-flex justify-content-sm-end justify-content-end align-items-md-end gap-3">
                 @if ($showDeleteSelected)
                     <div class="button-delete-selected">
@@ -92,6 +92,10 @@
         @if (session()->has('success'))
             <x-notifications.alert class="alert-success" :message="session('success')" />
         @endif
+
+        @if (session()->has('error'))
+            <x-notifications.alert class="alert-danger" :message="session('error')" />
+        @endif
         
         <div class="selected-all">
             <input id="select-all" type="checkbox" class="form-check-input" wire:model="selectAllCheckbox" wire:click="toggleSelectAll">
@@ -110,7 +114,7 @@
                 $authorSlug = str_replace(' ', '-', $book->author);
             @endphp
             <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4 g-2 book-card">
-                <div class="card shadow-sm rounded-4 text-decoration-none" href="{{ route('books.update', ['title' => $titleSlug, 'author' => $authorSlug]) }}">
+                <div class="card shadow-sm rounded-4 text-decoration-none" href="{{ route('books.edit', ['title' => $titleSlug, 'author' => $authorSlug]) }}">
                     <img loading="lazy" src="{{ asset('storage/covers/' . $book->cover_image_name) }}" class="card-img-top rounded-top-4" alt="{{ $book->title }}">
                     <div class="card-body">
                         <h5 class="card-title">{{ Str::limit($book->title, 20) }}</h5>
@@ -124,10 +128,10 @@
                                 <i class="bi bi-trash"></i>
                             </button>
                            
-                            <a wire:navigate href="{{ route('books.update', ['title' => $titleSlug, 'author' => $authorSlug]) }}" class="btn btn-info btn-sm text-white rounded-3" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Edit book">
+                            <a wire:navigate href="{{ route('books.edit', ['title' => $titleSlug, 'author' => $authorSlug]) }}" class="btn btn-info btn-sm text-white rounded-3" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Edit book">
                                 <i class="bi bi-info-circle"></i>
                             </a>
-                            <button type="button" class="btn btn-primary btn-sm text-white rounded-3" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Add to cart">
+                            <button type="button" class="btn btn-primary btn-sm text-white rounded-3" wire:click="addToCart({{ $book->id }})" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Add to cart">
                                 <i class="bi bi-cart"></i>
                             </button>
                         </div>

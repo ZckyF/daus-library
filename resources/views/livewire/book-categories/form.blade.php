@@ -1,10 +1,10 @@
 <div class="row mt-3">
-    <div class="mb-3 {{ isset($isUpdatePage) && $isUpdatePage ? 'col-md-6' : 'col-md-12' }}">
+    <div class="mb-3 {{ isset($isEditPage) && $isEditPage ? 'col-md-6' : 'col-md-12' }}">
         <label for="category_name" class="form-label">Category Name</label>
          <input type="text" class="form-control @error('form.category_name') is-invalid @enderror" id="category_name" wire:model="form.category_name" >
         @error('form.category_name') <span class="text-danger">{{ $message }}</span> @enderror
     </div>
-    @if (isset($isUpdatePage) && $isUpdatePage)
+    @if (isset($isEditPage) && $isEditPage)
         <div class="mb-3 col-md-6">
             <label for="user" class="form-label">Last Added Or Edited By</label>
             <input type="text" class="form-control" value="{{ $user }}" disabled>
@@ -21,7 +21,7 @@
             <span class="me-1"><i class="bi bi-arrow-left"></i></span>
             <span>Back</span>
         </a>
-        @if (isset($isUpdatePage) && $isUpdatePage)
+        @if (isset($isEditPage) && $isEditPage)
             <button type="button" class="btn btn-danger shadow-sm" data-bs-toggle="modal" data-bs-target="#deleteModal">
                 <span class="me-1"><i class="bi bi-trash"></i></span>
                 <span>Delete</span>
