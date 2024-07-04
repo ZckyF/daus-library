@@ -45,6 +45,13 @@
         </div>
         <div class="col-md-8 col-sm-7 col-12 jus">
             <div class="d-flex justify-content-sm-end justify-content-end align-items-md-end gap-3">
+                @if ($showDeleteSelected)
+                    <div class="button-delete-selected">
+                        <button type="button" class="btn btn-danger fw-bold shadow-sm text-center rounded-4" data-bs-toggle="modal" data-bs-target="#deleteSelectedModal">
+                            <i class="bi bi-trash"></i> Delete Selected
+                        </button>
+                    </div>
+                @endif
                 <div class="dropdown-categories">
                     <select class="form-control rounded-4 shadow-sm" wire:model.live="category" style="cursor: pointer;">
                         <option value="">All Categories</option>
@@ -71,7 +78,7 @@
                 </div>
 
                 <div class="button-add">
-                    <a href="{{ route('books.create') }}" class="btn btn-outline-primary fw-bold shadow-sm" >
+                    <a href="{{ route('books.create') }}" class="btn btn-outline-primary fw-bold shadow-sm" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Add book" >
                         <i class="bi bi-plus-lg"></i>
                     </a>
                 </div>
@@ -85,6 +92,13 @@
         @if (session()->has('success'))
             <x-notifications.alert class="alert-success" :message="session('success')" />
         @endif
+        
+        <div class="selected-all">
+            <input id="select-all" type="checkbox" class="form-check-input" wire:model="selectAllCheckbox" wire:click="toggleSelectAll">
+            <label for="select-all" class="ms-1">Select All</label>
+        </div>
+        
+        
         @if($books->isEmpty())
                 <div class="col-12">
                     <p class="text-center">No books found.</p>
@@ -103,17 +117,17 @@
                         <p class="card-text">{{ $book->author }}</p>
                     </div>
                     <div class="card-footer bg-transparent border-0 d-flex justify-content-between align-items-center">
-                        <input type="checkbox" class="form-check-input ">
+                        <input type="checkbox" class="form-check-input" wire:model.live="selectedBooks" value="{{ $book->id }}">
             
                         <div class="button-group">
-                            <button type="button" class="btn btn-danger btn-sm text-white rounded-3" data-bs-toggle="modal" data-bs-target="#deleteModal" wire:click="setBookId({{ $book->id }})" >
+                            <button type="button" class="btn btn-danger btn-sm text-white rounded-3" data-bs-toggle="modal" data-bs-target="#deleteModal" wire:click="setBookId({{ $book->id }})" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Delete book" >
                                 <i class="bi bi-trash"></i>
                             </button>
                            
-                            <a wire:navigate href="{{ route('books.update', ['title' => $titleSlug, 'author' => $authorSlug]) }}"     type="button" class="btn btn-info btn-sm text-white rounded-3">
+                            <a wire:navigate href="{{ route('books.update', ['title' => $titleSlug, 'author' => $authorSlug]) }}" class="btn btn-info btn-sm text-white rounded-3" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Edit book">
                                 <i class="bi bi-info-circle"></i>
                             </a>
-                            <button type="button" class="btn btn-primary btn-sm text-white rounded-3">
+                            <button type="button" class="btn btn-primary btn-sm text-white rounded-3" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Add to cart">
                                 <i class="bi bi-cart"></i>
                             </button>
                         </div>
@@ -134,6 +148,7 @@
         </div>
     </div>
     <x-notifications.modal title="Delete Confirmation" message="Are you sure you want to delete this book?" buttonText="Yes" action="delete" targetModal="deleteModal" />
+    <x-notifications.modal title="Delete Selected Confirmation" message="Are you sure you want to delete these books?" buttonText="Yes" action="deleteSelected" targetModal="deleteSelectedModal" />
 </div>
 
 @push('scripts')

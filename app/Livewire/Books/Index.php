@@ -15,6 +15,9 @@ class Index extends Component
     public $sortBy = 'newest';
     public $perPage = 10;
     public $bookId;
+    public $showDeleteSelected = false;
+    public $selectAllCheckbox = false;
+    public $selectedBooks = [];
     
     
 
@@ -77,6 +80,35 @@ class Index extends Component
 
        $this->dispatch('closeModal');
     }
+
+    public function deleteSelected()
+    {
+        Book::destroy($this->selectedBooks);
+        $this->selectedBooks = [];
+        session()->flash('success', 'Books successfully deleted.');
+        $this->dispatch('closeModal');
+    }
+
+    public function toggleSelectAll()
+    {
+        if ($this->selectAllCheckbox) {
+            $this->selectedBooks = Book::pluck('id')->toArray();
+            $this->showDeleteSelected = true;
+        } else {
+            $this->selectedBooks = [];
+            $this->showDeleteSelected = false;
+        }
+    }
+
+    public function updatedSelectedBooks()
+    {
+        if ($this->selectedBooks) {
+            $this->showDeleteSelected = true;
+        } else {
+            $this->showDeleteSelected = false;
+        }
+    }
+
 
     public function render()
     {

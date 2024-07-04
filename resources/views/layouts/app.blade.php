@@ -84,6 +84,8 @@
             }
           }
         });
+
+        $('[data-tooltip="tooltip"]').tooltip();
       });
     </script>
     @stack('scripts')

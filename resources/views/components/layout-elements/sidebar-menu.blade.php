@@ -98,7 +98,7 @@
 
   </style>
 <aside id="sidebarMenu" class="col-md-4 col-6 col-lg-2 sidebar collapse">
-    <div class="position-sticky  sidebar-sticky">
+    <div class="position-sticky sidebar-sticky">
       <div class="nav-header ms-3 mb-3">
         <a href="/" class="text-decoration-none">
           <img src="{{ asset('logo-dasbry.png') }}" alt="Company Logo" class="mb-2">
@@ -128,6 +128,7 @@
         <span>Transaction</span>
       </h6>
       <ul class="nav flex-column mb-2 border-bottom">
+        <x-layout-elements.nav-link :active="request()->routeIs('carts')" href="/carts" icon="cart"> Carts </x-layout-elements.nav-link>
         <x-layout-elements.nav-link :active="request()->routeIs('borrow-books')" href="/borrow-books" icon="journals"> Borrow Books </x-layout-elements.nav-link>
         <x-layout-elements.nav-link :active="request()->routeIs('fines')" href="/fines" icon="cash"> Fines </x-layout-elements.nav-link>
       </ul>

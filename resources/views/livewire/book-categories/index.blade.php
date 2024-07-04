@@ -41,7 +41,7 @@
                     </select>
                 </div>
                 <div class="button-add">
-                    <a wire:navigate href="{{ route('book-categories.create') }}" class="btn btn-outline-primary fw-bold shadow-sm text-center">
+                    <a wire:navigate href="{{ route('book-categories.create') }}" class="btn btn-outline-primary fw-bold shadow-sm text-center" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Add book category">
                         <i class="bi bi-plus-lg"></i>
                     </a>
                 </div>
@@ -65,10 +65,10 @@
                            <td>{{ $category->category_name }}</td>
                            <td>{{ $category->user->username }}</td>
                            <td>
-                                <a wire:navigate href="{{ route('book-categories.update',['category_name' => $categorySlug]) }}" class="btn btn-info btn-sm rounded-3 text-white">
+                                <a wire:navigate href="{{ route('book-categories.update',['category_name' => $categorySlug]) }}" class="btn btn-info btn-sm rounded-3 text-white" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Edit category">
                                     <span><i class="bi bi-info-circle"></i></span>
                                 </a>
-                               <button class="btn btn-danger btn-sm rounded-3" data-bs-toggle="modal" data-bs-target="#deleteModal" wire:click="setBookCategoryId({{ $category->id }})">
+                               <button class="btn btn-danger btn-sm rounded-3" data-bs-toggle="modal" data-bs-target="#deleteModal" wire:click="setBookCategoryId({{ $category->id }})" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Delete category">
                                     <span><i class="bi bi-trash"></i></span>
                                </button>
                                
