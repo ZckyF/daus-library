@@ -131,7 +131,7 @@
                             <a wire:navigate href="{{ route('books.edit', ['title' => $titleSlug, 'author' => $authorSlug]) }}" class="btn btn-info btn-sm text-white rounded-3" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Edit book">
                                 <i class="bi bi-info-circle"></i>
                             </a>
-                            <button type="button" class="btn btn-primary btn-sm text-white rounded-3" wire:click="addToCart({{ $book->id }})" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Add to cart">
+                            <button type="button" class="btn btn-primary btn-sm text-white rounded-3" wire:click="setBookModalId({{ $book->id }})" data-bs-toggle="modal" data-bs-target="#addCartModal" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Add to cart">
                                 <i class="bi bi-cart"></i>
                             </button>
                         </div>
@@ -151,6 +151,7 @@
             </div>
         </div>
     </div>
+    @include('livewire.books.modal-form')
     <x-notifications.modal title="Delete Confirmation" message="Are you sure you want to delete this book?" buttonText="Yes" action="delete" targetModal="deleteModal" />
     <x-notifications.modal title="Delete Selected Confirmation" message="Are you sure you want to delete these books?" buttonText="Yes" action="deleteSelected" targetModal="deleteSelectedModal" />
 </div>
@@ -161,6 +162,7 @@
         $(document).ready(() => {
             window.addEventListener('closeModal', () => {
                 $('#deleteModal').modal('hide');
+                $('#addCartModal').modal('hide');
                 $('#deleteSelectedModal').modal('hide');
             })
         })
