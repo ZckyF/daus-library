@@ -5,9 +5,11 @@ namespace App\Livewire\Books;
 use App\Models\Book;
 use App\Models\BookCategory;
 use Livewire\Attributes\Rule;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithPagination;
 
+#[Title('Books')]
 class Index extends Component
 {
     use WithPagination;

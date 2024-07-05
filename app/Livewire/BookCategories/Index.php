@@ -3,9 +3,11 @@
 namespace App\Livewire\BookCategories;
 
 use App\Models\BookCategory;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithPagination;
 
+#[Title('Book Categories')]
 class Index extends Component
 {
     use WithPagination;

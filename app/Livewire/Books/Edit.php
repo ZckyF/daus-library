@@ -7,9 +7,11 @@ use App\Models\Book;
 use App\Models\BookCategory;
 use App\Models\Bookshelf;
 use Illuminate\Support\Facades\Storage;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
+#[Title('Edit Book')]
 class Edit extends Component
 {
 

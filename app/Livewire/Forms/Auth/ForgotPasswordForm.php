@@ -35,7 +35,7 @@ class ForgotPasswordForm extends Form
         // Send reset link to the user's email
         $resetLink = url('/reset-password/' . urlencode($this->email)) . '/' . $token  ;
 
-        Mail::send('livewire.emails.reset-password', ['link' => $resetLink], function ($message) {
+        Mail::send('livewire.auth.emails.reset-password', ['link' => $resetLink], function ($message) {
             $message->to($this->email);
             $message->subject('Reset Password');
         });

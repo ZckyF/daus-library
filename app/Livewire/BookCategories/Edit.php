@@ -4,8 +4,11 @@ namespace App\Livewire\BookCategories;
 
 use App\Livewire\Forms\BookCategoryForm;
 use App\Models\BookCategory;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
+
+#[Title('Edit Book Category')]
 class Edit extends Component
 {
     public $bookCategoryId;

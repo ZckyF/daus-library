@@ -78,14 +78,13 @@
                 </div>
 
                 <div class="button-add">
-                    <a href="{{ route('books.create') }}" class="btn btn-outline-primary fw-bold shadow-sm" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Add book" >
+                    <a wire:navigate href="{{ route('books.create') }}" class="btn btn-outline-primary fw-bold shadow-sm" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Add book" >
                         <i class="bi bi-plus-lg"></i>
                     </a>
                 </div>
             </div>
             
-        </div>
-        
+        </div>  
     </div>
 
     <div class="row mt-5" id="books-container">

@@ -5,9 +5,11 @@ namespace App\Livewire\Books;
 use App\Livewire\Forms\BookForm;
 use App\Models\BookCategory;
 use App\Models\Bookshelf;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
+#[Title('Create Book')]
 class Create extends Component
 {
     use WithFileUploads;

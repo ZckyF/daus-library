@@ -4,8 +4,10 @@ namespace App\Livewire\BookCategories;
 
 use App\Livewire\Forms\BookCategoryForm;
 use App\Livewire\Forms\BookForm;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
+#[Title('Create Book Category')]
 class Create extends Component
 {
     public BookCategoryForm $form;
