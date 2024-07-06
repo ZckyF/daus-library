@@ -40,7 +40,7 @@
     <div class="row">
         <div class="col-md-4 col-12 mb-3">
             <div class="input-group">
-                <input type="text" class="form-control rounded-4 shadow-sm" placeholder="Search book..." wire:model.live.debounce.300ms="search">
+                <input type="text" class="form-control rounded-4 shadow-sm" placeholder="Search books..." wire:model.live.debounce.300ms="search">
             </div>
         </div>
         <div class="col-md-8 col-12">
@@ -97,8 +97,11 @@
         @endif
         
         <div class="selected-all">
-            <input id="select-all" type="checkbox" class="form-check-input" wire:model="selectAllCheckbox" wire:click="toggleSelectAll">
+            <span class="spinner-border text-primary spinner-border-sm " wire:loading wire:target="toggleSelectAll"></span>
+            <input id="select-all" type="checkbox" class="form-check-input" wire:loading.remove wire:target="toggleSelectAll" wire:model="selectAllCheckbox" wire:click="toggleSelectAll" />
+            
             <label for="select-all" class="ms-1">Select All</label>
+            
         </div>
         
         
@@ -158,13 +161,6 @@
 @push('scripts')
 
     <script>
-        $(document).ready(() => {
-            window.addEventListener('closeModal', () => {
-                $('#deleteModal').modal('hide');
-                $('#addCartModal').modal('hide');
-                $('#deleteSelectedModal').modal('hide');
-            })
-        })
     </script>
     
 @endpush

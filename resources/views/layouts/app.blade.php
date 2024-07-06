@@ -84,6 +84,11 @@
             }
           }
         });
+        window.addEventListener('closeModal', () => {
+            $('#deleteModal').modal('hide');
+            $('#addCartModal').modal('hide');
+            $('#deleteSelectedModal').modal('hide');
+        })
 
         $('[data-tooltip="tooltip"]').tooltip();
       });

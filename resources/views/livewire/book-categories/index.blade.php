@@ -85,12 +85,5 @@
 
 @push('scripts')
     <script>
-        $(document).ready(function (){
-            
-            window.addEventListener('closeModal', function (event){
-                $('#deleteModal').modal('hide');
-                $('#deleteSelectedModal').modal('hide');
-            })
-        })
     </script>
 @endpush

@@ -16,7 +16,7 @@ class Index extends Component
     public $search = '';
     public $category = '';
     public $sortBy = 'newest';
-    public $perPage = 10;
+    public $perPage = 12;
     public $bookId;
     public $showDeleteSelected = false;
     public $selectAllCheckbox = false;
