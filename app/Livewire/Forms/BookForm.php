@@ -27,7 +27,7 @@ class BookForm extends Form
     public $selectedBookshelvesId;
     public $selectedCategoriesId;
 
-    protected function rules()
+    public function rules()
     {
         return [
             'isbn' => 'required|max:13',
@@ -38,7 +38,7 @@ class BookForm extends Form
             'price_per_book' => 'required|numeric|min:0',
             'quantity' => 'required|integer|min:0',
             'quantity_now' => 'required|integer|min:0',
-            'description' => 'required|string',
+            'description' => 'required|string|max:255',
             'selectedCategories' => 'required|string',
             'selectedBookshelves' => 'required|string',
         ];

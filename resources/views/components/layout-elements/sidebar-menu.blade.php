@@ -117,10 +117,10 @@
       <ul class="nav flex-column border-bottom"> 
         <x-layout-elements.nav-link :active="request()->routeIs('books*')" href="/books" icon="book"> Books </x-layout-elements.nav-link>
         <x-layout-elements.nav-link :active="request()->routeIs('book-categories*')" href="/book-categories" icon="tags"> Book Categories </x-layout-elements.nav-link>
-        <x-layout-elements.nav-link :active="request()->routeIs('members')" href="/members" icon="person-vcard"> Members </x-layout-elements.nav-link>
-        <x-layout-elements.nav-link :active="request()->routeIs('users')" href="/users" icon="person"> Users </x-layout-elements.nav-link>
-        <x-layout-elements.nav-link :active="request()->routeIs('employees')" href="/employees" icon="people"> Employees </x-layout-elements.nav-link>
-        <x-layout-elements.nav-link :active="request()->routeIs('roles')" href="/roles" icon="person-gear"> Roles </x-layout-elements.nav-link>
+        <x-layout-elements.nav-link :active="request()->routeIs('members*')" href="/members" icon="person-vcard"> Members </x-layout-elements.nav-link>
+        <x-layout-elements.nav-link :active="request()->routeIs('users*')" href="/users" icon="person"> Users </x-layout-elements.nav-link>
+        <x-layout-elements.nav-link :active="request()->routeIs('employees*')" href="/employees" icon="people"> Employees </x-layout-elements.nav-link>
+        <x-layout-elements.nav-link :active="request()->routeIs('roles*')" href="/roles" icon="person-gear"> Roles </x-layout-elements.nav-link>
       </ul>
      
 
@@ -128,9 +128,9 @@
         <span>Transaction</span>
       </h6>
       <ul class="nav flex-column mb-2 border-bottom">
-        <x-layout-elements.nav-link :active="request()->routeIs('carts')" href="/carts" icon="cart"> Carts </x-layout-elements.nav-link>
-        <x-layout-elements.nav-link :active="request()->routeIs('borrow-books')" href="/borrow-books" icon="journals"> Borrow Books </x-layout-elements.nav-link>
-        <x-layout-elements.nav-link :active="request()->routeIs('fines')" href="/fines" icon="cash"> Fines </x-layout-elements.nav-link>
+        <x-layout-elements.nav-link :active="request()->routeIs('carts*')" href="/carts" icon="cart"> Carts </x-layout-elements.nav-link>
+        <x-layout-elements.nav-link :active="request()->routeIs('borrow-books*')" href="/borrow-books" icon="journals"> Borrow Books </x-layout-elements.nav-link>
+        <x-layout-elements.nav-link :active="request()->routeIs('fines*')" href="/fines" icon="cash"> Fines </x-layout-elements.nav-link>
       </ul>
 
 
@@ -138,9 +138,9 @@
         <span>Other Option</span>
       </h6>
       <ul class="nav flex-column mb-2">
-        <x-layout-elements.nav-link :active="request()->routeIs('settings')" href="/settings" icon="gear"> Settings </x-layout-elements.nav-link>
-        <x-layout-elements.nav-link :active="request()->routeIs('notification')" href="/notification" icon="bell"> Notification </x-layout-elements.nav-link>
-        <x-layout-elements.nav-link :active="request()->routeIs('logout')" href="/logout" icon="box-arrow-left"> Logout </x-layout-elements.nav-link>
+        <x-layout-elements.nav-link :active="request()->routeIs('settings*')" href="/settings" icon="gear"> Settings </x-layout-elements.nav-link>
+        <x-layout-elements.nav-link :active="request()->routeIs('notification*')" href="/notification" icon="bell"> Notification </x-layout-elements.nav-link>
+        <x-layout-elements.nav-link :active="request()->routeIs('logout*')" href="/logout" icon="box-arrow-left"> Logout </x-layout-elements.nav-link>
       </ul>
     </div>
 </aside>

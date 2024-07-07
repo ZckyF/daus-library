@@ -14,11 +14,11 @@ class BookCategoryForm extends Form
     public $category_name;
     public $description;
 
-    protected function rules()
+    public function rules()
     {
         return [
             'category_name' => 'required|string|max:255',
-            'description' => 'required|string',
+            'description' => 'required|string|max:255',
         ];
     }
     

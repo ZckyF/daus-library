@@ -64,7 +64,7 @@
                 </div>
 
                 <div class="button-add">
-                    <a wire:navigate  class="btn btn-outline-primary fw-bold shadow-sm" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Add member" >
+                    <a wire:navigate href="{{ route('members.create') }}"  class="btn btn-outline-primary fw-bold shadow-sm" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Add member" >
                         <i class="bi bi-plus-lg"></i>
                     </a>
                 </div>

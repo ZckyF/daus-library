@@ -52,37 +52,30 @@
 
     </style>
 @endpush
-
 <div class="mt-5">
-    <h3 class="mb-4">Create New Book</h3>
+    <h3 class="mb-4">Create New Member</h3>
     @if (session()->has('success'))
         <x-notifications.alert class="alert-success" :message="session('success')" />
     @endif
     <form wire:submit.prevent="save">
         @csrf
-        @include('livewire.books.form')
+        @include('livewire.members.form')
     </form>
 </div>
-
 @push('scripts')
-<script>
-    $(document).ready(function() {
-        // $('.image-avatar').on('click', function() {
-        //     $('#cover_image').click();
-        // });
+    <script>
+        $(document).ready(function() {
 
-        $('#cover_image').on('change', function(event) {
-            const input = event.target;
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    $('#cover-preview').attr('src', e.target.result);
-                };
-                reader.readAsDataURL(input.files[0]);
-            }
+            $('#image').on('change', function(event) {
+                const input = event.target;
+                if (input.files && input.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        $('#image-preview').attr('src', e.target.result);
+                    };
+                    reader.readAsDataURL(input.files[0]);
+                }
+            });
         });
-    });
-</script>
+    </script>
 @endpush
-
-
