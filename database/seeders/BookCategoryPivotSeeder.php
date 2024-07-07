@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Book;
+use App\Models\BookCategory;
 use App\Models\BookCategoryPivot;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -14,11 +16,22 @@ class BookCategoryPivotSeeder extends Seeder
      */
     public function run(): void
     {
-        for ($i = 1; $i <= 10; $i++) {
-            BookCategoryPivot::create([
-                'book_id' => $i,
-                'book_category_id' => $i,
-            ]);
+        $books = Book::all();
+        $bookCategories = BookCategory::all();
+
+        foreach ($books as $book) {
+        
+            $randomCategoryCount = rand(1, 5); 
+
+           
+            $randomCategories = $bookCategories->random($randomCategoryCount);
+
+            foreach ($randomCategories as $category) {
+                BookCategoryPivot::create([
+                    'book_id' => $book->id,
+                    'book_category_id' => $category->id,
+                ]);
+            }
         }
     }
 }

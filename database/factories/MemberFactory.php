@@ -17,7 +17,7 @@ class MemberFactory extends Factory
     public function definition(): array
     {
         return [
-            'number_card' => $this->faker->unique()->randomNumber(10,true),
+            'number_card' => str_pad($this->faker->unique()->randomNumber(9, false), 10, '0', STR_PAD_LEFT),
             'full_name' => $this->faker->name,
             'email' => $this->faker->unique()->safeEmail,
             'phone_number' => $this->faker->unique()->phoneNumber,

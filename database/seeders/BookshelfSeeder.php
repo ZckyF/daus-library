@@ -13,6 +13,6 @@ class BookshelfSeeder extends Seeder
      */
     public function run(): void
     {
-        Bookshelf::factory(15)->create();
+        Bookshelf::factory(50)->create();
     }
 }
