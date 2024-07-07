@@ -17,7 +17,7 @@
     @if(isset($isEditPage) && $isEditPage)
         <div class="mb-3 col-md-4">
             <label for="number_card" class="form-label">Number Card</label>
-            <input type="text" class="form-control" value="{{ $number_card }}" id="number_card" disabled>
+            <input type="text" class="form-control" wire:model="form.number_card" id="number_card" disabled>
         </div>
     @endif
     <div class="mb-3 col-md-4">
@@ -65,6 +65,8 @@
             <span>Save</span>
         </button>
     </div>
+
+    <x-notifications.modal title="Delete Confirmation" message="Are you sure you want to delete this member ?" buttonText="Yes" action="delete" targetModal="deleteModal" />
 
     
 </div>

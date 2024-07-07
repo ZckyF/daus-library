@@ -21,6 +21,10 @@ class Edit extends Component
         $categoryNameSlug = str_replace('-', ' ', $category_name);
         $category = BookCategory::where('category_name', $categoryNameSlug)->firstOrFail();
 
+        if (!$category) {
+            abort(404);
+        }
+        
         $this->bookCategoryId = $category->id;
         $this->user = $category->user->username;
 

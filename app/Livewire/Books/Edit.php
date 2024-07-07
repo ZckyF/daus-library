@@ -19,7 +19,6 @@ class Edit extends Component
 
     public $categories;
     public $bookshelves;
-    public $isDirty = false;
     public $bookId;
     public $user;
 
@@ -36,6 +35,9 @@ class Edit extends Component
 
         $book = Book::where('title', $title)->where('author', $author)->firstOrFail();
 
+        if (!$book) {
+            abort(404);
+        }
         $this->bookId = $book->id;
         $this->user = $book->user->username;
         

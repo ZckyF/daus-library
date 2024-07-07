@@ -117,7 +117,7 @@
                                 <i class="bi bi-trash"></i>
                             </button>
                            
-                            <a wire:navigate class="btn btn-info btn-sm text-white rounded-3" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Edit book">
+                            <a wire:navigate href="{{ route('members.edit', ['number_card' => $member->number_card]) }}" class="btn btn-info btn-sm text-white rounded-3" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Edit book">
                                 <i class="bi bi-info-circle"></i>
                             </a>
                         </div>

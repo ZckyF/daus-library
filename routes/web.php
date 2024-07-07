@@ -10,15 +10,17 @@ use App\Livewire\Books\Index as BookIndex;
 use App\Livewire\Books\Create as BookCreate;
 use App\Livewire\Books\Edit as BookEdit;
 
-use App\Livewire\BookCategories\Index as BookCategoriesIndex;
-use App\Livewire\BookCategories\Create as BookCategoriesCreate;
-use App\Livewire\BookCategories\Edit as BookCategoriesEdit;
+use App\Livewire\BookCategories\Index as BookCategoryIndex;
+use App\Livewire\BookCategories\Create as BookCategoryCreate;
+use App\Livewire\BookCategories\Edit as BookCategoryEdit;
 
-use App\Livewire\Members\Index as MembersIndex;
-use App\Livewire\Members\Create as MembersCreate;
+use App\Livewire\Members\Index as MemberIndex;
+use App\Livewire\Members\Create as MemberCreate;
+use App\Livewire\Members\Edit as MemberEdit;
 
 
 use App\Livewire\Dashboard;
+use App\Models\Member;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -39,12 +41,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/books/create', BookCreate::class)->name('books.create');
     Route::get('/books/{title}/{author}', BookEdit::class)->name('books.edit');
 
-    Route::get('/book-categories',BookCategoriesIndex::class)->name('book-categories');
-    Route::get('/book-categories/create',BookCategoriesCreate::class)->name('book-categories.create');
-    Route::get('/book-categories/{category_name}',BookCategoriesEdit::class)->name('book-categories.edit');
+    Route::get('/book-categories',BookCategoryIndex::class)->name('book-categories');
+    Route::get('/book-categories/create',BookCategoryCreate::class)->name('book-categories.create');
+    Route::get('/book-categories/{category_name}',BookCategoryEdit::class)->name('book-categories.edit');
 
-    Route::get('/members', MembersIndex::class)->name('members');
-    Route::get('/members/create', MembersCreate::class)->name('members.create');
+    Route::get('/members', MemberIndex::class)->name('members');
+    Route::get('/members/create', MemberCreate::class)->name('members.create');
+    Route::get('/members/{number_card}', MemberEdit::class)->name('members.edit');
     
     Route::post('/logout', [Logout::class,'logout'])->name('logout');
 });
