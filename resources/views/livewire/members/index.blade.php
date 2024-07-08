@@ -92,7 +92,7 @@
         
         @if($members->isEmpty())
                 <div class="col-12">
-                    <p class="text-center">No books found.</p>
+                    <p class="text-center">No data found.</p>
                 </div>
             @else
             @foreach ($members as $member)
@@ -113,7 +113,7 @@
                         <input type="checkbox" class="form-check-input" wire:model.live="selectedMembers" value="{{ $member->id }}">
             
                         <div class="button-group">
-                            <button type="button" class="btn btn-danger btn-sm text-white rounded-3" data-bs-toggle="modal" data-bs-target="#deleteModal" wire:click="setBookId({{ $member->id }})" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Delete book" >
+                            <button type="button" class="btn btn-danger btn-sm text-white rounded-3" data-bs-toggle="modal" data-bs-target="#deleteModal" wire:click="setMemberId({{ $member->id }})" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Delete book" >
                                 <i class="bi bi-trash"></i>
                             </button>
                            

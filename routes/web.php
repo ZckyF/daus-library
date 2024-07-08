@@ -14,6 +14,8 @@ use App\Livewire\BookCategories\Index as BookCategoryIndex;
 use App\Livewire\BookCategories\Create as BookCategoryCreate;
 use App\Livewire\BookCategories\Edit as BookCategoryEdit;
 
+use App\Livewire\Bookshelves\Index as BookshelfIndex;
+
 use App\Livewire\Members\Index as MemberIndex;
 use App\Livewire\Members\Create as MemberCreate;
 use App\Livewire\Members\Edit as MemberEdit;
@@ -44,6 +46,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/book-categories',BookCategoryIndex::class)->name('book-categories');
     Route::get('/book-categories/create',BookCategoryCreate::class)->name('book-categories.create');
     Route::get('/book-categories/{category_name}',BookCategoryEdit::class)->name('book-categories.edit');
+
+    Route::get('/bookshelves', BookshelfIndex::class)->name('bookshelves');
 
     Route::get('/members', MemberIndex::class)->name('members');
     Route::get('/members/create', MemberCreate::class)->name('members.create');

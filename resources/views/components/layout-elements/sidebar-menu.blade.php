@@ -115,7 +115,7 @@
         <span>Master Data</span>
       </h6>
       <ul class="nav flex-column border-bottom"> 
-        <x-layout-elements.nav-link :active="request()->routeIs('books*')" href="/books" icon="book"> Books </x-layout-elements.nav-link>
+        <x-layout-elements.nav-link :active="request()->routeIs('books*') && !request()->routeIs('bookshelves*')" href="/books" icon="book"> Books </x-layout-elements.nav-link>
         <x-layout-elements.nav-link :active="request()->routeIs('book-categories*')" href="/book-categories" icon="tags"> Book Categories </x-layout-elements.nav-link>
         <x-layout-elements.nav-link :active="request()->routeIs('bookshelves*')" href="/bookshelves" icon="bookshelf"> Bookshelves </x-layout-elements.nav-link>
         <x-layout-elements.nav-link :active="request()->routeIs('members*')" href="/members" icon="person-vcard"> Members </x-layout-elements.nav-link>

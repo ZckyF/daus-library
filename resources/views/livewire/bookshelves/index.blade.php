@@ -13,7 +13,7 @@
     <div class="row mb-3">
         <div class="col-md-4 col-12 mb-3">
             <div class="input-group">
-                <input type="text" class="form-control rounded-4 shadow-sm" placeholder="Search categories..." wire:model.live.debounce.300ms="search">
+                <input type="text" class="form-control rounded-4 shadow-sm" placeholder="Search bookshelves..." wire:model.live.debounce.300ms="search">
             </div>
         </div>
         <div class="col-md-8 col-12">
@@ -29,8 +29,8 @@
                     <select class="form-control rounded-4 shadow-sm" wire:model.live="sortBy" style="cursor: pointer;">
                         <option value="newest">Newest</option>
                         <option value="oldest">Oldest</option>
-                        <option value="category-asc">Categories A-Z</option>
-                        <option value="category-desc">Categories Z-A</option>
+                        <option value="bookshelf-asc">Number A-Z</option>
+                        <option value="bookshelf-desc">Number Z-A</option>
                     </select>
                 </div>
                 <div class="dropdown-per-page">
@@ -41,7 +41,7 @@
                     </select>
                 </div>
                 <div class="button-add">
-                    <a wire:navigate href="{{ route('book-categories.create') }}" class="btn btn-outline-primary fw-bold shadow-sm text-center" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Add book category">
+                    <a wire:navigate href="{{ route('book-categories.create') }}" class="btn btn-outline-primary fw-bold shadow-sm text-center" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Add bookshelf">
                         <i class="bi bi-plus-lg"></i>
                     </a>
                 </div>
@@ -52,46 +52,43 @@
         @if (session()->has('success'))
             <x-notifications.alert class="alert-success" :message="session('success')" />
         @endif
-        <x-tables.table tableClass="table-striped shadow-sm" :columns="$columns" :useCheckboxColumn="true">
-            @if($categories->isEmpty())
+        <x-tables.table tableClass="table-striped shadow-sm" :columns="$columns" :useCheckboxColumn="true"> 
+            @if($bookshelves->isEmpty())
                 <tr>
                     <td colspan="5" class="text-center">No data found.</td>
                 </tr>
             @else
-                @foreach ($categories as $index => $category)
-                    @php
-                        $categorySlug = str_replace(' ', '-', $category->category_name);
-                    @endphp
+                @foreach ($bookshelves as $index => $bookshelf)
                     <tr>
                         <td>
-                            <input type="checkbox" class="form-check-input" wire:model.live="selectedCategories" value="{{ $category->id }}">
+                            <input type="checkbox" class="form-check-input" wire:model.live="selectedBookshelves" value="{{ $bookshelf->id }}">
                         </td>
-                        <td>{{ $categories->firstItem() + $index }}</td>
-                        <td>{{ $category->category_name }}</td>
-                        <td>{{ $category->user->username }}</td>
+                        <td>{{ $bookshelves->firstItem() + $index }}</td>
+                        <td>{{ $bookshelf->bookshelf_number }}</td>
+                        <td>{{ $bookshelf->user->username }}</td>
                         <td>
-                                <a wire:navigate href="{{ route('book-categories.edit',['category_name' => $categorySlug]) }}" class="btn btn-info btn-sm rounded-3 text-white" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Edit category">
-                                    <span><i class="bi bi-info-circle"></i></span>
-                                </a>
-                            <button class="btn btn-danger btn-sm rounded-3" data-bs-toggle="modal" data-bs-target="#deleteModal" wire:click="setBookCategoryId({{ $category->id }})" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Delete category">
-                                    <span><i class="bi bi-trash"></i></span>
+                            <a wire:navigate class="btn btn-info btn-sm rounded-3 text-white" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Edit bookshelf">
+                                <span><i class="bi bi-info-circle"></i></span>
+                            </a>
+                            <button class="btn btn-danger btn-sm rounded-3" data-bs-toggle="modal" data-bs-target="#deleteModal" wire:click="setBookShelfId({{ $bookshelf->id }})" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Delete bookshelf">
+                                <span><i class="bi bi-trash"></i></span>
                             </button>
-                            
                         </td>
                     </tr>
                 @endforeach
-            @endif 
-            
+            @endif
+        
         </x-tables.table>
         <div class="d-flex justify-content-center mt-3">
             <div wire:loading wire:target="search,sortBy" class="spinner-border text-primary" role="status">
               <span class="visually-hidden">Loading...</span>
             </div>
         </div>
-        {{ $categories->links() }}
+        {{ $bookshelves->links() }}
     </div>
-    <x-notifications.modal title="Delete Confirmation" message="Are you sure you want to delete this category?" buttonText="Yes" action="delete" targetModal="deleteModal" />
-    <x-notifications.modal title="Delete Selected Confirmation" message="Are you sure you want to delete these categories?" buttonText="Yes" action="deleteSelected" targetModal="deleteSelectedModal" />
+
+    <x-notifications.modal title="Delete Confirmation" message="Are you sure you want to delete this bookshelf?" buttonText="Yes" action="delete" targetModal="deleteModal" />
+    <x-notifications.modal title="Delete Selected Confirmation" message="Are you sure you want to delete these bookshelves?" buttonText="Yes" action="deleteSelected" targetModal="deleteSelectedModal" />
 </div>
 
 
