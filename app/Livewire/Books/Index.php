@@ -14,7 +14,9 @@ class Index extends Component
 {
     use WithPagination;
     public $search = '';
-    public $category = '';
+    public $searchCategory = '';
+    public $searchBookshelves = '';
+    public $categoryId = '';
     public $sortBy = 'newest';
     public $perPage = 12;
     public $bookId;
@@ -40,9 +42,9 @@ class Index extends Component
             });
         }
 
-        if ($this->category) {
+        if ($this->categoryId) {
             $query->whereHas('bookCategories', function ($q) {
-                $q->where('book_category_id', $this->category);
+                $q->where('book_category_id', $this->categoryId);
             });
         }
 
@@ -59,7 +61,36 @@ class Index extends Component
         return $query->paginate($this->perPage);
     }
 
+    public function fetchBookCategories()
+    {
+        $query = BookCategory::query();
+
+        if ($this->searchCategory) {
+            $query->where(function ($query) {
+                $query->where('category_name', 'like', '%' . $this->searchCategory . '%');
+            });
+        }
+
+        return $query->get();
+    }
+
+    public function fetchBookshelves()
+    {
+        $query = Book::query();
+        if($this->searchBookshelves){
+            $query->whereHas('bookshelves', function ($q) {
+                $q->where('bookshelf_number', 'like', '%' . $this->searchBookshelves . '%');
+            });
+        }
+            
+        
+    }
+
     public function updatedSearch() 
+    {
+        $this->resetPage();
+    }
+    public function updatedSearchCategory() 
     {
         $this->resetPage();
     }
@@ -74,6 +105,11 @@ class Index extends Component
 
     public function updatedPerPage() 
     {
+        $this->resetPage();
+    }
+    public function selectCategory($categoryId)
+    {
+        $this->categoryId = $categoryId;
         $this->resetPage();
     }
     public function setBookId($bookId)
@@ -165,7 +201,8 @@ class Index extends Component
 
     public function render()
     {
-        $categories = BookCategory::all();
+        $categories = $this->fetchBookCategories();
+        $bookshelves = $this->fetchBookshelves();
         $books = $this->fetchBooks();
         $optionPages = ['12','24','48','84','108'];
         $optionSorts = [
@@ -174,6 +211,6 @@ class Index extends Component
             'title-asc' => 'Title A-Z',
             'title-desc' => 'Title Z-A',
         ];
-        return view('livewire.books.index', compact('books', 'categories', 'optionPages', 'optionSorts'));
+        return view('livewire.books.index', compact('books', 'categories','bookshelves', 'optionPages', 'optionSorts'));
     }
 }

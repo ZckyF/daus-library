@@ -66,7 +66,7 @@
                         <td>{{ $bookshelf->bookshelf_number }}</td>
                         <td>{{ $bookshelf->user->username }}</td>
                         <td>
-                            <a wire:navigate class="btn btn-info btn-sm rounded-3 text-white" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Edit bookshelf">
+                            <a wire:navigate href="{{ route('bookshelves.edit', $bookshelf->bookshelf_number) }}" class="btn btn-info btn-sm rounded-3 text-white" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Edit bookshelf">
                                 <span><i class="bi bi-info-circle"></i></span>
                             </a>
                             <button class="btn btn-danger btn-sm rounded-3" data-bs-toggle="modal" data-bs-target="#deleteModal" wire:click="setBookShelfId({{ $bookshelf->id }})" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Delete bookshelf">

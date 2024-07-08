@@ -57,7 +57,7 @@
                 @foreach($topBooks as $index => $book)
                     <tr>
                         <td>{{ $index + 1 }}</td>
-                        <td>{{ $book->title }}</td>
+                        <td>{{ Str::limit($book->title, 40) }}</td>
                         <td>{{ $book->borrow_count }}</td>
                     </tr>
                 @endforeach

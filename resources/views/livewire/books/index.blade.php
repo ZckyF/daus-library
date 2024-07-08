@@ -24,6 +24,10 @@
                 transform: translateY(0);
             }
         }
+
+        .dropdown-item:hover {
+            cursor: pointer;
+        }
         /* .card {
             transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out; 
         }
@@ -53,12 +57,25 @@
                     </div>
                 @endif
                 <div class="dropdown-categories">
-                    <select class="form-control rounded-4 shadow-sm" wire:model.live="category" style="cursor: pointer;">
-                        <option value="">All Categories</option>
-                        @foreach ($categories as $category)
-                            <option value="{{ $category->id }}">{{ $category->category_name }}</option>
-                        @endforeach
-                    </select>
+                    <div class="dropdown">
+                        <button class="btn bg-white shadow-sm rounded-4 dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                            Select Category
+                        </button>
+                        <div class="dropdown-menu p-3" style="max-height: 400px; overflow-y: auto;" wire:ignore.self aria-labelledby="dropdownMenuButton">
+                            <input type="text" class="form-control mb-2" placeholder="Search category..." wire:model.live.debounce.300ms="searchCategory">
+                            @if($categories->count() <= 0)
+                                <div class="dropdown-item">Not found</div>
+                                
+                            @else
+                                <div class="dropdown-item" wire:click="selectCategory(0)">All</div>
+                                @foreach ($categories as $category)
+                                <div class="dropdown-item {{ $categoryId == $category->id ? 'active rounded-1' : '' }} " wire:click="selectCategory('{{ $category->id }}')">{{ Str::limit($category->category_name, 15) }}</div>
+                                @endforeach
+                            @endif
+                            
+                        </div>
+                    </div>
+                    
                 </div>
                 
                 <div class="dropdown-sort">

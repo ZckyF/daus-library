@@ -4,6 +4,7 @@ namespace App\Livewire\Forms;
 
 use App\Models\Bookshelf;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
@@ -25,15 +26,30 @@ class BookshelfForm extends Form
         $rules = $this->rules();
         $rules['bookshelf_number'] .= '|unique:bookshelves,bookshelf_number';
         
-        $validatedData = $this->validate($rules);
         
-        Bookshelf::create(array_merge($validatedData, [
+        Bookshelf::create(array_merge($this->validate($rules), [
             'user_id' => Auth::user()->id
         ]));
 
         $this->resetForm();
 
         session()->flash('success', 'Bookshelf created successfully');
+    }
+
+    public function update($bookshelfId)
+    {
+        $bookshelf = Bookshelf::findOrfail($bookshelfId);
+
+        $rules = $this->rules();
+        $rules['bookshelf_number'] .= '|'.Rule::unique('bookshelves', 'bookshelf_number')->ignore($bookshelf->id);
+
+
+        $bookshelf->update(array_merge($this->validate($rules),[
+            'user_id' => Auth::user()->id
+        ]));
+        $this->resetForm();
+        
+        session()->flash('success', 'Bookshelf successfully updated.');
     }
 
     protected function resetForm()
