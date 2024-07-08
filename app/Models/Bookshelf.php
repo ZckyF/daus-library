@@ -13,7 +13,7 @@ class Bookshelf extends Model
     use HasFactory,SoftDeletes;
 
     protected $fillable = [
-        'bookshelve_number',
+        'bookshelf_number',
         'location',
         'user_id'
     ];

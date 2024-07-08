@@ -105,9 +105,14 @@ class Index extends Component
         $categories = $this->fetchBookCategories();
         $optionPages = ['10','20','40','50','100'];
         $columns = ['#','Category Name','Added or Edited','Actions'];
-        
+        $optionSorts = [
+            'newest' => 'Newest',
+            'oldest' => 'Oldest',
+            'category-asc' => 'Category A-Z',
+            'category-desc' => 'Category Z-A'
+        ];
         return view('livewire.book-categories.index', 
-            compact('categories','optionPages','columns')
+            compact('categories','optionPages','columns','optionSorts')
         );
     }
 }

@@ -27,10 +27,9 @@
                 @endif
                 <div class="dropdown-sort">
                     <select class="form-control rounded-4 shadow-sm" wire:model.live="sortBy" style="cursor: pointer;">
-                        <option value="newest">Newest</option>
-                        <option value="oldest">Oldest</option>
-                        <option value="bookshelf-asc">Number A-Z</option>
-                        <option value="bookshelf-desc">Number Z-A</option>
+                        @foreach ($optionSorts as $sort => $value)
+                            <option value="{{ $sort }}">{{ $value }}</option>
+                        @endforeach
                     </select>
                 </div>
                 <div class="dropdown-per-page">
@@ -41,7 +40,7 @@
                     </select>
                 </div>
                 <div class="button-add">
-                    <a wire:navigate href="{{ route('book-categories.create') }}" class="btn btn-outline-primary fw-bold shadow-sm text-center" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Add bookshelf">
+                    <a wire:navigate href="{{ route('bookshelves.create') }}" class="btn btn-outline-primary fw-bold shadow-sm text-center" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Add bookshelf">
                         <i class="bi bi-plus-lg"></i>
                     </a>
                 </div>

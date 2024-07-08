@@ -168,6 +168,12 @@ class Index extends Component
         $categories = BookCategory::all();
         $books = $this->fetchBooks();
         $optionPages = ['12','24','48','84','108'];
-        return view('livewire.books.index', compact('books', 'categories', 'optionPages'));
+        $optionSorts = [
+            'newest' => 'Newest',
+            'oldest' => 'Oldest',
+            'title-asc' => 'Title A-Z',
+            'title-desc' => 'Title Z-A',
+        ];
+        return view('livewire.books.index', compact('books', 'categories', 'optionPages', 'optionSorts'));
     }
 }

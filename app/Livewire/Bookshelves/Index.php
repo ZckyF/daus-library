@@ -104,6 +104,12 @@ class Index extends Component
         $bookshelves = $this->fetchBookCategories();
         $optionPages = ['10','20','40','50','100'];
         $columns = ['#','Bookshelf Number','Added or Edited','Actions'];
-        return view('livewire.bookshelves.index',compact('bookshelves','optionPages','columns'));
+        $optionSorts = [
+            'newest' => 'Newest',
+            'oldest' => 'Oldest',
+            'bookshelf-asc' => 'Bookshelf A-Z',
+            'bookshelf-desc' => 'Bookshelf Z-A'
+        ];
+        return view('livewire.bookshelves.index',compact('bookshelves','optionPages','columns','optionSorts'));
     }
 }

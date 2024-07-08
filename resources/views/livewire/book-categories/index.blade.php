@@ -27,10 +27,9 @@
                 @endif
                 <div class="dropdown-sort">
                     <select class="form-control rounded-4 shadow-sm" wire:model.live="sortBy" style="cursor: pointer;">
-                        <option value="newest">Newest</option>
-                        <option value="oldest">Oldest</option>
-                        <option value="category-asc">Categories A-Z</option>
-                        <option value="category-desc">Categories Z-A</option>
+                        @foreach ($optionSorts as $sort => $value)
+                            <option value="{{ $sort }}">{{ $value }}</option>
+                        @endforeach
                     </select>
                 </div>
                 <div class="dropdown-per-page">
