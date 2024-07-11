@@ -41,8 +41,8 @@ class Book extends Model
      */
     public function bookCategories() :BelongsToMany
     {
-        return $this->belongsToMany(BookCategory::class,'book_category_pivot')->using(BookCategoryPivot::class);
-    }
+        return $this->belongsToMany(BookCategory::class,'book_category_pivot')->using(BookCategoryPivot::class)->withTimestamps();
+    }   
 
     /**
      * Returns a belongs to many relationship between Book model and Bookshelf model
@@ -52,7 +52,7 @@ class Book extends Model
      */
     public function bookshelves() :BelongsToMany
     {
-        return $this->belongsToMany(Bookshelf::class,'bookshelf_pivot')->using(BookshelfPivot::class);
+        return $this->belongsToMany(Bookshelf::class,'bookshelf_pivot')->using(BookshelfPivot::class)->withTimestamps();
     }
 
     /**
@@ -64,7 +64,7 @@ class Book extends Model
     public function borrowBooks(): BelongsToMany
     {
         return $this->belongsToMany(BorrowBook::class, 'borrow_book_pivot')
-            ->using(BorrowBookPivot::class);
+            ->using(BorrowBookPivot::class)->withTimestamps();
     }
 
     /**

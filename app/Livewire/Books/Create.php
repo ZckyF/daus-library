@@ -16,6 +16,8 @@ class Create extends Component
 
     public $categories;
     public $bookshelves;
+    public $searchSelectCategories = '';
+    public $searchSelectBookshelves = '';
 
     public $selectedDropdownCategories = [];
     public $selectedDropdownBookshelves = [];
@@ -29,30 +31,45 @@ class Create extends Component
         
     }
 
-    public function updatedSelectedDropdownCategories()
+    public function selectCategories()
     {
+        $this->categories = BookCategory::select('id', 'category_name')->get();
         $selectedCategoryNames = $this->categories->whereIn('id', $this->selectedDropdownCategories)
                                 ->pluck('category_name')
                                 ->toArray();
 
         $this->form->selectedCategoriesId = $this->selectedDropdownCategories;
         $this->form->selectedCategories = implode(', ', $selectedCategoryNames);
+
+        $this->dispatch('closeModal');
     }
 
-    public function updatedSelectedDropdownBookshelves()
+    public function selectBookshelves()
     {
+        $this->bookshelves = Bookshelf::select('id', 'bookshelf_number')->get();
         $selectedBookshelvesNumber = $this->bookshelves->whereIn('id', $this->selectedDropdownBookshelves)
         ->pluck('bookshelf_number')
         ->toArray();
         $this->form->selectedBookshelvesId = $this->selectedDropdownBookshelves;
         $this->form->selectedBookshelves = implode(', ', $selectedBookshelvesNumber);
 
+        $this->dispatch('closeModal');
+
+    }
+
+    public function updatedSearchSelectCategories()
+    {
+        $this->categories = BookCategory::where('category_name', 'like', '%' . $this->searchSelectCategories . '%')->get();
+    }
+    public function updatedSearchSelectBookshelves()
+    {
+        $this->bookshelves = Bookshelf::where('bookshelf_number', 'like', '%' . $this->searchSelectBookshelves . '%')->get();
     }
 
     public function save()
     {
         $this->form->store();
-        $this->redirectRoute('books'); 
+        return $this->redirectRoute('books'); 
     }
 
 

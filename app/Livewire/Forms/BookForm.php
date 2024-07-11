@@ -10,6 +10,9 @@ use Livewire\Form;
 
 class BookForm extends Form
 {
+
+    public ?Book $book;
+
     public $isbn;
     public $title;
     public $cover_image_name;
@@ -38,12 +41,27 @@ class BookForm extends Form
             'price_per_book' => 'required|numeric|min:0',
             'quantity' => 'required|integer|min:0',
             'quantity_now' => 'required|integer|min:0',
-            'description' => 'required|string|max:255',
+            'description' => 'required|string',
             'selectedCategories' => 'required|string',
             'selectedBookshelves' => 'required|string',
         ];
     }
     
+    public function setBook(Book $book)
+    {
+        $this->book = $book;
+
+        $this->isbn = $book->isbn;
+        $this->title = $book->title;
+        $this->cover_image_name = $book->cover_image_name;
+        $this->author = $book->author;
+        $this->published_year = $book->published_year;
+        $this->price_per_book = $book->price_per_book;
+        $this->quantity = $book->quantity;
+        $this->quantity_now = $book->quantity_now;
+        $this->description = $book->description;
+
+    }
 
     public function store()
     {
@@ -66,27 +84,30 @@ class BookForm extends Form
         $book->bookshelves()->sync($this->selectedBookshelvesId);
 
         
-        $this->resetForm();
+        $this->reset();
 
         
         session()->flash('success', 'Book successfully created.');
     }
 
-    public function update($bookId)
+
+    public function update()
     {
         
-        $book = Book::findOrfail($bookId);
+        $book = $this->book;
+
         $rules = $this->rules();
+        $rules['isbn'] .= '|'.Rule::unique('books', 'isbn')->ignore($book);
         if ($this->cover_image_name !== $book->cover_image_name) {
             $rules['cover_image_name'] .= '|image|mimes:jpeg,png,jpg,gif|max:2048';
-            $rules['isbn'] .= '|'.Rule::unique('books', 'isbn')->ignore($book->id);
-            
+
             $fileName = $this->cover_image_name->hashName(); 
             $this->cover_image_name->storeAs('covers', $fileName, 'public');
         } else {
-            $rules['isbn'] .= '|'.Rule::unique('books', 'isbn')->ignore($book->id);
             $fileName = $book->cover_image_name;
         }
+
+
         $validatedData = $this->validate($rules);
 
         $book->update(array_merge($validatedData, [
@@ -94,20 +115,40 @@ class BookForm extends Form
             'user_id' => Auth::user()->id,
         ]));
 
-        $book->bookCategories()->sync($this->selectedCategoriesId);
-        $book->bookshelves()->sync($this->selectedBookshelvesId);
+        $this->syncCategoriesAndBookshelves($book);
 
-        $this->resetForm();
+        $this->reset();
 
         session()->flash('success', 'Book successfully updated.');
     }
 
-
-
-    protected function resetForm()
+    protected function syncCategoriesAndBookshelves(Book $book)
     {
-        $this->reset('isbn', 'title', 'cover_image_name', 'author', 'published_year', 'price_per_book', 'quantity', 'quantity_now', 'description', 'selectedCategories', 'selectedBookshelves');
+        // Get the IDs of existing soft deleted categories and bookshelves
+        $existingCategoryIds = $book->bookCategories()->wherePivot('deleted_at', '!=', null)->pluck('book_category_id')->toArray();
+        $existingBookshelfIds = $book->bookshelves()->wherePivot('deleted_at', '!=', null)->pluck('bookshelf_id')->toArray();
+    
+        // Combine selected categories with existing soft deleted categories
+        $categoryIdsToSync = array_unique(array_merge($this->selectedCategoriesId, $existingCategoryIds));
+        $bookshelfIdsToSync = array_unique(array_merge($this->selectedBookshelvesId, $existingBookshelfIds));
+    
+        // Update the pivot table for categories
+        foreach ($categoryIdsToSync as $categoryId) {
+            $book->bookCategories()->updateExistingPivot($categoryId, ['deleted_at' => null]);
+        }
+    
+        // Update the pivot table for bookshelves
+        foreach ($bookshelfIdsToSync as $bookshelfId) {
+            $book->bookshelves()->updateExistingPivot($bookshelfId, ['deleted_at' => null]);
+        }
+    
+        // Sync the selected categories and bookshelves
+        $book->bookCategories()->sync($this->selectedCategoriesId);
+        $book->bookshelves()->sync($this->selectedBookshelvesId);
     }
+    
+
+
     
 
     

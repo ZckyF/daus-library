@@ -1,4 +1,9 @@
-<div wire:ignore.self class="modal fade" id="{{ $targetModal }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+@php
+  $classModal = $classModal ?? 'modal fade';
+  $buttonText = $buttonText ?? 'Yes';
+@endphp
+
+<div wire:ignore.self class="modal {{ $classModal }}" id="{{ $targetModal }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -6,7 +11,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          {{ $message }}
+          {{ $slot }}
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

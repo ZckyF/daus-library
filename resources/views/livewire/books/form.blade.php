@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="mb-3 col-md-12">
+    <div class="mb-3 col-12">
         <label for="cover_image" class="form-label py-5 image-avatar">
 
             <img id="cover-preview" src="{{ $form->cover_image_name ? (is_string($form->cover_image_name) ? Storage::url('covers/' . $form->cover_image_name) : $form->cover_image_name->temporaryUrl()) : "" }}" alt="Cover Image" />
@@ -51,52 +51,28 @@
         @error('form.quantity_now') <span class="text-danger">{{ $message }}</span> @enderror
     </div>
     <div class="mb-3 col-md-6">
-        <label for="categroeis" class="form-label">Categories</label>
-        <div class="d-flex gap-4">
-            <!-- Input text for selected categories -->
+        <label for="categories" data-bs-toggle="modal" data-bs-target="#categoryModal" class="form-label">Categories</label>
+        <div class="d-flex align-items-center  gap-4">
             <input type="text" class="form-control @error('form.selectedCategories') is-invalid @enderror" id="selected_categories" wire:model="form.selectedCategories" readonly>
-            
-            <!-- Dropdown with multi-select checkboxes -->
-            <div class="dropdown">
-                <button class="btn bg-white shadow-sm rounded-3 dropdown-toggle" type="button" id="categoryDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                    Select Categories
-                </button>
-                <ul class="dropdown-menu px-2" aria-labelledby="categoryDropdown" style="max-height: 200px; overflow-y: auto;" wire:ignore>
-                    @foreach ($categories as $category)
-                        <li>
-                            <label class="dropdown-item">
-                                <input type="checkbox" wire:model.live="selectedDropdownCategories" value="{{ $category->id }}"> {{ $category->category_name }}
-                            </label>
-                        </li>
-                    @endforeach
-                </ul>
-            </div>
+
+            <button type="button" class="btn bg-white shadow-sm rounded-3" data-bs-toggle="modal" data-bs-target="#categoryModal" style="white-space: nowrap">
+                Select Categories
+            </button>
         </div>
+       
         @error('form.selectedCategories') <span class="text-danger">{{ $message }}</span> @enderror
     </div>
     <div class="mb-3 col-md-6">
-        <label for="bookshelves" class="form-label">Bookshelves</label>
-        <div class="d-flex gap-4">
-            <!-- Input text for selected categories -->
-            <input type="text" class="form-control @error('form.selectedBookshelves') is-invalid @enderror" id="selected_categories" wire:model="form.selectedBookshelves" readonly>
+        <label for="bookshelves" data-bs-toggle="modal" data-bs-target="#bookshelfModal" class="form-label">bookshelves</label> 
+        <div class="d-flex align-items-center  gap-4">
+            <input type="text" class="form-control @error('form.selectedBookshelves') is-invalid @enderror" id="selected_bookshelves" wire:model="form.selectedBookshelves" readonly />
             
-            <!-- Dropdown with multi-select checkboxes -->
-            <div class="dropdown">
-                <button class="btn bg-white shadow-sm rounded-3 dropdown-toggle" type="button" id="bookshelfDropdown" data-bs-toggle="dropdown" aria-expanded="false" >
-                    Select Bookshelves
-                </button>
-                <ul class="dropdown-menu px-2" aria-labelledby="bookshelfDropdown" style="max-height: 200px; overflow-y: auto;" wire:ignore>
-                    @foreach ($bookshelves as $bookshelf)
-                        <li>
-                            <label class="dropdown-item" for="{{ $bookshelf->id }}">
-                                <input id="{{ $bookshelf->id }}" type="checkbox" wire:model.live="selectedDropdownBookshelves" value="{{ $bookshelf->id }}"> {{ $bookshelf->bookshelf_number }}
-                            </label>
-                        </li>
-                    @endforeach
-                </ul>
-            </div>
+            <button type="button" class="btn bg-white shadow-sm rounded-3" data-bs-toggle="modal" data-bs-target="#bookshelfModal" style="white-space: nowrap">
+                Select Bookshelves
+            </button>
         </div>
-        @error('form.selectedCategories') <span class="text-danger">{{ $message }}</span> @enderror
+    
+        @error('form.selectedBookshelves') <span class="text-danger">{{ $message }}</span> @enderror
     </div>
     @if(isset($isEditPage) && $isEditPage)
     <div class="mb-3 col-12">
@@ -127,6 +103,55 @@
             <span>Save</span>
         </button>
     </div>
-<x-notifications.modal title="Delete Confirmation" message="Are you sure you want to delete this book?" buttonText="Yes" action="delete" targetModal="deleteModal" />
+    <x-notifications.modal title="Delete Confirmation" action="delete" targetModal="deleteModal">Are you sure you want to delete this book ? </x-notifications.modal>
+
+    <x-notifications.modal title="Select Categories" action="selectCategories" targetModal="categoryModal" buttonText="Select">
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Search categories" wire:model.live.debounce.500ms="searchSelectCategories">
+        </div>
+        <div style="max-height: 400px; overflow-y: auto;">
+            @foreach ($categories as $category)
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" wire:model="selectedDropdownCategories" value="{{ $category->id }}" id="category-{{ $category->id }}">
+                    <label class="form-check-label" for="category-{{ $category->id }}">{{ $category->category_name }}</label>
+                </div>
+            @endforeach
+        </div>    
+    </x-notifications.modal>
+
+    <x-notifications.modal title="Select Bookshelves" action="selectBookshelves" targetModal="bookshelfModal" buttonText="Select">
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Search bookshelves" wire:model.live.debounce.500ms="searchSelectBookshelves">
+        </div>
+        <div style="max-height: 400px; overflow-y: auto;">
+            @foreach ($bookshelves as $bookshelf)
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" wire:model="selectedDropdownBookshelves" value="{{ $bookshelf->id }}" id="bookshelf-{{ $bookshelf->id }}">
+                    <label class="form-check-label" for="bookshelf-{{ $bookshelf->id }}">{{ $bookshelf->bookshelf_number }}</label>
+                </div>
+            @endforeach
+        </div>    
+    </x-notifications.modal>
+
+        {{-- <div class="d-flex gap-4">
+            <!-- Input text for selected categories -->
+            <input type="text" class="form-control @error('form.selectedCategories') is-invalid @enderror" id="selected_categories" wire:model="form.selectedCategories" readonly>
+            
+            <!-- Dropdown with multi-select checkboxes -->
+            <div class="dropdown">
+                <button class="btn bg-white shadow-sm rounded-3 dropdown-toggle" type="button" id="categoryDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    Select Categories
+                </button>
+                <ul class="dropdown-menu px-2" aria-labelledby="categoryDropdown" style="max-height: 200px; overflow-y: auto;" wire:ignore>
+                    @foreach ($categories as $category)
+                        <li>
+                            <label class="dropdown-item">
+                                <input type="checkbox" wire:model.live="selectedDropdownCategories" value="{{ $category->id }}"> {{ $category->category_name }}
+                            </label>
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
+        </div> --}}
 </div>
 

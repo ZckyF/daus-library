@@ -19,7 +19,9 @@ class Edit extends Component
 
     public $categories;
     public $bookshelves;
-    public $bookId;
+    public $searchSelectCategories = '';
+    public $searchSelectBookshelves = '';
+
     public $user;
 
     public $selectedDropdownCategories = [];
@@ -38,76 +40,69 @@ class Edit extends Component
         if (!$book) {
             abort(404);
         }
-        $this->bookId = $book->id;
         $this->user = $book->user->username;
         
-        $this->form->isbn = $book->isbn;
-        $this->form->title = $book->title;
-        $this->form->cover_image_name = $book->cover_image_name;
-        $this->form->author = $book->author; 
-        $this->form->published_year = $book->published_year;
-        $this->form->price_per_book = $book->price_per_book;
-        $this->form->quantity = $book->quantity;
-        $this->form->quantity_now = $book->quantity_now;
-        $this->form->description = $book->description;
+        $this->form->setBook($book);
 
-        $this->categories = BookCategory::select('id', 'category_name')->get();
-        $this->bookshelves = Bookshelf::select('id', 'bookshelf_number')->get();
+        // $this->categories = BookCategory::select('id', 'category_name')->get();
+        // $this->bookshelves = Bookshelf::select('id', 'bookshelf_number')->get();
         
-        $this->selectedDropdownCategories = $book->bookCategories->pluck('id')->toArray();
-        $this->selectedDropdownBookshelves = $book->bookshelves->pluck('id')->toArray();
+        $this->selectedDropdownCategories = $book->bookCategories()->wherePivot('deleted_at', null)->pluck('id')->toArray();
+        $this->selectedDropdownBookshelves = $book->bookshelves()->wherePivot('deleted_at', null)->pluck('id')->toArray();
 
-        $this->updatedSelectedDropdownCategories();
-        $this->updatedSelectedDropdownBookshelves();
+        
+        $this->selectCategories();
+        $this->selectBookshelves();
 
     }
 
-    public function updatedSelectedDropdownCategories()
+    public function selectCategories()
     {
+        $this->categories = BookCategory::select('id', 'category_name')->get();
+ 
         $selectedCategoryNames = $this->categories->whereIn('id', $this->selectedDropdownCategories)
                                 ->pluck('category_name')
                                 ->toArray();
 
         $this->form->selectedCategoriesId = $this->selectedDropdownCategories;
         $this->form->selectedCategories = implode(', ', $selectedCategoryNames);
+
+        $this->dispatch('closeModal');
     }
 
-    public function updatedSelectedDropdownBookshelves()
+    public function selectBookshelves()
     {
+        $this->bookshelves = Bookshelf::select('id', 'bookshelf_number')->get();
+        
         $selectedBookshelvesNumber = $this->bookshelves->whereIn('id', $this->selectedDropdownBookshelves)
         ->pluck('bookshelf_number')
         ->toArray();
         $this->form->selectedBookshelvesId = $this->selectedDropdownBookshelves;
         $this->form->selectedBookshelves = implode(', ', $selectedBookshelvesNumber);
 
+        $this->dispatch('closeModal');
+
     }
 
-    // public function updatedForm()
-    // {
-    //     $this->validateOnly('form');
-
-    //     // Check if form data has changed from original
-    //     $this->isDirty = $this->book->isbn !== $this->bookData['isbn'] ||
-    //                $this->book->title !== $this->bookData['title'] ||
-    //                // Add checks for other fields as needed
-    //                $this->book->description !== $this->bookData['description'];
-
-    //     // Disable save button if no changes or reverted to original
-    //     if (!$this->isDirty) {
-    //         $this->dispatchBrowserEvent('disable-save-button');
-    //     }
-    // }
+    public function updatedSearchSelectCategories()
+    {
+        $this->categories = BookCategory::where('category_name', 'like', '%' . $this->searchSelectCategories . '%')->get();
+    }
+    public function updatedSearchSelectBookshelves()
+    {
+        $this->bookshelves = Bookshelf::where('bookshelf_number', 'like', '%' . $this->searchSelectBookshelves . '%')->get();
+    }
 
     public function save()
     {
         
-        $this->form->update($this->bookId);
-        $this->redirectRoute('books');
+        $this->form->update();
+        return $this->redirectRoute('books');
     }
 
     public function delete()
     {
-        $book = Book::find($this->bookId);
+        $book = $this->form->book;
     
         if ($book) {
             $coverImage = $book->cover_image_name;

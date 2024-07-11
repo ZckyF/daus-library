@@ -4,6 +4,7 @@ namespace App\Livewire\Books;
 
 use App\Models\Book;
 use App\Models\BookCategory;
+use App\Models\Bookshelf;
 use Livewire\Attributes\Rule;
 use Livewire\Attributes\Title;
 use Livewire\Component;
@@ -16,16 +17,16 @@ class Index extends Component
     public $search = '';
     public $searchCategory = '';
     public $searchBookshelves = '';
-    public $categoryId = '';
+    public $categoryId;
+    public $bookshelfId;
     public $sortBy = 'newest';
     public $perPage = 12;
     public $bookId;
     public $showDeleteSelected = false;
-    public $selectAllCheckbox = false;
     public $selectedBooks = [];
 
     public $bookModalId;
-    #[Rule('required|integer|min:1')]
+    #[Rule('required|integer|min:1|max:3')]
     public $quantity = 1;
     
     
@@ -45,6 +46,12 @@ class Index extends Component
         if ($this->categoryId) {
             $query->whereHas('bookCategories', function ($q) {
                 $q->where('book_category_id', $this->categoryId);
+            });
+        }
+
+        if ($this->bookshelfId) {
+            $query->whereHas('bookshelves', function ($q) {
+                $q->where('bookshelf_id', $this->bookshelfId);
             });
         }
 
@@ -76,12 +83,12 @@ class Index extends Component
 
     public function fetchBookshelves()
     {
-        $query = Book::query();
+        $query = Bookshelf::query();
         if($this->searchBookshelves){
-            $query->whereHas('bookshelves', function ($q) {
-                $q->where('bookshelf_number', 'like', '%' . $this->searchBookshelves . '%');
-            });
+            $query->where('bookshelf_number', 'like', '%' . $this->searchBookshelves . '%');
         }
+
+        return $query->get();
             
         
     }
@@ -91,6 +98,10 @@ class Index extends Component
         $this->resetPage();
     }
     public function updatedSearchCategory() 
+    {
+        $this->resetPage();
+    }
+    public function updatedSearchBookshelves() 
     {
         $this->resetPage();
     }
@@ -112,6 +123,11 @@ class Index extends Component
         $this->categoryId = $categoryId;
         $this->resetPage();
     }
+    public function selectBookshelf($bookshelfId)
+    {
+        $this->bookshelfId = $bookshelfId;
+        $this->resetPage();
+    }
     public function setBookId($bookId)
     {
         $this->bookId = $bookId;
@@ -131,25 +147,16 @@ class Index extends Component
         session()->flash('success', 'Books successfully deleted.');
         $this->dispatch('closeModal');
     }
-
-    public function toggleSelectAll()
+    
+    public function toggleSelectBook($bookId)
     {
-        if ($this->selectAllCheckbox) {
-            $this->selectedBooks = Book::pluck('id')->toArray();
-            $this->showDeleteSelected = true;
+        if (in_array($bookId, $this->selectedBooks)) {
+            $key = array_search($bookId, $this->selectedBooks);
+            unset($this->selectedBooks[$key]);
         } else {
-            $this->selectedBooks = [];
-            $this->showDeleteSelected = false;
+            $this->selectedBooks[] = $bookId;
         }
-    }
-
-    public function updatedSelectedBooks()
-    {
-        if ($this->selectedBooks) {
-            $this->showDeleteSelected = true;
-        } else {
-            $this->showDeleteSelected = false;
-        }
+        $this->showDeleteSelected = !empty($this->selectedBooks);
     }
 
     public function setBookModalId($bookId)
@@ -211,6 +218,7 @@ class Index extends Component
             'title-asc' => 'Title A-Z',
             'title-desc' => 'Title Z-A',
         ];
+
         return view('livewire.books.index', compact('books', 'categories','bookshelves', 'optionPages', 'optionSorts'));
     }
 }

@@ -85,9 +85,7 @@
           }
         });
         window.addEventListener('closeModal', () => {
-            $('#deleteModal').modal('hide');
-            $('#addCartModal').modal('hide');
-            $('#deleteSelectedModal').modal('hide');
+            $('div.modal').modal('hide');
         })
 
         $('[data-tooltip="tooltip"]').tooltip();
