@@ -37,22 +37,29 @@
 
     
 
-    .sidebar-sticky {
-      height: calc(100vh - 48px);
-      overflow-x: hidden;
-      overflow-y: auto; 
-      scrollbar-color: rgba(0, 0, 0, 0.3) #e0e0e0; 
-      scrollbar-width: none;
-    }
+  .sidebar-sticky {
+    height: calc(100vh - 48px);
+    overflow-x: hidden;
+    overflow-y: auto; 
+    scrollbar-color: #b8b8b8 #e0e0e0; 
+    scrollbar-width: thin; 
+  }
 
-        /* Custom scrollbar for the sidebar */
-    .sidebar-sticky::-webkit-scrollbar {
-      width: 4px; /* width of the scrollbar */
-    }
+  /* Custom scrollbar for the sidebar */
+  .sidebar-sticky::-webkit-scrollbar {
+    width: 6px; 
+  }
 
-    .sidebar-sticky::-webkit-scrollbar-thumb:hover {
-      background: #555; /* color of the thumb when hovered */
-    }
+  .sidebar-sticky::-webkit-scrollbar-thumb {
+    background: #b8b8b8; 
+    border-radius: 4px; 
+  }
+
+
+  .sidebar-sticky::-webkit-scrollbar-track {
+    background: #f0f0f0; 
+  }
+
 
     .sidebar .nav-link {
       font-weight: 500;
@@ -96,17 +103,20 @@
       color: #979797;
     }
 
+
+
   </style>
 <aside id="sidebarMenu" class="col-md-4 col-6 col-lg-2 sidebar collapse">
+    <div class="nav-header ms-3 mb-4">
+      <a href="/" class="text-decoration-none">
+        <img src="{{ asset('logo-dasbry.png') }}" alt="Company Logo" class="mb-2">
+        <strong class="ms-1" style="font-size: 25px; letter-spacing: 4px">asbry</strong>
+      </a>
+    </div>
     <div class="position-sticky sidebar-sticky">
-      <div class="nav-header ms-3 mb-3">
-        <a href="/" class="text-decoration-none">
-          <img src="{{ asset('logo-dasbry.png') }}" alt="Company Logo" class="mb-2">
-          <strong class="ms-1" style="font-size: 25px; letter-spacing: 4px">asbry</strong>
-        </a>
-      </div>
+      
       <ul class="nav flex-column border-bottom">
-        <x-layout-elements.nav-link :active="request()->routeIs('dashboard')" href="/" icon="speedometer2"> Dashboard </x-layout-elements.nav-link>
+        <x-layout-elements.side-link :active="request()->routeIs('dashboard')" href="/" icon="speedometer2"> Dashboard </x-layout-elements.side-link>
       </ul>
 
       
@@ -115,13 +125,13 @@
         <span>Master Data</span>
       </h6>
       <ul class="nav flex-column border-bottom"> 
-        <x-layout-elements.nav-link :active="request()->routeIs('books*') && !request()->routeIs('bookshelves*')" href="/books" icon="book"> Books </x-layout-elements.nav-link>
-        <x-layout-elements.nav-link :active="request()->routeIs('book-categories*')" href="/book-categories" icon="tags"> Book Categories </x-layout-elements.nav-link>
-        <x-layout-elements.nav-link :active="request()->routeIs('bookshelves*')" href="/bookshelves" icon="bookshelf"> Bookshelves </x-layout-elements.nav-link>
-        <x-layout-elements.nav-link :active="request()->routeIs('members*')" href="/members" icon="person-vcard"> Members </x-layout-elements.nav-link>
-        <x-layout-elements.nav-link :active="request()->routeIs('users*')" href="/users" icon="person"> Users </x-layout-elements.nav-link>
-        <x-layout-elements.nav-link :active="request()->routeIs('employees*')" href="/employees" icon="people"> Employees </x-layout-elements.nav-link>
-        <x-layout-elements.nav-link :active="request()->routeIs('roles*')" href="/roles" icon="person-gear"> Roles </x-layout-elements.nav-link>
+        <x-layout-elements.side-link :active="request()->routeIs('books*') && !request()->routeIs('bookshelves*')" href="/books" icon="book"> Books </x-layout-elements.side-link>
+        <x-layout-elements.side-link :active="request()->routeIs('book-categories*')" href="/book-categories" icon="tags"> Book Categories </x-layout-elements.side-link>
+        <x-layout-elements.side-link :active="request()->routeIs('bookshelves*')" href="/bookshelves" icon="bookshelf"> Bookshelves </x-layout-elements.side-link>
+        <x-layout-elements.side-link :active="request()->routeIs('members*')" href="/members" icon="person-vcard"> Members </x-layout-elements.side-link>
+        <x-layout-elements.side-link :active="request()->routeIs('users*')" href="/users" icon="person"> Users </x-layout-elements.side-link>
+        <x-layout-elements.side-link :active="request()->routeIs('employees*')" href="/employees" icon="people"> Employees </x-layout-elements.side-link>
+        <x-layout-elements.side-link :active="request()->routeIs('roles*')" href="/roles" icon="person-gear"> Roles </x-layout-elements.side-link>
       </ul>
      
 
@@ -129,9 +139,9 @@
         <span>Transaction</span>
       </h6>
       <ul class="nav flex-column mb-2 border-bottom">
-        <x-layout-elements.nav-link :active="request()->routeIs('carts*')" href="/carts" icon="cart"> Carts </x-layout-elements.nav-link>
-        <x-layout-elements.nav-link :active="request()->routeIs('borrow-books*')" href="/borrow-books" icon="journals"> Borrow Books </x-layout-elements.nav-link>
-        <x-layout-elements.nav-link :active="request()->routeIs('fines*')" href="/fines" icon="cash"> Fines </x-layout-elements.nav-link>
+        <x-layout-elements.side-link :active="request()->routeIs('carts*')" href="/carts" icon="cart"> Carts </x-layout-elements.side-link>
+        <x-layout-elements.side-link :active="request()->routeIs('borrow-books*')" href="/borrow-books" icon="journals"> Borrow Books </x-layout-elements.side-link>
+        <x-layout-elements.side-link :active="request()->routeIs('fines*')" href="/fines" icon="cash"> Fines </x-layout-elements.side-link>
       </ul>
 
 
@@ -139,9 +149,9 @@
         <span>Other Option</span>
       </h6>
       <ul class="nav flex-column mb-2">
-        <x-layout-elements.nav-link :active="request()->routeIs('settings*')" href="/settings" icon="gear"> Settings </x-layout-elements.nav-link>
-        <x-layout-elements.nav-link :active="request()->routeIs('notification*')" href="/notification" icon="bell"> Notification </x-layout-elements.nav-link>
-        <x-layout-elements.nav-link :active="request()->routeIs('logout*')" href="/logout" icon="box-arrow-left"> Logout </x-layout-elements.nav-link>
+        <x-layout-elements.side-link :active="request()->routeIs('settings*')" href="/settings" icon="gear"> Settings </x-layout-elements.side-link>
+        <x-layout-elements.side-link :active="request()->routeIs('notification*')" href="/notification" icon="bell"> Notification </x-layout-elements.side-link>
+        <x-layout-elements.side-link :active="request()->routeIs('logout*')" href="/logout" icon="box-arrow-left"> Logout </x-layout-elements.side-link>
       </ul>
     </div>
 </aside>
