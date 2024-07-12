@@ -6,16 +6,25 @@ namespace App\Livewire\Forms\Auth;
 use Livewire\Form;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Rule;
-use Livewire\Attributes\Validate;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
 class ForgotPasswordForm extends Form
 {
-    #[Rule('required|email|max:255|exists:employees,email')]
-    public string $email = '';
+    /**
+     * Email address for password reset.
+     * 
+     * @var string
+     */
+    #[Rule('required|string|email|max:255|exists:employees,email')]
+    public $email = '';
     
-    public function sendResetLink() 
+    /**
+     * Send password reset link to the provided email.
+     * 
+     * @return void
+     */
+    public function sendResetLink(): void
     {
         $this->validate();
         
@@ -33,7 +42,7 @@ class ForgotPasswordForm extends Form
         );
 
         // Send reset link to the user's email
-        $resetLink = url('/reset-password/' . urlencode($this->email)) . '/' . $token  ;
+        $resetLink = url('/reset-password/' . urlencode($this->email)) . '/' . $token;
 
         Mail::send('livewire.auth.emails.reset-password', ['link' => $resetLink], function ($message) {
             $message->to($this->email);
@@ -43,3 +52,4 @@ class ForgotPasswordForm extends Form
         session()->flash('success', 'If the email you entered is registered, you will receive an email with a password reset link.');
     }
 }
+

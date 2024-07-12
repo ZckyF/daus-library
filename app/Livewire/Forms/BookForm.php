@@ -10,27 +10,117 @@ use Livewire\Form;
 
 class BookForm extends Form
 {
-
+    /**
+     * Optional existing book model instance.
+     * 
+     * @var Book|null
+     */
     public ?Book $book;
 
+    /**
+     * ISBN of the book.
+     * 
+     * @var string
+     */
     public $isbn;
+
+    /**
+     * Title of the book.
+     * 
+     * @var string
+     */
     public $title;
+
+    /**
+     * Name of the cover image.
+     * 
+     * @var mixed
+     */
     public $cover_image_name;
+
+    /**
+     * Author of the book.
+     * 
+     * @var string
+     */
     public $author;
+
+    /**
+     * Published year of the book.
+     * 
+     * @var int
+     */
     public $published_year;
+
+    /**
+     * Price per book.
+     * 
+     * @var float
+     */
     public $price_per_book;
+
+    /**
+     * Total quantity of books.
+     * 
+     * @var int
+     */
     public $quantity;
+
+    /**
+     * Current available quantity of books.
+     * 
+     * @var int
+     */
     public $quantity_now;
+
+    /**
+     * Description of the book.
+     * 
+     * @var string
+     */
     public $description;
+
+    /**
+     * Selected categories for the book.
+     * 
+     * @var array
+     */
     public $selectedCategories;
+
+    /**
+     * Selected bookshelves for the book.
+     * 
+     * @var array
+     */
     public $selectedBookshelves;
 
+    /**
+     * Selected image for the cover.
+     * 
+     * @var mixed
+     */
     public $selectedImage;
 
-    public $selectedBookshelvesId;
+    /**
+     * IDs of selected categories.
+     * 
+     * @var array
+     */
     public $selectedCategoriesId;
 
-    public function rules()
+    /**
+     * IDs of selected bookshelves.
+     * 
+     * @var array
+     */
+    public $selectedBookshelvesId;
+
+    /**
+     * Validation rules for book creation/updation.
+     * 
+     * @return array
+     */
+    public function rules(): array
     {
         return [
             'isbn' => 'required|max:13',
@@ -46,8 +136,14 @@ class BookForm extends Form
             'selectedBookshelves' => 'required|string',
         ];
     }
-    
-    public function setBook(Book $book)
+
+    /**
+     * Set the book instance for editing.
+     * 
+     * @param Book $book
+     * @return void
+     */
+    public function setBook(Book $book): void
     {
         $this->book = $book;
 
@@ -61,14 +157,21 @@ class BookForm extends Form
         $this->quantity_now = $book->quantity_now;
         $this->description = $book->description;
 
+    
+        $this->selectedCategoriesId = $book->bookCategories->pluck('id')->toArray();
+        $this->selectedBookshelvesId = $book->bookshelves->pluck('id')->toArray();
     }
 
-    public function store()
+    /**
+     * Store a new book record.
+     * 
+     * @return void
+     */
+    public function store(): void
     {
-        
         $rules = $this->rules();
         $rules['isbn'] .= '|unique:books,isbn';
-        $rules['cover_image_name'] .= '|image|mimes:jpeg,png,jpg,gif';
+        $rules['cover_image_name'] .= '|image|mimes:jpeg,png,jpg,gif|max:2048';
         
         $validatedData = $this->validate($rules);
 
@@ -79,25 +182,26 @@ class BookForm extends Form
             'cover_image_name' => $fileName,
             'user_id' => Auth::user()->id,
         ]));
- 
-        $book->bookCategories()->sync($this->selectedCategoriesId);
-        $book->bookshelves()->sync($this->selectedBookshelvesId);
 
-        
+        $this->syncCategoriesAndBookshelves($book);
+
         $this->reset();
 
-        
         session()->flash('success', 'Book successfully created.');
     }
 
-
-    public function update()
+    /**
+     * Update an existing book record.
+     * 
+     * @return void
+     */
+    public function update(): void
     {
-        
         $book = $this->book;
 
         $rules = $this->rules();
         $rules['isbn'] .= '|'.Rule::unique('books', 'isbn')->ignore($book);
+        
         if ($this->cover_image_name !== $book->cover_image_name) {
             $rules['cover_image_name'] .= '|image|mimes:jpeg,png,jpg,gif|max:2048';
 
@@ -106,7 +210,6 @@ class BookForm extends Form
         } else {
             $fileName = $book->cover_image_name;
         }
-
 
         $validatedData = $this->validate($rules);
 
@@ -122,34 +225,35 @@ class BookForm extends Form
         session()->flash('success', 'Book successfully updated.');
     }
 
-    protected function syncCategoriesAndBookshelves(Book $book)
+    /**
+     * Sync selected categories and bookshelves for the book.
+     * 
+     * @param Book $book
+     * @return void
+     */
+    protected function syncCategoriesAndBookshelves(Book $book): void
     {
-        // Get the IDs of existing soft deleted categories and bookshelves
+        
         $existingCategoryIds = $book->bookCategories()->wherePivot('deleted_at', '!=', null)->pluck('book_category_id')->toArray();
         $existingBookshelfIds = $book->bookshelves()->wherePivot('deleted_at', '!=', null)->pluck('bookshelf_id')->toArray();
     
-        // Combine selected categories with existing soft deleted categories
+        
         $categoryIdsToSync = array_unique(array_merge($this->selectedCategoriesId, $existingCategoryIds));
         $bookshelfIdsToSync = array_unique(array_merge($this->selectedBookshelvesId, $existingBookshelfIds));
     
-        // Update the pivot table for categories
+        
         foreach ($categoryIdsToSync as $categoryId) {
             $book->bookCategories()->updateExistingPivot($categoryId, ['deleted_at' => null]);
         }
     
-        // Update the pivot table for bookshelves
+        
         foreach ($bookshelfIdsToSync as $bookshelfId) {
             $book->bookshelves()->updateExistingPivot($bookshelfId, ['deleted_at' => null]);
         }
     
-        // Sync the selected categories and bookshelves
+        
         $book->bookCategories()->sync($this->selectedCategoriesId);
         $book->bookshelves()->sync($this->selectedBookshelvesId);
     }
-    
-
-
-    
-
-    
 }
+

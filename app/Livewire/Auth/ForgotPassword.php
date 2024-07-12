@@ -11,14 +11,29 @@ use Livewire\Attributes\Title;
 #[Title('Forgot Password')]
 class ForgotPassword extends Component
 {
+    /**
+     * Form instance for handling forgot password functionality.
+     * 
+     * @var ForgotPasswordForm
+     */
     public ForgotPasswordForm $form;
 
-    public function forgotPassword() 
+    /**
+     * Send reset password link.
+     * 
+     * @return void
+     */
+    public function forgotPassword(): void
     {
         $this->form->sendResetLink();    
     }
 
-    public function render()
+    /**
+     * Render the component view for forgot password.
+     * 
+     * @return \Illuminate\View\View
+     */
+    public function render(): \Illuminate\View\View
     {
         return view('livewire.auth.forgot-password');
     }

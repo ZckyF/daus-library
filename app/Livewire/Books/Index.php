@@ -102,7 +102,7 @@ class Index extends Component
      * @var int
      */
     #[Rule('required|integer|min:1|max:3')]
-    public int $quantity = 1;
+    public $quantity = 1;
     
     
      /**

@@ -10,11 +10,33 @@ use Livewire\Form;
 
 class BookCategoryForm extends Form
 {
+    /**
+     * Optional existing book category model instance.
+     * 
+     * @var BookCategory|null
+     */
     public ?BookCategory $bookCategory;
+
+    /**
+     * Name of the book category.
+     * 
+     * @var string
+     */
     public $category_name;
+
+    /**
+     * Description of the book category.
+     * 
+     * @var string
+     */
     public $description;
 
-    public function rules()
+    /**
+     * Validation rules for book category creation/updation.
+     * 
+     * @return array
+     */
+    public function rules(): array
     {
         return [
             'category_name' => 'required|string|max:255',
@@ -22,40 +44,57 @@ class BookCategoryForm extends Form
         ];
     }
 
-    public function setBookCategory(BookCategory $bookCategory)
+    /**
+     * Set the book category instance for editing.
+     * 
+     * @param BookCategory $bookCategory
+     * @return void
+     */
+    public function setBookCategory(BookCategory $bookCategory): void
     {
         $this->bookCategory = $bookCategory;
         $this->category_name = $bookCategory->category_name;
         $this->description = $bookCategory->description;
     }
     
-    public function store()
+    /**
+     * Store a new book category record.
+     * 
+     * @return void
+     */
+    public function store(): void
     {
         $rules = $this->rules();
         $rules['category_name'] .= '|unique:book_categories,category_name';
 
-       BookCategory::create(array_merge($this->validate($rules), [
-           'user_id' => Auth::user()->id
-       ]));
+        BookCategory::create(array_merge($this->validate($rules), [
+            'user_id' => Auth::user()->id
+        ]));
 
-      $this->reset();
+        $this->reset();
 
-       session()->flash('success', 'Book Category created successfully');
+        session()->flash('success', 'Book Category created successfully');
     }
 
-    public function update()
+    /**
+     * Update an existing book category record.
+     * 
+     * @return void
+     */
+    public function update(): void
     {
         $bookCategory = $this->bookCategory;
 
         $rules = $this->rules();
         $rules['category_name'] .= '|'.Rule::unique('book_categories', 'category_name')->ignore($bookCategory);
 
-
         $bookCategory->update(array_merge($this->validate($rules),[
             'user_id' => Auth::user()->id
         ]));
-       $this->reset();
+
+        $this->reset();
 
         session()->flash('success', 'Book Category successfully updated.');
     }
 }
+

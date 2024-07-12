@@ -11,15 +11,31 @@ use Livewire\Component;
 #[Layout('layouts.auth')]
 class Login extends Component
 {
+    /**
+     * Form instance for handling login functionality.
+     * 
+     * @var LoginForm
+     */
     public LoginForm $form;
-    
-    public function login() 
+
+    /**
+     * Process user login.
+     * 
+     * @return void
+     */
+    public function login(): void
     {
         $this->form->store();
     }
 
-    public function render()
+    /**
+     * Render the component view for login.
+     * 
+     * @return \Illuminate\View\View
+     */
+    public function render(): \Illuminate\View\View
     {
         return view('livewire.auth.login');
     }
 }
+
