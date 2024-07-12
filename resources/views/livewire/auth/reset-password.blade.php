@@ -19,7 +19,7 @@
                 @enderror
             </div>
             <div class="form-group mb-3">
-                <label for="passwordConfrim" class="form-label">Password Confirmation</label>
+                <label for="passwordConfirm" class="form-label">Password Confirmation</label>
                 <input type="password" wire:model="form.password_confirmation" class="form-control @error('form.password_confirmation') is-invalid @enderror" id="passwordConfirm" placeholder="Enter your password Confirm">
                 @error('form.password_confirmation')
                 <div id="password" class="invalid-feedback">

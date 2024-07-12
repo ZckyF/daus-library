@@ -14,24 +14,103 @@ use Livewire\WithPagination;
 class Index extends Component
 {
     use WithPagination;
-    public $search = '';
-    public $searchCategory = '';
-    public $searchBookshelves = '';
-    public $categoryId;
-    public $bookshelfId;
-    public $sortBy = 'newest';
-    public $perPage = 12;
-    public $bookId;
-    public $showDeleteSelected = false;
-    public $selectedBooks = [];
 
-    public $bookModalId;
+    /**
+     * The search term input for books.
+     * 
+     * @var string
+     */
+    public string $search = '';
+
+    /**
+     * The search term input for book categories.
+     * 
+     * @var string
+     */
+    public string $searchBookCategory = '';
+
+    /**
+     * The search term input for bookshelves.
+     * 
+     * @var string
+     */
+    public string $searchBookshelves = '';
+
+    /**
+     * The category ID for filtering books.
+     * 
+     * @var int|null
+     */
+    public ?int $bookCategoryId = null;
+
+    /**
+     * The bookshelf ID for filtering books.
+     * 
+     * @var int|null
+     */
+    public ?int $bookshelfId = null;
+
+    /**
+     * The sorting criteria for the books display.
+     * Default is 'newest'.
+     * 
+     * @var string
+     */
+    public string $sortBy = 'newest';
+
+    /**
+     * The number of items per page to display.
+     * Default is 12.
+     * 
+     * @var int
+     */
+    public int $perPage = 12;
+
+    /**
+     * The ID of the book.
+     * 
+     * @var int
+     */
+    public int $bookId;
+
+    /**
+     * Flag to show delete selected books option.
+     * Default is false.
+     * 
+     * @var bool
+     */
+    public bool $showDeleteSelected = false;
+
+    /**
+     * Array of selected books.
+     * 
+     * @var array
+     */
+    public array $selectedBooks = [];
+
+    /**
+     * The ID of the book for the modal.
+     * 
+     * @var int
+     */
+    public int $bookModalId;
+
+    /**
+     * The quantity of the book selected to add to the cart.
+     * Must be an integer between 1 and 3.
+     * 
+     * @var int
+     */
     #[Rule('required|integer|min:1|max:3')]
-    public $quantity = 1;
+    public int $quantity = 1;
     
     
-
-    public function fetchBooks()
+     /**
+     * Fetches books based on search criteria and filters.
+     *
+     * @return \Illuminate\Pagination\LengthAwarePaginator; 
+     */
+    public function fetchBooks(): \Illuminate\Pagination\LengthAwarePaginator
     {
         
         $query = Book::query();
@@ -43,17 +122,20 @@ class Index extends Component
             });
         }
 
-        if ($this->categoryId) {
+        if ($this->bookCategoryId) {
             $query->whereHas('bookCategories', function ($q) {
-                $q->where('book_category_id', $this->categoryId);
+                $q->where('book_category_id', $this->bookCategoryId)
+                  ->whereNull('book_category_pivot.deleted_at');
             });
         }
-
+        
         if ($this->bookshelfId) {
             $query->whereHas('bookshelves', function ($q) {
-                $q->where('bookshelf_id', $this->bookshelfId);
+                $q->where('bookshelf_id', $this->bookshelfId)
+                  ->whereNull('bookshelf_pivot.deleted_at');
             });
         }
+        
 
         if ($this->sortBy == 'title-asc') {
             $query->orderBy('title', 'asc');
@@ -64,24 +146,33 @@ class Index extends Component
         } elseif ($this->sortBy == 'oldest') {
             $query->orderBy('created_at', 'asc');
         }
-
         return $query->paginate($this->perPage);
+        
     }
 
-    public function fetchBookCategories()
+    /**
+     * Fetches book categories based on search criteria.
+     * 
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function fetchBookCategories(): \Illuminate\Database\Eloquent\Collection
     {
         $query = BookCategory::query();
 
-        if ($this->searchCategory) {
+        if ($this->searchBookCategory) {
             $query->where(function ($query) {
-                $query->where('category_name', 'like', '%' . $this->searchCategory . '%');
+                $query->where('category_name', 'like', '%' . $this->searchBookCategory . '%');
             });
         }
-
         return $query->get();
     }
 
-    public function fetchBookshelves()
+    /**
+     * Fetches bookshelves based on search criteria.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function fetchBookshelves(): \Illuminate\Database\Eloquent\Collection
     {
         $query = Bookshelf::query();
         if($this->searchBookshelves){
@@ -92,47 +183,98 @@ class Index extends Component
             
         
     }
-
-    public function updatedSearch() 
+    /**
+     * Resets the page when the search term is updated.
+     * 
+     * @return void
+     */
+    public function updatedSearch(): void 
     {
         $this->resetPage();
     }
-    public function updatedSearchCategory() 
+    /**
+     * Updates the page when the book category is updated.
+     * 
+     * @return void
+     */
+    public function updatedSearchBookCategory(): void
     {
         $this->resetPage();
     }
-    public function updatedSearchBookshelves() 
+    /**
+     * Updates the page when the bookshelves is updated.
+     * 
+     * @return void
+     */
+    public function updatedSearchBookshelves(): void
     {
         $this->resetPage();
     }
-    public function updatedCategory() 
+    /**
+     * Updates the page when the category is updated.
+     * 
+     * @return void
+     */
+    public function updatedCategory(): void 
     {
         $this->resetPage();
     }
-    public function updatedSortBy() 
+    /**
+     * Updates the page when the sort by is updated.
+     * 
+     * @return void
+     */
+    public function updatedSortBy(): void 
     {
         $this->resetPage();
     }
-
-    public function updatedPerPage() 
+    /**
+     * Updates the page when the per page is updated.
+     * 
+     * @return void
+     */
+    public function updatedPerPage(): void 
     {
         $this->resetPage();
     }
-    public function selectCategory($categoryId)
+    /**
+     * Selects the book category to filter books by.
+     * 
+     * @param int $bookCategoryId 
+     * @return void
+     */
+    public function selectBookCategory(int $bookCategoryId): void 
     {
-        $this->categoryId = $categoryId;
+        $this->bookCategoryId = $bookCategoryId;
         $this->resetPage();
     }
-    public function selectBookshelf($bookshelfId)
+    /**
+     * Selects the bookshelf to filter books by.
+     * 
+     * @param int $bookshelfId
+     * @return void
+     */
+    public function selectBookshelf(int $bookshelfId): void 
     {
         $this->bookshelfId = $bookshelfId;
         $this->resetPage();
     }
-    public function setBookId($bookId)
+    /**
+     * Sets the book ID for the modal.
+     * 
+     * @param int $bookId
+     * @return void
+     */
+    public function setBookId(int $bookId): void 
     {
         $this->bookId = $bookId;
     }
-    public function delete()
+    /**
+     * Deletes a book by ID.
+     * 
+     * @return void
+     */
+    public function delete(): void 
     {
        Book::destroy($this->bookId);
        session()->flash('success', 'Book successfully deleted.');
@@ -140,32 +282,46 @@ class Index extends Component
        $this->dispatch('closeModal');
     }
 
-    public function deleteSelected()
+    /**
+     * Deletes selected books.
+     * 
+     * @return void
+     */
+    public function deleteSelected(): void 
     {
         Book::destroy($this->selectedBooks);
         $this->selectedBooks = [];
         session()->flash('success', 'Books successfully deleted.');
         $this->dispatch('closeModal');
     }
-    
-    public function toggleSelectBook($bookId)
+
+    /**
+     * Updates the visibility of the delete selected button based on selected books.
+     * 
+     * @return void
+     * 
+     * */
+    public function updatedSelectedBooks(): void 
     {
-        if (in_array($bookId, $this->selectedBooks)) {
-            $key = array_search($bookId, $this->selectedBooks);
-            unset($this->selectedBooks[$key]);
-        } else {
-            $this->selectedBooks[] = $bookId;
-        }
         $this->showDeleteSelected = !empty($this->selectedBooks);
     }
-
-    public function setBookModalId($bookId)
+    /**
+     * Sets the book ID for the modal.
+     * 
+     * @param int $bookId
+     * @return void
+     */
+    public function setBookModalId(int $bookId): void 
     {
         $this->bookModalId = $bookId;
         $this->quantity = 1;
     }
-
-    public function addToCart()
+    /**
+     * Adds a book to the cart.
+     * 
+     * @return void
+     */
+    public function addToCart(): void 
     {
         $this->validate();
     
@@ -205,13 +361,17 @@ class Index extends Component
 
     
 
-
-    public function render()
+    /**
+     * Render the livewire component.
+     * 
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function render(): \Illuminate\Contracts\View\View
     {
-        $categories = $this->fetchBookCategories();
+        $bookCategories = $this->fetchBookCategories();
         $bookshelves = $this->fetchBookshelves();
         $books = $this->fetchBooks();
-        $optionPages = ['12','24','48','84','108'];
+        $optionPages = [12,24,48,84,108];
         $optionSorts = [
             'newest' => 'Newest',
             'oldest' => 'Oldest',
@@ -219,6 +379,6 @@ class Index extends Component
             'title-desc' => 'Title Z-A',
         ];
 
-        return view('livewire.books.index', compact('books', 'categories','bookshelves', 'optionPages', 'optionSorts'));
+        return view('livewire.books.index', compact('books', 'bookCategories','bookshelves', 'optionPages', 'optionSorts'));
     }
 }

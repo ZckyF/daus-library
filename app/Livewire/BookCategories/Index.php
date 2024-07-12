@@ -12,74 +12,133 @@ class Index extends Component
 {
     use WithPagination;
 
-    public $search = '';
-    public $sortBy = 'newest';
-    public $perPage = 10;
-    public $bookCategoryId;
-    public $selectedCategories = [];
-    public $showDeleteSelected = false;
-    public $selectAllCheckbox = false;
+    /**
+     * Search term for book categories.
+     * 
+     * @var string
+     */
+    public string $search = '';
 
+    /**
+     * Sorting criteria for book categories.
+     * 
+     * @var string
+     */
+    public string $sortBy = 'newest';
 
-    public function updatedSearch()
+    /**
+     * Number of items per page for pagination.
+     * 
+     * @var int
+     */
+    public int $perPage = 10;
+
+    /**
+     * ID of the book category to be deleted.
+     * 
+     * @var int
+     */
+    public int $bookCategoryId;
+
+    /**
+     * Array of selected book category IDs.
+     * 
+     * @var array
+     */
+    public array $selectedBookCategories = [];
+
+    /**
+     * Flag to show or hide the delete selected button.
+     * 
+     * @var bool
+     */
+    public bool $showDeleteSelected = false;
+
+    /**
+     * Reset pagination when the search term is updated.
+     * 
+     * @return void
+     */
+    public function updatedSearch(): void
     {
         $this->resetPage();
     }
 
-    public function updatedSortBy()
+    /**
+     * Reset pagination when the sorting criteria is updated.
+     * 
+     * @return void
+     */
+    public function updatedSortBy(): void
     {
         $this->resetPage();
     }
 
-    public function updatedPerPage()
+    /**
+     * Reset pagination when the items per page is updated.
+     * 
+     * @return void
+     */
+    public function updatedPerPage(): void
     {
         $this->resetPage();
     }
 
-    public function updatedSelectedCategories()
+    /**
+     * Update the showDeleteSelected flag when selected book categories are updated.
+     * 
+     * @return void
+     */
+    public function updatedSelectedBookCategories(): void
     {
-        
-        if(count($this->selectedCategories) > 0) {
-            $this->showDeleteSelected = true;
-        } else {
-            $this->showDeleteSelected = false;
-        }
-       
+        $this->showDeleteSelected = !empty($this->selectedBookCategories);
     }
-    public function setBookCategoryId($bookCategoryId)
+
+    /**
+     * Set the book category ID to be deleted.
+     * 
+     * @param int $bookCategoryId
+     * @return void
+     */
+    public function setBookCategoryId(int $bookCategoryId): void
     {
         $this->bookCategoryId = $bookCategoryId;
     }
-    public function delete()
+
+    /**
+     * Delete a book category by its ID.
+     * 
+     * @return void
+     */
+    public function delete(): void
     {
        BookCategory::destroy($this->bookCategoryId);
        session()->flash('success', 'Book Category successfully deleted.');
 
        $this->dispatch('closeModal');
     }
-    public function toggleSelectAll()
-    {
-        if ($this->selectAllCheckbox) {
-            $this->selectedCategories = BookCategory::pluck('id')->toArray();
-            $this->showDeleteSelected = true;
-        } else {
-            $this->selectedCategories = [];
-            $this->showDeleteSelected = false;
-        }
-    }
 
-    public function deleteSelected()
+    /**
+     * Delete selected book categories.
+     * 
+     * @return void
+     */
+    public function deleteSelected(): void
     {
-        BookCategory::whereIn('id', $this->selectedCategories)->delete();
+        BookCategory::whereIn('id', $this->selectedBookCategories)->delete();
         session()->flash('success', 'Selected Book Categories successfully deleted.');
-        $this->selectedCategories = [];
+        $this->selectedBookCategories = [];
 
         $this->showDeleteSelected = false;
         $this->dispatch('closeModal');
-        
     }
 
-    public function fetchBookCategories()
+    /**
+     * Fetch book categories based on search, sorting, and pagination criteria.
+     * 
+     * @return \Illuminate\Pagination\LengthAwarePaginator
+     */
+    public function fetchBookCategories(): \Illuminate\Pagination\LengthAwarePaginator
     {
         $query = BookCategory::query();
 
@@ -87,24 +146,34 @@ class Index extends Component
             $query->where('category_name', 'like', '%' . $this->search . '%');
         }
 
-        if ($this->sortBy == 'category-asc') {
-            $query->orderBy('category_name', 'asc');
-        } elseif ($this->sortBy == 'category-desc') {
-            $query->orderBy('category_name', 'desc');
-        } elseif ($this->sortBy == 'newest') {
-            $query->orderBy('created_at', 'desc');
-        } elseif ($this->sortBy == 'oldest') {
-            $query->orderBy('created_at', 'asc');
+        switch ($this->sortBy) {
+            case 'category-asc':
+                $query->orderBy('category_name', 'asc');
+                break;
+            case 'category-desc':
+                $query->orderBy('category_name', 'desc');
+                break;
+            case 'newest':
+                $query->orderBy('created_at', 'desc');
+                break;
+            case 'oldest':
+                $query->orderBy('created_at', 'asc');
+                break;
         }
 
         return $query->paginate($this->perPage);
     }
 
-    public function render()
+    /**
+     * Render the component view.
+     * 
+     * @return \Illuminate\View\View
+     */
+    public function render(): \Illuminate\View\View
     {
         $categories = $this->fetchBookCategories();
-        $optionPages = ['10','20','40','50','100'];
-        $columns = ['#','Category Name','Added or Edited','Actions'];
+        $optionPages = [10, 20, 40, 50, 100];
+        $columns = ['#', 'Category Name', 'Added or Edited', 'Actions'];
         $optionSorts = [
             'newest' => 'Newest',
             'oldest' => 'Oldest',
@@ -112,7 +181,8 @@ class Index extends Component
             'category-desc' => 'Category Z-A'
         ];
         return view('livewire.book-categories.index', 
-            compact('categories','optionPages','columns','optionSorts')
+            compact('categories', 'optionPages', 'columns', 'optionSorts')
         );
     }
 }
+

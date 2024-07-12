@@ -70,20 +70,20 @@
                     </div>
                     
                 </div>
-                <div class="dropdown-categories">
+                <div class="dropdown-book-category">
                     <div class="dropdown">
                         <button class="btn bg-white shadow-sm rounded-4 dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                             Select Category
                         </button>
                         <div class="dropdown-menu p-3" style="max-height: 400px; overflow-y: auto;" wire:ignore.self aria-labelledby="dropdownMenuButton">
-                            <input type="text" class="form-control mb-2" placeholder="Search category..." wire:model.live.debounce.300ms="searchCategory">
-                            @if($categories->count() <= 0)
+                            <input type="text" class="form-control mb-2" placeholder="Search category..." wire:model.live.debounce.300ms="searchBookCategory">
+                            @if($bookCategories->count() <= 0)
                                 <div class="dropdown-item">Not found</div>
                                 
                             @else
-                                <div class="dropdown-item" wire:click="selectCategory(0)">All</div>
-                                @foreach ($categories as $category)
-                                <div class="dropdown-item {{ $categoryId == $category->id ? 'active rounded-1' : '' }} " wire:click="selectCategory('{{ $category->id }}')">{{ Str::limit($category->category_name, 15) }}</div>
+                                <div class="dropdown-item" wire:click="selectBookCategory(0)">All</div>
+                                @foreach ($bookCategories as $category)
+                                <div class="dropdown-item {{ $bookCategoryId == $category->id ? 'active rounded-1' : '' }} " wire:click="selectBookCategory('{{ $category->id }}')">{{ Str::limit($category->category_name, 15) }}</div>
                                 @endforeach
                             @endif
                             
@@ -147,7 +147,7 @@
                 $titleSlug = str_replace(' ', '-', $book->title);
                 $authorSlug = str_replace(' ', '-', $book->author);
             @endphp
-            <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4 g-2 book-card" wire:key="book-{{ $book->id }}">
+            <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4 g-2 book-card">
                 <div class="card shadow-sm rounded-4 text-decoration-none" href="{{ route('books.edit', ['title' => $titleSlug, 'author' => $authorSlug]) }}">
                     <img loading="lazy" src="{{ asset('storage/covers/' . $book->cover_image_name) }}" class="card-img-top rounded-top-4" alt="{{ $book->title }}">
                     <div class="card-body">
@@ -155,7 +155,7 @@
                         <p class="card-text">{{ $book->author }}</p>
                     </div>
                     <div class="card-footer bg-transparent border-0 d-flex justify-content-between align-items-center">
-                        <input type="checkbox" class="form-check-input" wire:click="toggleSelectBook({{ $book->id }})"  @if(in_array($book->id, $selectedBooks)) checked @endif value="{{ $book->id }}">
+                        <input type="checkbox" class="form-check-input" wire:model.live="selectedBooks" wire:key="book-{{ $book->id }}"  @if(in_array($book->id, $selectedBooks)) checked @endif value="{{ $book->id }}">
 
                          
                         <div class="button-group">

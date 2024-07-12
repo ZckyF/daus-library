@@ -30,13 +30,20 @@
   <div class="row mt-5">
     <div class="d-flex justify-content-between align-items-center mb-3">
       <h3>Chart Borrow Book</h3>
-      <select wire:model.live="selectedYear" class="selected-year form-select w-auto border-0 shadow-sm">
+      <select wire:model.change="selectedYear" class="selected-year form-select w-auto border-0 shadow-sm">
           @foreach($years as $year)
               <option class="border-0" value="{{ $year }}">{{ $year }}</option>
           @endforeach
       </select>
     </div>
     <canvas id="borrowBookChart" class="bg-white rounded-3 shadow"></canvas>
+    {{-- <div class="position-relative">
+        <canvas id="borrowBookChart" class="bg-white rounded-3 shadow"></canvas>
+        <div class="position-absolute top-50 start-50 translate-middle" wire:loading wire:target="selectedYear" style="display: none">
+            <div class="spinner-border text-primary" role="status"></div>
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div> --}}
   </div>
   <div class="row mt-5">
     <h3 class="mb-4">Top 10 Tables</h3>

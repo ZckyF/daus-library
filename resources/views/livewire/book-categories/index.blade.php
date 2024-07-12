@@ -21,19 +21,20 @@
                 @if ($showDeleteSelected)
                     <div class="button-delete-selected">
                         <button type="button" class="btn btn-danger fw-bold shadow-sm text-center rounded-4" data-bs-toggle="modal" data-bs-target="#deleteSelectedModal">
-                            <i class="bi bi-trash"></i> Delete Selected
+                            <i class="bi bi-trash"></i> 
+                            Delete Selected | {{ count($selectedBookCategories) }}
                         </button>
                     </div>
                 @endif
                 <div class="dropdown-sort">
-                    <select class="form-control rounded-4 shadow-sm" wire:model.live="sortBy" style="cursor: pointer;">
+                    <select class="form-control rounded-4 shadow-sm" wire:model.change="sortBy" style="cursor: pointer;">
                         @foreach ($optionSorts as $sort => $value)
                             <option value="{{ $sort }}">{{ $value }}</option>
                         @endforeach
                     </select>
                 </div>
                 <div class="dropdown-per-page">
-                    <select class="form-control rounded-4 shadow-sm" wire:model.live="perPage" style="cursor: pointer;">
+                    <select class="form-control rounded-4 shadow-sm" wire:model.change="perPage" style="cursor: pointer;">
                         @foreach ($optionPages as $option)
                             <option value="{{ $option }}">{{ $option }}</option>
                         @endforeach
@@ -63,7 +64,7 @@
                     @endphp
                     <tr>
                         <td>
-                            <input type="checkbox" class="form-check-input" wire:model.live="selectedCategories" value="{{ $category->id }}">
+                            <input type="checkbox" class="form-check-input" wire:model.live="selectedBookCategories" wire:key="book-category-{{ $category->id }}" value="{{ $category->id }}">
                         </td>
                         <td>{{ $categories->firstItem() + $index }}</td>
                         <td>{{ $category->category_name }}</td>
@@ -89,8 +90,12 @@
         </div>
         {{ $categories->links() }}
     </div>
-    <x-notifications.modal title="Delete Confirmation" message="Are you sure you want to delete this category?" buttonText="Yes" action="delete" targetModal="deleteModal" />
-    <x-notifications.modal title="Delete Selected Confirmation" message="Are you sure you want to delete these categories?" buttonText="Yes" action="deleteSelected" targetModal="deleteSelectedModal" />
+    <x-notifications.modal title="Delete Confirmation" action="delete" targetModal="deleteModal"> 
+        Are you sure you want to delete this category?
+    </x-notifications.modal>
+    <x-notifications.modal title="Delete Selected Confirmation" action="deleteSelected" targetModal="deleteSelectedModal"> 
+        Are you sure you want to delete these categories?
+    </x-notifications.modal>
 </div>
 
 

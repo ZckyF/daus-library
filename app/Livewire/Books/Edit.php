@@ -6,32 +6,81 @@ use App\Livewire\Forms\BookForm;
 use App\Models\Book;
 use App\Models\BookCategory;
 use App\Models\Bookshelf;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithFileUploads;
-
 #[Title('Edit Book')]
 class Edit extends Component
 {
-
     use WithFileUploads;
 
-    public $categories;
-    public $bookshelves;
-    public $searchSelectCategories = '';
-    public $searchSelectBookshelves = '';
+    /**
+     * Collection of categories.
+     * 
+     * @var Collection
+     */
+    public Collection $categories;
 
-    public $user;
+    /**
+     * Collection of bookshelves.
+     * 
+     * @var Collection
+     */
+    public Collection $bookshelves;
 
-    public $selectedDropdownCategories = [];
-    public $selectedDropdownBookshelves = [];
+    /**
+     * Search term for selecting categories.
+     * 
+     * @var string
+     */
+    public string $searchSelectCategories = '';
+
+    /**
+     * Search term for selecting bookshelves.
+     * 
+     * @var string
+     */
+    public string $searchSelectBookshelves = '';
+
+    /**
+     * Username of the user who created or edited the book category.
+     * 
+     * @var string
+     */
+    public string $user;
+
+    /**
+     * Array of selected category IDs for modal.
+     * 
+     * @var array
+     */
+    public array $selectedModalCategories = [];
+
+    /**
+     * Array of selected bookshelf IDs for modal.
+     * 
+     * @var array
+     */
+    public array $selectedModalBookshelves = [];
     
+    /**
+     * Form instance for editing book.
+     * 
+     * @var BookForm
+     */
     public BookForm $form;
 
-    public function mount($title, $author)
+    /**
+     * Initialize the component with default values and fetch the book details.
+     * 
+     * @param string $title
+     * @param string $author
+     * @return void
+     */
+    public function mount(string $title, string $author): void
     {
-    
         $title = str_replace('-', ' ', $title);
         $author = str_replace('-', ' ', $author);
 
@@ -40,91 +89,128 @@ class Edit extends Component
         if (!$book) {
             abort(404);
         }
+
         $this->user = $book->user->username;
-        
         $this->form->setBook($book);
 
-        // $this->categories = BookCategory::select('id', 'category_name')->get();
-        // $this->bookshelves = Bookshelf::select('id', 'bookshelf_number')->get();
-        
-        $this->selectedDropdownCategories = $book->bookCategories()->wherePivot('deleted_at', null)->pluck('id')->toArray();
-        $this->selectedDropdownBookshelves = $book->bookshelves()->wherePivot('deleted_at', null)->pluck('id')->toArray();
+        $this->selectedModalCategories = $book->bookCategories()
+            ->wherePivot('deleted_at', null)
+            ->pluck('id')
+            ->toArray();
 
-        
+        $this->selectedModalBookshelves = $book->bookshelves()
+            ->wherePivot('deleted_at', null)
+            ->pluck('id')
+            ->toArray();
+
         $this->selectCategories();
         $this->selectBookshelves();
-
     }
 
-    public function selectCategories()
+    /**
+     * Select and set categories for the book form.
+     * 
+     * @return void
+     */
+    public function selectCategories(): void
     {
         $this->categories = BookCategory::select('id', 'category_name')->get();
- 
-        $selectedCategoryNames = $this->categories->whereIn('id', $this->selectedDropdownCategories)
-                                ->pluck('category_name')
-                                ->toArray();
 
-        $this->form->selectedCategoriesId = $this->selectedDropdownCategories;
+        $selectedCategoryNames = $this->categories->whereIn('id', $this->selectedModalCategories)
+            ->pluck('category_name')
+            ->toArray();
+
+        $this->form->selectedCategoriesId = $this->selectedModalCategories;
         $this->form->selectedCategories = implode(', ', $selectedCategoryNames);
 
         $this->dispatch('closeModal');
     }
 
-    public function selectBookshelves()
+    /**
+     * Select and set bookshelves for the book form.
+     * 
+     * @return void
+     */
+    public function selectBookshelves(): void
     {
         $this->bookshelves = Bookshelf::select('id', 'bookshelf_number')->get();
-        
-        $selectedBookshelvesNumber = $this->bookshelves->whereIn('id', $this->selectedDropdownBookshelves)
-        ->pluck('bookshelf_number')
-        ->toArray();
-        $this->form->selectedBookshelvesId = $this->selectedDropdownBookshelves;
+
+        $selectedBookshelvesNumber = $this->bookshelves->whereIn('id', $this->selectedModalBookshelves)
+            ->pluck('bookshelf_number')
+            ->toArray();
+
+        $this->form->selectedBookshelvesId = $this->selectedModalBookshelves;
         $this->form->selectedBookshelves = implode(', ', $selectedBookshelvesNumber);
 
         $this->dispatch('closeModal');
-
     }
 
-    public function updatedSearchSelectCategories()
+    /**
+     * Update the category list based on the search term.
+     * 
+     * @return void
+     */
+    public function updatedSearchSelectCategories(): void
     {
         $this->categories = BookCategory::where('category_name', 'like', '%' . $this->searchSelectCategories . '%')->get();
     }
-    public function updatedSearchSelectBookshelves()
+
+    /**
+     * Update the bookshelf list based on the search term.
+     * 
+     * @return void
+     */
+    public function updatedSearchSelectBookshelves(): void
     {
         $this->bookshelves = Bookshelf::where('bookshelf_number', 'like', '%' . $this->searchSelectBookshelves . '%')->get();
     }
 
-    public function save()
+    /**
+     * Save the book form data.
+     * 
+     * @return void
+     */
+    public function save(): void
     {
-        
         $this->form->update();
-        return $this->redirectRoute('books');
+        $this->redirectRoute('books');
     }
 
-    public function delete()
+    /**
+     * Delete the book and its cover image if it exists.
+     * 
+     * @return void
+     */
+    public function delete(): void
     {
         $book = $this->form->book;
-    
+
         if ($book) {
             $coverImage = $book->cover_image_name;
-    
+
             $book->delete();
-    
-        
+
             if ($coverImage && $coverImage !== 'default.jpg') {
                 Storage::disk('public')->delete('covers/' . $coverImage);
             }
-    
+
             session()->flash('success', 'Book deleted successfully');
-            
+
             $this->redirectRoute('books');
         } else {
             session()->flash('error', 'Book not found');
         }
     }
-    
-    public function render()
+
+    /**
+     * Render the component view.
+     * 
+     * @return \Illuminate\View\View
+     */
+    public function render(): \Illuminate\View\View
     {
         $isEditPage = true;
-        return view('livewire.books.edit',compact('isEditPage'));
+        return view('livewire.books.edit', compact('isEditPage'));
     }
 }
+

@@ -112,7 +112,7 @@
         <div style="max-height: 400px; overflow-y: auto;">
             @foreach ($categories as $category)
                 <div class="form-check">
-                    <input type="checkbox" class="form-check-input" wire:model="selectedDropdownCategories" value="{{ $category->id }}" id="category-{{ $category->id }}">
+                    <input type="checkbox" class="form-check-input" wire:model="selectedModalCategories" value="{{ $category->id }}" id="category-{{ $category->id }}">
                     <label class="form-check-label" for="category-{{ $category->id }}">{{ $category->category_name }}</label>
                 </div>
             @endforeach
@@ -126,7 +126,7 @@
         <div style="max-height: 400px; overflow-y: auto;">
             @foreach ($bookshelves as $bookshelf)
                 <div class="form-check">
-                    <input type="checkbox" class="form-check-input" wire:model="selectedDropdownBookshelves" value="{{ $bookshelf->id }}" id="bookshelf-{{ $bookshelf->id }}">
+                    <input type="checkbox" class="form-check-input" wire:model="selectedModalBookshelves" value="{{ $bookshelf->id }}" id="bookshelf-{{ $bookshelf->id }}">
                     <label class="form-check-label" for="bookshelf-{{ $bookshelf->id }}">{{ $bookshelf->bookshelf_number }}</label>
                 </div>
             @endforeach

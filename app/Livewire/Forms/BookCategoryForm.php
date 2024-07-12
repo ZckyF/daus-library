@@ -10,7 +10,7 @@ use Livewire\Form;
 
 class BookCategoryForm extends Form
 {
-
+    public ?BookCategory $bookCategory;
     public $category_name;
     public $description;
 
@@ -20,6 +20,13 @@ class BookCategoryForm extends Form
             'category_name' => 'required|string|max:255',
             'description' => 'required|string|max:255',
         ];
+    }
+
+    public function setBookCategory(BookCategory $bookCategory)
+    {
+        $this->bookCategory = $bookCategory;
+        $this->category_name = $bookCategory->category_name;
+        $this->description = $bookCategory->description;
     }
     
     public function store()
@@ -31,29 +38,24 @@ class BookCategoryForm extends Form
            'user_id' => Auth::user()->id
        ]));
 
-       $this->resetForm();
+      $this->reset();
 
        session()->flash('success', 'Book Category created successfully');
     }
 
-    public function update($bookCategoryId)
+    public function update()
     {
-        $category = BookCategory::findOrfail($bookCategoryId);
+        $bookCategory = $this->bookCategory;
 
         $rules = $this->rules();
-        $rules['category_name'] .= '|'.Rule::unique('book_categories', 'category_name')->ignore($category->id);
+        $rules['category_name'] .= '|'.Rule::unique('book_categories', 'category_name')->ignore($bookCategory);
 
 
-        $category->update(array_merge($this->validate($rules),[
+        $bookCategory->update(array_merge($this->validate($rules),[
             'user_id' => Auth::user()->id
         ]));
-        $this->resetForm();
+       $this->reset();
 
         session()->flash('success', 'Book Category successfully updated.');
-    }
-
-    protected function resetForm()
-    {
-        $this->reset(['category_name', 'description']);
     }
 }
