@@ -2,7 +2,7 @@
     <div class="mb-3 col-md-12">
         <label for="image" class="form-label py-5 image-avatar">
 
-            <img id="image-preview" src="{{ $form->image_name ? (is_string($form->image_name) ? Storage::url('members/' . $form->image_name) : $form->image_name->temporaryUrl()) : "" }}" alt="Cover Image" />
+            <img id="image-preview" src="{{ $form->image_name ? (is_string($form->image_name) ? Storage::url('members/' . $form->image_name) : $form->image_name->temporaryUrl()) : "" }}" alt="Image" />
 
             <span class="icon-image">
                 <i class="bi bi-plus add-image-icon"></i>
@@ -33,7 +33,7 @@
     </div>
     <div class="mb-3 {{ isset($isEditPage) && $isEditPage ? 'col-md-6' : 'col-md-4' }}">
         <label for="phone_number" class="form-label">Phone Number</label>
-        <input type="number" class="form-control @error('form.phone_number') is-invalid @enderror" id="phone_number" wire:model="form.phone_number">
+        <input type="string" class="form-control @error('form.phone_number') is-invalid @enderror" id="phone_number" wire:model="form.phone_number">
         @error('form.phone_number') <span class="text-danger">{{ $message }}</span> @enderror
     </div>
     @if(isset($isEditPage) && $isEditPage)

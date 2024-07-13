@@ -14,12 +14,27 @@ class Edit extends Component
 {
     use WithFileUploads;
 
-    public $memberId;
-    public $user;
+    /**
+     * The username of the member.
+     *
+     * @var string
+     */
+    public string $user;
 
+    /**
+     * The form instance for editing the member.
+     *
+     * @var MemberForm
+     */
     public MemberForm $form;
 
-    public function mount($number_card)
+    /**
+     * Mount the component with the given member's number card.
+     *
+     * @param string $number_card
+     * @return void
+     */
+    public function mount(string $number_card): void
     {
         $member = Member::where('number_card', $number_card)->firstOrFail();
 
@@ -27,26 +42,30 @@ class Edit extends Component
             abort(404);
         }
 
-        $this->memberId = $member->id;
         $this->user = $member->user->username;
 
-        $this->form->number_card = $member->number_card;
-        $this->form->full_name = $member->full_name;
-        $this->form->email = $member->email;
-        $this->form->phone_number = $member->phone_number;
-        $this->form->address = $member->address;
-        $this->form->image_name = $member->image_name;
-
+        $this->form->setMember($member);
     }
 
-    public function save()
+    /**
+     * Save the member data.
+     *
+     * @return void
+     */
+    public function save(): void
     {
-        $this->form->update($this->memberId);
+        $this->form->update();
         $this->redirectRoute('members');
     }
-    public function delete()
+
+    /**
+     * Delete the member and its cover image.
+     *
+     * @return void
+     */
+    public function delete(): void
     {
-        $member = Member::find($this->memberId);
+        $member = $this->form->member;
     
         $coverImage = $member->cover_image_name;
     
@@ -59,12 +78,17 @@ class Edit extends Component
         session()->flash('success', 'Member deleted successfully');
             
         $this->redirectRoute('members');
-        
     }
 
-    public function render()
+    /**
+     * Render the edit member view.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function render(): \Illuminate\View\View
     {
         $isEditPage = true;
-        return view('livewire.members.edit',compact('isEditPage'));
+        return view('livewire.members.edit', compact('isEditPage'));
     }
 }
+

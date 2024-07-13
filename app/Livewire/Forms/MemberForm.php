@@ -5,19 +5,65 @@ namespace App\Livewire\Forms;
 use App\Models\Member;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
-use Livewire\Attributes\Validate;
 use Livewire\Form;
 
 class MemberForm extends Form
 {
+    /**
+     * The member instance for this form.
+     *
+     * @var Member|null
+     */
+    public ?Member $member;
+
+    /**
+     * The number card of the member.
+     *
+     * @var string
+     */
     public $number_card;
+
+    /**
+     * The full name of the member.
+     *
+     * @var string
+     */
     public $full_name;
+
+    /**
+     * The email of the member.
+     *
+     * @var string
+     */
     public $email;
+
+    /**
+     * The phone number of the member.
+     *
+     * @var string
+     */
     public $phone_number;
+
+    /**
+     * The address of the member.
+     *
+     * @var string
+     */
     public $address;
+
+    /**
+     * The image name of the member.
+     *
+     * @var \Livewire\Features\SupportFileUploads\TemporaryUploadedFile|string
+     */
     public $image_name;
 
-    public function rules()
+    /**
+     * Get the validation rules for the form.
+     *
+     * @return array
+     */
+    public function rules(): array
     {
         return [
             'full_name' => 'required|string|max:255',
@@ -28,8 +74,30 @@ class MemberForm extends Form
         ];
     }
 
+    /**
+     * Set the member instance and populate form fields.
+     *
+     * @param Member $member
+     * @return void
+     */
+    public function setMember(Member $member): void
+    {
+        $this->member = $member;
 
-    public function store()
+        $this->number_card = $member->number_card;
+        $this->full_name = $member->full_name;
+        $this->email = $member->email;
+        $this->phone_number = $member->phone_number;
+        $this->address = $member->address;
+        $this->image_name = $member->image_name;
+    }
+
+    /**
+     * Store a new member.
+     *
+     * @return void
+     */
+    public function store(): void
     {
         $rules = $this->rules();
         $rules['email'] .= '|unique:members,email';
@@ -48,19 +116,23 @@ class MemberForm extends Form
             'user_id' => Auth::user()->id,
         ]));
 
-        $this->resetForm();
+        $this->reset();
 
         session()->flash('success', 'Member successfully added.');
     }
 
-    public function update($memberId)
+    /**
+     * Update an existing member.
+     *
+     * @return void
+     */
+    public function update(): void
     {
-        $member = Member::findOrFail($memberId);
+        $member = $this->member;
 
         $rules = $this->rules();
         $rules['email'] .= '|'.Rule::unique('members', 'email')->ignore($member->id);
         $rules['phone_number'] .= '|'.Rule::unique('members', 'phone_number')->ignore($member->id);
-
 
         if ($this->image_name !== $member->image_name) {
             $rules['image_name'] .= '|image|mimes:jpeg,png,jpg,gif|max:2048';
@@ -73,19 +145,21 @@ class MemberForm extends Form
 
         $validatedData = $this->validate($rules);
         $member->update(array_merge($validatedData, [
-            'number_card' => $this->number_card,
             'image_name' => $fileName,
             'user_id' => Auth::user()->id,
         ]));
 
-        $this->resetForm();
+        $this->reset();
 
         session()->flash('success', 'Member successfully updated.');
     }
 
-    
-
-    protected function generateUniqueNumberCard()
+    /**
+     * Generate a unique number card for the member.
+     *
+     * @return string
+     */
+    protected function generateUniqueNumberCard(): string
     {
         do {
             $number_card = str_pad(mt_rand(1, 9999999999), 10, '0', STR_PAD_LEFT);
@@ -93,9 +167,5 @@ class MemberForm extends Form
 
         return $number_card;
     }
-
-    protected function resetForm() 
-    {
-         $this->reset('number_card', 'full_name', 'email', 'phone_number', 'address', 'image_name');
-    }
 }
+

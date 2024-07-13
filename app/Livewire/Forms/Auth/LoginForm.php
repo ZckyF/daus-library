@@ -29,20 +29,21 @@ class LoginForm extends Form
     /**
      * Validate user credentials and perform login.
      * 
-     * @return void
+     * @return \Illuminate\Routing\Redirector|null
      */
-    public function store(): void
+    public function store(): \Illuminate\Routing\Redirector|null
     {
         $this->validate();
 
         if (filter_var($this->usernameOrEmail, FILTER_VALIDATE_EMAIL)) {
             $employee = Employee::where('email', $this->usernameOrEmail)->first();
-
+            
             if ($employee) {
                 $user = User::where('employee_id', $employee->id)->first();
+                
             } else {
                 session()->flash('error', 'The provided credentials do not match records.');
-                return;
+                return null;
             }
         } else {
             $user = User::where('username', $this->usernameOrEmail)->first();
@@ -53,6 +54,7 @@ class LoginForm extends Form
             return redirect()->intended();
         } else {
             session()->flash('error', 'The provided credentials do not match records.');
+            return null;
         }
     }
 }

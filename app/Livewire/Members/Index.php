@@ -11,17 +11,56 @@ use Livewire\WithPagination;
 class Index extends Component
 {
     use WithPagination;
-    public $search = '';
-    public $sortBy = 'newest';
-    public $perPage = 12;
-    public $memberId;
-    public $showDeleteSelected = false;
-    public $selectAllCheckbox = false;
-    public $selectedMembers = [];
 
-    public function fetchBooks()
+    /**
+     * The search term for filtering members.
+     *
+     * @var string
+     */
+    public string $search = '';
+
+    /**
+     * The sorting option for listing members.
+     *
+     * @var string
+     */
+    public string $sortBy = 'newest';
+
+    /**
+     * The number of members to display per page.
+     *
+     * @var int
+     */
+    public int $perPage = 12;
+
+    /**
+     * The ID of the member to be deleted.
+     *
+     * @var int
+     */
+    public int $memberId;
+
+    /**
+     * Flag to show delete selected button.
+     *
+     * @var bool
+     */
+    public bool $showDeleteSelected = false;
+
+    /**
+     * Array of selected member IDs.
+     *
+     * @var array
+     */
+    public array $selectedMembers = [];
+
+    /**
+     * Fetch the list of members based on search and sorting options.
+     *
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
+    public function fetchMembers(): \Illuminate\Contracts\Pagination\LengthAwarePaginator
     {
-        
         $query = Member::query();
 
         if ($this->search) {
@@ -31,43 +70,83 @@ class Index extends Component
             });
         }
 
-        if ($this->sortBy == 'fullname-asc') {
-            $query->orderBy('full_name', 'asc');
-        } elseif ($this->sortBy == 'fullname-desc') {
-            $query->orderBy('full_name', 'desc');
-        } elseif ($this->sortBy == 'newest') {
-            $query->orderBy('created_at', 'desc');
-        } elseif ($this->sortBy == 'oldest') {
-            $query->orderBy('created_at', 'asc');
+        switch ($this->sortBy) {
+            case 'fullname-asc':
+                $query->orderBy('full_name', 'asc');
+                break;
+            case 'fullname-desc':
+                $query->orderBy('full_name', 'desc');
+                break;
+            case 'newest':
+                $query->orderBy('created_at', 'desc');
+                break;
+            case 'oldest':
+                $query->orderBy('created_at', 'asc');
+                break;
         }
 
         return $query->paginate($this->perPage);
     }
-    public function updatedSearch() 
-    {
-        $this->resetPage();
-    }
-    public function updatedSortBy() 
+
+    /**
+     * Reset the page number when the search term is updated.
+     *
+     * @return void
+     */
+    public function updatedSearch(): void 
     {
         $this->resetPage();
     }
 
-    public function updatedPerPage() 
+    /**
+     * Reset the page number when the sorting option is updated.
+     *
+     * @return void
+     */
+    public function updatedSortBy(): void 
     {
         $this->resetPage();
     }
-    public function setMemberId($memberId)
+
+    /**
+     * Reset the page number when the per-page option is updated.
+     *
+     * @return void
+     */
+    public function updatedPerPage(): void 
+    {
+        $this->resetPage();
+    }
+
+    /**
+     * Set the member ID for deletion.
+     *
+     * @param int $memberId
+     * @return void
+     */
+    public function setMemberId(int $memberId): void
     {
         $this->memberId = $memberId;
     }
-    public function delete()
-    {
-       Member::destroy($this->memberId);
-       session()->flash('success', 'Member successfully deleted.');
 
-       $this->dispatch('closeModal');
+    /**
+     * Delete the specified member.
+     *
+     * @return void
+     */
+    public function delete(): void
+    {
+        Member::destroy($this->memberId);
+        session()->flash('success', 'Member successfully deleted.');
+        $this->dispatch('closeModal');
     }
-    public function deleteSelected()
+
+    /**
+     * Delete the selected members.
+     *
+     * @return void
+     */
+    public function deleteSelected(): void
     {
         Member::destroy($this->selectedMembers);
         $this->selectedMembers = [];
@@ -75,36 +154,32 @@ class Index extends Component
         $this->dispatch('closeModal');
     }
 
-    public function toggleSelectAll()
+    /**
+     * Update the delete selected button visibility based on selection.
+     *
+     * @return void
+     */
+    public function updatedSelectedMembers(): void
     {
-        if ($this->selectAllCheckbox) {
-            $this->selectedMembers = Member::pluck('id')->toArray();
-            $this->showDeleteSelected = true;
-        } else {
-            $this->selectedMembers = [];
-            $this->showDeleteSelected = false;
-        }
+        $this->showDeleteSelected = !empty($this->selectedMembers);
     }
 
-    public function updatedSelectedMembers()
+    /**
+     * Render the component view.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function render(): \Illuminate\View\View
     {
-        if ($this->selectedMembers) {
-            $this->showDeleteSelected = true;
-        } else {
-            $this->showDeleteSelected = false;
-        }
-    }
-    
-    public function render()
-    {
-        $members = $this->fetchBooks();
-        $optionPages = ['12','24','48','84','108'];
+        $members = $this->fetchMembers();
+        $optionPages = [12, 24, 48, 84, 108];
         $optionSorts = [
             'newest' => 'Newest',
             'oldest' => 'Oldest',
             'fullname-asc' => 'Name A-Z',
             'fullname-desc' => 'Name Z-A'
         ];
-        return view('livewire.members.index', compact('members', 'optionPages','optionSorts'));
+        return view('livewire.members.index', compact('members', 'optionPages', 'optionSorts'));
     }
 }
+

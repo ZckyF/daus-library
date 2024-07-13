@@ -49,14 +49,14 @@
                 @endif
                 
                 <div class="dropdown-sort">
-                    <select class="form-control rounded-4 shadow-sm" wire:model.live="sortBy" style="cursor: pointer;">
+                    <select class="form-control rounded-4 shadow-sm" wire:model.change="sortBy" style="cursor: pointer;">
                         @foreach ($optionSorts as $sort => $value)
                             <option value="{{ $sort }}">{{ $value }}</option>
                         @endforeach
                     </select>
                 </div>
                 <div class="dropdown-per-page">
-                    <select class="form-control rounded-4 shadow-sm" wire:model.live="perPage" style="cursor: pointer;">
+                    <select class="form-control rounded-4 shadow-sm" wire:model.change="perPage" style="cursor: pointer;">
                         @foreach ($optionPages as $option)
                             <option value="{{ $option }}">{{ $option }}</option>
                         @endforeach
@@ -81,13 +81,6 @@
             <x-notifications.alert class="alert-danger" :message="session('error')" />
         @endif
         
-        <div class="selected-all">
-            <span class="spinner-border text-primary spinner-border-sm " wire:loading wire:target="toggleSelectAll"></span>
-            <input id="select-all" type="checkbox" class="form-check-input" wire:loading.remove wire:target="toggleSelectAll" wire:model="selectAllCheckbox" wire:click="toggleSelectAll" />
-            
-            <label for="select-all" class="ms-1">Select All</label>
-            
-        </div>
         
         
         @if($members->isEmpty())
@@ -137,9 +130,13 @@
             </div>
         </div>
     </div>
-    <x-notifications.modal title="Delete Confirmation" message="Are you sure you want to delete this book?" buttonText="Yes" action="delete" targetModal="deleteModal" />
-    <x-notifications.modal title="Delete Selected Confirmation" message="Are you sure you want to delete these books?" buttonText="Yes" action="deleteSelected" targetModal="deleteSelectedModal" />
-    <div class="row"></div>
+    <x-notifications.modal title="Delete Confirmation" buttonText="Yes" action="delete" targetModal="deleteModal"> 
+        Are you sure you want to delete this member?
+    </x-notifications.modal>
+    <x-notifications.modal title="Delete Selected Confirmation" buttonText="Yes" action="deleteSelected" targetModal="deleteSelectedModal">
+        Are you sure you want to delete these members?    
+    </x-notifications.modal>
+
     
 </div>
 
