@@ -10,12 +10,27 @@ use Livewire\Component;
 #[Title('Edit Bookshelf')]
 class Edit extends Component
 {
-    public $bookshelfId;
-    public $user;
+    /**
+     * Username of the user.
+     * 
+     * @var string
+     */
+    public string $user;
 
+    /**
+     * Instance of BookshelfForm.
+     * 
+     * @var BookshelfForm
+     */
     public BookshelfForm $form;
 
-    public function mount($bookshelf_number)
+    /**
+     * Initialize the component with a bookshelf number.
+     * 
+     * @param string $bookshelf_number
+     * @return void
+     */
+    public function mount(string $bookshelf_number): void
     {
         $bookshelf = Bookshelf::where('bookshelf_number', $bookshelf_number)->firstOrFail();
 
@@ -23,30 +38,40 @@ class Edit extends Component
             abort(404);
         }
         
-        $this->bookshelfId = $bookshelf->id;
         $this->user = $bookshelf->user->username;
-
-
-        $this->form->bookshelf_number = $bookshelf->bookshelf_number;
-        $this->form->location = $bookshelf->location;
-
-
+        $this->form->setBookshelf($bookshelf);
     }
 
-    public function save()
+    /**
+     * Save the updated bookshelf.
+     * 
+     * @return void
+     */
+    public function save(): void
     {
-        $this->form->update($this->bookshelfId);
+        $this->form->update();
         $this->redirectRoute('bookshelves');
     }
 
-    public function delete()
+    /**
+     * Delete the current bookshelf.
+     * 
+     * @return void
+     */
+    public function delete(): void
     {
-        $bookshelf = Bookshelf::find($this->bookshelfId);
+        $bookshelf = $this->form->bookshelf;
         $bookshelf->delete();
-        session()->flash('success','Bookshelf deleted successfully');
+        session()->flash('success', 'Bookshelf deleted successfully');
         $this->redirectRoute('bookshelves');
     }
-    public function render()
+
+    /**
+     * Render the component.
+     * 
+     * @return \Illuminate\View\View
+     */
+    public function render(): \Illuminate\View\View
     {
         $isEditPage = true;
         return view('livewire.bookshelves.edit', compact('isEditPage'));

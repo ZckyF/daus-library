@@ -9,16 +9,30 @@ use Livewire\Component;
 #[Title('Create Bookshelf')]
 class Create extends Component
 {
-
+    /**
+     * Instance of BookshelfForm.
+     * 
+     * @var BookshelfForm
+     */
     public BookshelfForm $form;
 
-    public function save()
+    /**
+     * Save the new bookshelf.
+     * 
+     * @return void
+     */
+    public function save(): void
     {
         $this->form->store();
         $this->redirectRoute('bookshelves');
     }
 
-    public function render()
+    /**
+     * Render the component.
+     * 
+     * @return \Illuminate\View\View
+     */
+    public function render(): \Illuminate\View\View
     {
         return view('livewire.bookshelves.create');
     }

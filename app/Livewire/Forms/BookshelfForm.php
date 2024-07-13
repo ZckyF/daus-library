@@ -10,10 +10,32 @@ use Livewire\Form;
 
 class BookshelfForm extends Form
 {
-    public $bookshelf_number;
-    public $location;
+    /**
+     * The current bookshelf for the form.
+     * 
+     * @var Bookshelf|null
+     */
+    public ?Bookshelf $bookshelf;
 
-    public function rules()
+    /**
+     * The bookshelf number for the form.
+     * 
+     * @var string
+     */
+    public $bookshelf_number;
+    /**
+     * The location for the form.
+     * 
+     * @var string
+     */
+    public $location;
+    
+    /**
+     * Validation rules for the form.
+     * 
+     * @return array
+     */
+    public function rules(): array
     {
         return [
             'bookshelf_number' => 'required|string|max:255',
@@ -21,39 +43,55 @@ class BookshelfForm extends Form
         ];
     }
 
-    public function store()
+    /**
+     * Set the current bookshelf for the form.
+     * 
+     * @param Bookshelf $bookshelf
+     * @return void
+     */
+    public function setBookshelf(Bookshelf $bookshelf): void
+    {
+        $this->bookshelf = $bookshelf;
+        $this->bookshelf_number = $bookshelf->bookshelf_number;
+        $this->location = $bookshelf->location;
+    }
+
+    /**
+     * Store a new bookshelf.
+     * 
+     * @return void
+     */
+    public function store(): void
     {
         $rules = $this->rules();
         $rules['bookshelf_number'] .= '|unique:bookshelves,bookshelf_number';
-        
         
         Bookshelf::create(array_merge($this->validate($rules), [
             'user_id' => Auth::user()->id
         ]));
 
-        $this->resetForm();
+        $this->reset();
 
         session()->flash('success', 'Bookshelf created successfully');
     }
 
-    public function update($bookshelfId)
+    /**
+     * Update the current bookshelf.
+     * 
+     * @return void
+     */
+    public function update(): void
     {
-        $bookshelf = Bookshelf::findOrfail($bookshelfId);
+        $bookshelf = $this->bookshelf;
 
         $rules = $this->rules();
         $rules['bookshelf_number'] .= '|'.Rule::unique('bookshelves', 'bookshelf_number')->ignore($bookshelf->id);
 
-
-        $bookshelf->update(array_merge($this->validate($rules),[
+        $bookshelf->update(array_merge($this->validate($rules), [
             'user_id' => Auth::user()->id
         ]));
-        $this->resetForm();
-        
-        session()->flash('success', 'Bookshelf successfully updated.');
-    }
 
-    protected function resetForm()
-    {
-        $this->reset(['bookshelf_number', 'location']);
+        $this->reset();
+        session()->flash('success', 'Bookshelf successfully updated.');
     }
 }
