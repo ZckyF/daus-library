@@ -1,4 +1,4 @@
-@push('styles')
+
 @push('styles')
     <style>
         .card-img-top {
@@ -7,7 +7,7 @@
             object-fit: cover;
             object-position: center;
         }
-        .member-card {
+        .user-card {
             opacity: 0;
             transform: translateY(10px);
             animation: fadeInUp 0.5s forwards;
@@ -28,13 +28,13 @@
 
     </style>
 @endpush
-@endpush
+
 
 <div class="mt-5">
     <div class="row">
         <div class="col-md-4 col-12 mb-3">
             <div class="input-group">
-                <input type="text" class="form-control rounded-4 shadow-sm" placeholder="Search members..." wire:model.live.debounce.300ms="search">
+                <input type="text" class="form-control rounded-4 shadow-sm" placeholder="Search users..." wire:model.live.debounce.300ms="search">
             </div>
              
         </div>
@@ -44,7 +44,7 @@
                     <div class="button-delete-selected">
                         <button type="button" class="btn btn-danger fw-bold shadow-sm text-center rounded-4" data-bs-toggle="modal" data-bs-target="#deleteSelectedModal">
                             <i class="bi bi-trash"></i> 
-                            Delete Selected | {{ count($selectedMembers) }}
+                            Delete Selected | {{ count($selectedUsers) }}
                         </button>
                     </div>
                 @endif
@@ -65,7 +65,7 @@
                 </div>
 
                 <div class="button-add">
-                    <a wire:navigate href="{{ route('members.create') }}"  class="btn btn-outline-primary fw-bold shadow-sm" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Add member" >
+                    <a wire:navigate href="{{ route('users.create') }}"  class="btn btn-outline-primary fw-bold shadow-sm" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Add user" >
                         <i class="bi bi-plus-lg"></i>
                     </a>
                 </div>
@@ -73,7 +73,7 @@
             
         </div> 
     </div>
-    <div class="row mt-5" id="members">
+    <div class="row mt-5" id="users">
         @if (session()->has('success'))
             <x-notifications.alert class="alert-success" :message="session('success')" />
         @endif
@@ -84,43 +84,49 @@
         
         
         
-        @if($members->isEmpty())
+        @if($users->isEmpty())
                 <div class="col-12">
                     <p class="text-center">No data found.</p>
                 </div>
             @else
-            @foreach ($members as $member)
-
-            <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4 g-2 member-card">
+            @foreach ($users as $user)
+            @php
+                $usernameSlug = str_replace(' ', '-', $user->username);
+            @endphp
+            <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4 g-2 user-card">
                 <div class="card shadow-sm rounded-4 text-decoration-none">
-                    <img loading="lazy" src="{{ asset('storage/members/' . $member->image_name) }}" class="card-img-top rounded-top-4" alt="{{ $member->full_name }}">
+                    <img loading="lazy" src="{{ asset('storage/avatars/' . $user->avatar_name) }}" class="card-img-top rounded-top-4" alt="{{ $user->username }}">
                     <div class="card-body">
-                        <h5 class="card-title">{{ Str::limit($member->full_name, 20) }}</h5>
+                        <h5 class="card-title">{{ Str::limit($user->username, 20) }}</h5>
                         <p class="card-text">
-                            {{ $member->number_card }}
+                            {{ $user->employee->email }}
                             <br>
-                            {{ $member->email }}
+                            {{ $user->employee->full_name }}
                         </p>
                       
                     </div>
                     <div class="card-footer bg-transparent border-0 d-flex justify-content-between align-items-center">
-                        <input type="checkbox" class="form-check-input" wire:model.live="selectedMembers" value="{{ $member->id }}">
+                        @if (Auth::user()->id !== $user->id && 
+                        !$user->hasRole('admin') && 
+                        !$user->hasRole('super_admin'))
+                            <input type="checkbox" class="form-check-input" wire:model.live="selectedUsers" value="{{ $user->id }}">
             
-                        <div class="button-group">
-                            <button type="button" class="btn btn-danger btn-sm text-white rounded-3" data-bs-toggle="modal" data-bs-target="#deleteModal" wire:click="setMemberId({{ $member->id }})" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Delete member" >
-                                <i class="bi bi-trash"></i>
-                            </button>
-                           
-                            <a wire:navigate href="{{ route('members.edit', ['number_card' => $member->number_card]) }}" class="btn btn-info btn-sm text-white rounded-3" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Edit member">
-                                <i class="bi bi-info-circle"></i>
-                            </a>
-                        </div>
+                            <div class="button-group">
+                                <button type="button" class="btn btn-danger btn-sm text-white rounded-3" data-bs-toggle="modal" data-bs-target="#deleteModal" wire:click="setUserId({{ $user->id }})" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Delete user">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+            
+                                <a wire:navigate href="{{ route('users.edit', ['username' => $usernameSlug]) }}" class="btn btn-info btn-sm text-white rounded-3" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Edit user">
+                                    <i class="bi bi-info-circle"></i>
+                                </a>
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>
             @endforeach
 
-            {{ $members->links() }}
+            {{ $users->links() }}
             
         @endif
     </div>
@@ -132,10 +138,10 @@
         </div>
     </div>
     <x-notifications.modal title="Delete Confirmation" buttonText="Yes" action="delete" targetModal="deleteModal"> 
-        Are you sure you want to delete this member?
+        Are you sure you want to delete this user?
     </x-notifications.modal>
     <x-notifications.modal title="Delete Selected Confirmation" buttonText="Yes" action="deleteSelected" targetModal="deleteSelectedModal">
-        Are you sure you want to delete these members?    
+        Are you sure you want to delete these users?    
     </x-notifications.modal>
 
     

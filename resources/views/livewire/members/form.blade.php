@@ -66,7 +66,9 @@
         </button>
     </div>
 
-    <x-notifications.modal title="Delete Confirmation" message="Are you sure you want to delete this member ?" buttonText="Yes" action="delete" targetModal="deleteModal" />
+    <x-notifications.modal title="Delete Confirmation" action="delete" targetModal="deleteModal"> 
+        Are you sure you want to delete this member?
+    </x-notifications.modal>
 
     
 </div>

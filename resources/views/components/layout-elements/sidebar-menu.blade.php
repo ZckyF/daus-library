@@ -42,7 +42,8 @@
     overflow-x: hidden;
     overflow-y: auto; 
     scrollbar-color: #b8b8b8 #e0e0e0; 
-    scrollbar-width: thin; 
+    scrollbar-width: thin;
+    padding-bottom: 4rem;
   }
 
   /* Custom scrollbar for the sidebar */

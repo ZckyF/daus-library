@@ -34,5 +34,7 @@
             <span>Save</span>
         </button>
     </div>
-    <x-notifications.modal title="Delete Confirmation" message="Are you sure you want to delete this book bookshelf ?" buttonText="Yes" action="delete" targetModal="deleteModal" />
+    <x-notifications.modal title="Delete Confirmation" action="delete" targetModal="deleteModal">
+        Are you sure you want to delete this book bookshelf ?
+    </x-notifications.modal>
 </div>

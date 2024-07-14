@@ -5,6 +5,7 @@ use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Logout;
 use App\Livewire\Auth\ResetPassword;
 
+use App\Livewire\Dashboard;
 
 use App\Livewire\Books\Index as BookIndex;
 use App\Livewire\Books\Create as BookCreate;
@@ -22,10 +23,12 @@ use App\Livewire\Members\Index as MemberIndex;
 use App\Livewire\Members\Create as MemberCreate;
 use App\Livewire\Members\Edit as MemberEdit;
 
+use App\Livewire\Users\Index as UserIndex;
+use App\Livewire\Users\Create as UserCreate;
+use App\Livewire\Users\Edit as UserEdit;
 
-use App\Livewire\Dashboard;
-use App\Models\Bookshelf;
-use App\Models\Member;
+
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -57,6 +60,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/members', MemberIndex::class)->name('members');
     Route::get('/members/create', MemberCreate::class)->name('members.create');
     Route::get('/members/{number_card}', MemberEdit::class)->name('members.edit');
+    
+    Route::get('/users', UserIndex::class)->name('users');
+    Route::get('/users/create', UserCreate::class)->name('users.create');
+    Route::get('/users/{username}', UserEdit::class)->name('users.edit');
+
     
     Route::post('/logout', [Logout::class,'logout'])->name('logout');
 });
