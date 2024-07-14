@@ -46,8 +46,9 @@
     </div> --}}
   </div>
   <div class="row mt-5">
-    <h3 class="mb-4">Top 10 Tables</h3>
+    
     <div class="col-lg-6">
+        <h3 class="mb-4">Top 10 borrowed the most books</h3>
         <x-tables.table tableClass="table-striped" :columns="['Rank', 'Full Name', 'Borrow Count']"> 
             @foreach($topMembers as $index => $member)
                 <tr>
@@ -58,7 +59,8 @@
             @endforeach
         </x-tables.table>
     </div>
-    <div class="col-lg-6">    
+    <div class="col-lg-6">
+        <h3 class="mb-4">Top 10 most borrowed books</h3>    
         <x-tables.table tableClass="table-striped" :columns="['Rank', 'Title', 'Borrow Count']">
             <tbody>
                 @foreach($topBooks as $index => $book)

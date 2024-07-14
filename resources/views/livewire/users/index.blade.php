@@ -99,9 +99,9 @@
                     <div class="card-body">
                         <h5 class="card-title">{{ Str::limit($user->username, 20) }}</h5>
                         <p class="card-text">
-                            {{ $user->employee->email }}
+                            <span class="{{ $user->isOnline() ? 'text-success' : 'text-danger' }}">{{ $user->isOnline() ? 'Online' : 'Offline' }}</span>
                             <br>
-                            {{ $user->employee->full_name }}
+                             {{ $user->is_actived ? 'Active' : 'Inactive' }}
                         </p>
                       
                     </div>
@@ -112,6 +112,10 @@
                             <input type="checkbox" class="form-check-input" wire:model.live="selectedUsers" value="{{ $user->id }}">
             
                             <div class="button-group">
+                                
+                                <button type="button" class="btn btn-success btn-sm text-white rounded-3" data-bs-toggle="modal" data-bs-target="#isActiveModal" wire:click="setUserId({{ $user->id }})" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="{{ $user->is_actived ? 'Deactivate user' : 'Activate user' }}">
+                                    <i class="bi {{ $user->is_actived ? 'bi-x-circle' : 'bi-check-circle' }}"></i>
+                                </button>
                                 <button type="button" class="btn btn-danger btn-sm text-white rounded-3" data-bs-toggle="modal" data-bs-target="#deleteModal" wire:click="setUserId({{ $user->id }})" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Delete user">
                                     <i class="bi bi-trash"></i>
                                 </button>
@@ -137,11 +141,14 @@
             </div>
         </div>
     </div>
-    <x-notifications.modal title="Delete Confirmation" buttonText="Yes" action="delete" targetModal="deleteModal"> 
+    <x-notifications.modal title="Delete Confirmation" action="delete" targetModal="deleteModal"> 
         Are you sure you want to delete this user?
     </x-notifications.modal>
-    <x-notifications.modal title="Delete Selected Confirmation" buttonText="Yes" action="deleteSelected" targetModal="deleteSelectedModal">
+    <x-notifications.modal title="Delete Selected Confirmation" action="deleteSelected" targetModal="deleteSelectedModal">
         Are you sure you want to delete these users?    
+    </x-notifications.modal>
+    <x-notifications.modal title="{{ $user->is_actived ? 'Deactivate' : 'Activate' }} Confirmation" action="toggleActive" targetModal="isActiveModal">
+        Are you sure you want to {{ $user->is_actived ? 'deactivate' : 'activate' }} this users?
     </x-notifications.modal>
 
     

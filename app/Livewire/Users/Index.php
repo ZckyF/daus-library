@@ -118,6 +118,22 @@ class Index extends Component
     }
 
     /**
+     * Toggle active status of a user by its ID.
+     * 
+     * @return void
+     */
+    public function toggleActive(): void
+    {
+        $user = User::find($this->userId);
+        if ($user) {
+            $user->is_actived = !$user->is_actived;
+            $user->save();
+            session()->flash('success', $user->is_actived ? 'User activated successfully' : 'User deactivated successfully');
+        }
+        $this->dispatch('closeModal');
+    }
+
+    /**
      * Delete selected users.
      * 
      * @return void
