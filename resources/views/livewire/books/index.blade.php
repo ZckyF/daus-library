@@ -106,12 +106,14 @@
                         @endforeach
                     </select>
                 </div>
-
-                <div class="button-add">
-                    <a wire:navigate href="{{ route('books.create') }}" class="btn btn-outline-primary fw-bold shadow-sm" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Add book" >
-                        <i class="bi bi-plus-lg"></i>
-                    </a>
-                </div>
+                @can('create', Auth::user())
+                    <div class="button-add">
+                        <a wire:navigate href="{{ route('books.create') }}" class="btn btn-outline-primary fw-bold shadow-sm" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Add book" >
+                            <i class="bi bi-plus-lg"></i>
+                        </a>
+                    </div>  
+                @endcan
+                
             </div>
             
         </div> 
@@ -155,20 +157,32 @@
                         <p class="card-text">{{ $book->author }}</p>
                     </div>
                     <div class="card-footer bg-transparent border-0 d-flex justify-content-between align-items-center">
-                        <input type="checkbox" class="form-check-input" wire:model.live="selectedBooks" wire:key="book-{{ $book->id }}"  @if(in_array($book->id, $selectedBooks)) checked @endif value="{{ $book->id }}">
+                        @can('delete',$book)
+                            <input type="checkbox" class="form-check-input" wire:model.live="selectedBooks" wire:key="book-{{ $book->id }}"  @if(in_array($book->id, $selectedBooks)) checked @endif value="{{ $book->id }}">  
 
-                         
+                        @else
+                            <span></span>
+                        @endcan
+
+                        
                         <div class="button-group">
-                            <button type="button" class="btn btn-danger btn-sm text-white rounded-3" data-bs-toggle="modal" data-bs-target="#deleteModal" wire:click="setBookId({{ $book->id }})" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Delete book" >
+                            @can('delete',$book)
+                                <button type="button" class="btn btn-danger btn-sm text-white rounded-3" data-bs-toggle="modal" data-bs-target="#deleteModal" wire:click="setBookId({{ $book->id }})" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Delete book" >
                                 <i class="bi bi-trash"></i>
-                            </button>
-                           
-                            <a wire:navigate href="{{ route('books.edit', ['title' => $titleSlug, 'author' => $authorSlug]) }}" class="btn btn-info btn-sm text-white rounded-3" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Edit book">
-                                <i class="bi bi-info-circle"></i>
-                            </a>
-                            <button type="button" class="btn btn-primary btn-sm text-white rounded-3" wire:click="setBookModalId({{ $book->id }})" data-bs-toggle="modal" data-bs-target="#addCartModal" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Add to cart">
-                                <i class="bi bi-cart"></i>
-                            </button>
+                            </button> 
+                            @endcan
+                            @can('view', $book)
+                                <a wire:navigate href="{{ route('books.edit', ['title' => $titleSlug, 'author' => $authorSlug]) }}" class="btn btn-info btn-sm text-white rounded-3" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Edit book">
+                                    <i class="bi bi-info-circle"></i>
+                                </a>   
+                            @endcan
+                            @can('create',\App\Models\BorrowBook::class)
+                                <button type="button" class="btn btn-primary btn-sm text-white rounded-3" wire:click="setBookModalId({{ $book->id }})" data-bs-toggle="modal" data-bs-target="#addCartModal" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Add to cart">
+                                    <i class="bi bi-cart"></i>
+                                </button>  
+                            @endcan
+                            
+                            
                         </div>
                     </div>
                 </div>
@@ -181,7 +195,7 @@
     </div>
     <div class="row">
         <div class="d-flex justify-content-center mt-3">
-            <div wire:loading wire:target="search,category,sortBy" class="spinner-border text-primary" role="status">
+            <div wire:loading wire:target="search,category,sortBy,perPage" class="spinner-border text-primary" role="status">
               <span class="visually-hidden">Loading...</span>
             </div>
         </div>

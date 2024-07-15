@@ -15,7 +15,7 @@ class BookForm extends Form
      * 
      * @var Book|null
      */
-    public ?Book $book;
+    public ?Book $book = null;
 
     /**
      * ISBN of the book.

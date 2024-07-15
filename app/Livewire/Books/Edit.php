@@ -7,6 +7,7 @@ use App\Models\Book;
 use App\Models\BookCategory;
 use App\Models\Bookshelf;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Title;
 use Livewire\Component;
@@ -88,6 +89,9 @@ class Edit extends Component
 
         if (!$book) {
             abort(404);
+        }
+        if (Gate::denies('view', $book)) {
+            abort(403);
         }
 
         $this->user = $book->user->username;
@@ -172,6 +176,9 @@ class Edit extends Component
      */
     public function save(): void
     {
+        if (Gate::denies('create', Book::class)) {
+            abort(403);
+        }
         $this->form->update();
         $this->redirectRoute('books');
     }
@@ -184,7 +191,9 @@ class Edit extends Component
     public function delete(): void
     {
         $book = $this->form->book;
-
+        if (Gate::denies('update', $book)) {
+            abort(403);
+        }
         if ($book) {
             $coverImage = $book->cover_image_name;
 
