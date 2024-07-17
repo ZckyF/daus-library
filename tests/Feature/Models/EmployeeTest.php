@@ -3,6 +3,7 @@ namespace Tests\Feature\Models;
 
 use Tests\TestCase;
 use App\Models\Employee;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Database\QueryException;
 
@@ -108,6 +109,28 @@ class EmployeeTest extends TestCase
         Employee::factory()->create([
             'nik' => '1234567890',
         ]);
+    }
+
+    /**
+     * Test that an employee belongs to a user.
+     *
+     * This test creates an employee using the factory method and a user with the
+     * employee's ID using the factory method. It then asserts that the employee
+     * belongs to the user by checking if the employee's user is an instance of
+     * the User class and if the user's ID matches the employee's user's ID.
+     *
+     * @return void
+     */
+    public function testMemberBelongsToUser() :void
+    {
+        $employee = Employee::factory()->create();
+
+        $user = User::factory()->create([
+            'employee_id' => $employee->id,
+        ]);
+
+        $this->assertInstanceOf(User::class, $employee->user);
+        $this->assertEquals($user->id, $employee->user->id);
     }
 
     /**

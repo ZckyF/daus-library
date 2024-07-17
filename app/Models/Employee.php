@@ -30,9 +30,9 @@ class Employee extends Model
      *
      * @return BelongsTo The associated user.
      */
-    public function users() : BelongsTo 
+    public function user() : BelongsTo 
     {
-        return $this->users(User::class);
+        return $this->user(User::class);
     }
 
     

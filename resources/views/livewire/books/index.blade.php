@@ -106,7 +106,7 @@
                         @endforeach
                     </select>
                 </div>
-                @can('create', Auth::user())
+                @can('create', \App\Models\Book::class)
                     <div class="button-add">
                         <a wire:navigate href="{{ route('books.create') }}" class="btn btn-outline-primary fw-bold shadow-sm" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Add book" >
                             <i class="bi bi-plus-lg"></i>

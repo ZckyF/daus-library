@@ -5,6 +5,8 @@ namespace App\Livewire\Books;
 use App\Models\Book;
 use App\Models\BookCategory;
 use App\Models\Bookshelf;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Livewire\Attributes\Rule;
 use Livewire\Attributes\Title;
 use Livewire\Component;
@@ -277,10 +279,21 @@ class Index extends Component
      */
     public function delete(): void 
     {
-       Book::destroy($this->bookId);
-       session()->flash('success', 'Book successfully deleted.');
-
-       $this->dispatch('closeModal');
+        
+        $book = Book::find($this->bookId);
+        if (Gate::denies('delete', $book)) {
+            abort(403);
+        }
+        if ($book) {
+            $book->delete();
+            $book->update(['user_id' => Auth::user()]);
+            
+            session()->flash('success', 'Book successfully deleted and user_id updated.');
+    
+            $this->dispatch('closeModal');
+        } else {
+            session()->flash('error', 'Book not found.');
+        }
     }
 
     /**
@@ -290,9 +303,17 @@ class Index extends Component
      */
     public function deleteSelected(): void 
     {
-        Book::destroy($this->selectedBooks);
+        $books = Book::find($this->selectedBooks);
+        if (Gate::denies('delete', $books[0])) {
+            abort(403);
+        }
+        foreach ($books as $book) {
+            $book->delete();
+            $book->update(['user_id' => auth()->id()]);
+        }
+
         $this->selectedBooks = [];
-        session()->flash('success', 'Books successfully deleted.');
+        session()->flash('success', 'Books successfully deleted and user_id updated.');
         $this->dispatch('closeModal');
     }
 

@@ -117,7 +117,7 @@
     <div class="position-sticky sidebar-sticky">
       
       <ul class="nav flex-column border-bottom">
-        <x-layout-elements.side-link :active="request()->routeIs('dashboard')" href="/" icon="speedometer2"> Dashboard </x-layout-elements.side-link>
+        <x-layout-elements.side-link model="dashboard" :active="request()->routeIs('dashboard')" href="/" icon="speedometer2"> Dashboard </x-layout-elements.side-link>
       </ul>
 
       
@@ -126,33 +126,32 @@
         <span>Master Data</span>
       </h6>
       <ul class="nav flex-column border-bottom"> 
-        <x-layout-elements.side-link :active="request()->routeIs('books*') && !request()->routeIs('bookshelves*')" href="/books" icon="book"> Books </x-layout-elements.side-link>
-        <x-layout-elements.side-link :active="request()->routeIs('book-categories*')" href="/book-categories" icon="tags"> Book Categories </x-layout-elements.side-link>
-        <x-layout-elements.side-link :active="request()->routeIs('bookshelves*')" href="/bookshelves" icon="bookshelf"> Bookshelves </x-layout-elements.side-link>
-        <x-layout-elements.side-link :active="request()->routeIs('members*')" href="/members" icon="person-vcard"> Members </x-layout-elements.side-link>
-        <x-layout-elements.side-link :active="request()->routeIs('users*')" href="/users" icon="person"> Users </x-layout-elements.side-link>
-        <x-layout-elements.side-link :active="request()->routeIs('employees*')" href="/employees" icon="people"> Employees </x-layout-elements.side-link>
-        <x-layout-elements.side-link :active="request()->routeIs('roles*')" href="/roles" icon="person-gear"> Roles </x-layout-elements.side-link>
+        <x-layout-elements.side-link :model="App\Models\Book::class" :active="request()->routeIs('books*') && !request()->routeIs('bookshelves*')" href="/books" icon="book"> Books </x-layout-elements.side-link>
+        <x-layout-elements.side-link :model="App\Models\BookCategory::class" :active="request()->routeIs('book-categories*')" href="/book-categories" icon="tags"> Book Categories </x-layout-elements.side-link>
+        <x-layout-elements.side-link :model="App\Models\bookshelf::class" :active="request()->routeIs('bookshelves*')" href="/bookshelves" icon="bookshelf"> Bookshelves </x-layout-elements.side-link>
+        <x-layout-elements.side-link :model="App\Models\Member::class" :active="request()->routeIs('members*')" href="/members" icon="person-vcard"> Members </x-layout-elements.side-link>
+        <x-layout-elements.side-link :model="App\Models\User::class" :active="request()->routeIs('users*')" href="/users" icon="person"> Users </x-layout-elements.side-link>
+        <x-layout-elements.side-link :model="App\Models\Employee::class" :active="request()->routeIs('employees*')" href="/employees" icon="people"> Employees </x-layout-elements.side-link>
+        <x-layout-elements.side-link :model="App\Models\Employee::class" :active="request()->routeIs('roles*')" href="/roles" icon="person-gear"> Roles </x-layout-elements.side-link>
       </ul>
      
-
+   
       <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-3 ">
         <span>Transaction</span>
       </h6>
       <ul class="nav flex-column mb-2 border-bottom">
-        <x-layout-elements.side-link :active="request()->routeIs('carts*')" href="/carts" icon="cart"> Carts </x-layout-elements.side-link>
-        <x-layout-elements.side-link :active="request()->routeIs('borrow-books*')" href="/borrow-books" icon="journals"> Borrow Books </x-layout-elements.side-link>
-        <x-layout-elements.side-link :active="request()->routeIs('fines*')" href="/fines" icon="cash"> Fines </x-layout-elements.side-link>
-      </ul>
-
-
+        <x-layout-elements.side-link :model="App\Models\Fine::class" :active="request()->routeIs('carts*')" href="/carts" icon="cart"> Carts </x-layout-elements.side-link>
+        <x-layout-elements.side-link :model="App\Models\BorrowBook::class" :active="request()->routeIs('borrow-books*')" href="/borrow-books" icon="journals"> Borrow Books </x-layout-elements.side-link>
+        <x-layout-elements.side-link :model="App\Models\Fine::class" :active="request()->routeIs('fines*')" href="/fines" icon="cash"> Fines </x-layout-elements.side-link>
+      </ul>  
+     
       <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-3 ">
         <span>Other Option</span>
       </h6>
       <ul class="nav flex-column mb-2">
-        <x-layout-elements.side-link :active="request()->routeIs('settings*')" href="/settings" icon="gear"> Settings </x-layout-elements.side-link>
-        <x-layout-elements.side-link :active="request()->routeIs('notification*')" href="/notification" icon="bell"> Notification </x-layout-elements.side-link>
-        <x-layout-elements.side-link :active="request()->routeIs('logout*')" href="/logout" icon="box-arrow-left"> Logout </x-layout-elements.side-link>
+        <x-layout-elements.side-link :model="App\Models\Book::class" :active="request()->routeIs('settings*')" href="/settings" icon="gear"> Settings </x-layout-elements.side-link>
+        <x-layout-elements.side-link :model="App\Models\Book::class" :active="request()->routeIs('notification*')" href="/notification" icon="bell"> Notification </x-layout-elements.side-link>
+        <x-layout-elements.side-link :model="App\Models\Book::class" :active="request()->routeIs('logout*')" href="/logout" icon="box-arrow-left"> Logout </x-layout-elements.side-link>
       </ul>
     </div>
 </aside>

@@ -64,17 +64,19 @@ class UserSeeder extends Seeder
             'bookshelf.view_any',
             'bookshelf.view',
 
-            'user.view',
-            'user.update',
+            'user.profile',
 
             'member.view_any',
-            'member.view',
+
+            'borrow_book.view_any',
+            'borrow_book.view',
+
+
+            
         ];
         
         $staffServicePermissions = [
-            'borrow_book.view_any',
             'borrow_book.create',
-            'borrow_book.view',
             'borrow_book.update',
             'borrow_book.delete',
 
@@ -105,14 +107,19 @@ class UserSeeder extends Seeder
             'employee.view',
             'employee.update',
             'employee.delete',
-          
+            
+            'member.view',
             'member.create',
             'member.update',
             'member.delete',
 
             'user.view_any',
             'user.create',
+            'user.view',
+            'user.update',
+            'user.is_actived',
             'user.delete',
+            
         ];
 
         // Permession combined
