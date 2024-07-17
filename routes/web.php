@@ -29,6 +29,7 @@ use App\Livewire\Users\Edit as UserEdit;
 
 
 use App\Models\Book;
+use App\Models\BookCategory;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -50,8 +51,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/books/create', BookCreate::class)->can('create', Book::class)->name('books.create');
     Route::get('/books/{title}/{author}', BookEdit::class)->name('books.edit');
 
-    Route::get('/book-categories',BookCategoryIndex::class)->name('book-categories');
-    Route::get('/book-categories/create',BookCategoryCreate::class)->name('book-categories.create');
+    Route::get('/book-categories',BookCategoryIndex::class)->can('viewAny', BookCategory::class)->name('book-categories');
+    Route::get('/book-categories/create',BookCategoryCreate::class)->can('create', BookCategory::class)->name('book-categories.create');
     Route::get('/book-categories/{category_name}',BookCategoryEdit::class)->name('book-categories.edit');
 
     Route::get('/bookshelves', BookshelfIndex::class)->name('bookshelves');

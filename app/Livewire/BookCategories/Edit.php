@@ -4,6 +4,7 @@ namespace App\Livewire\BookCategories;
 
 use App\Livewire\Forms\BookCategoryForm;
 use App\Models\BookCategory;
+use Illuminate\Support\Facades\Gate;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
@@ -39,6 +40,9 @@ class Edit extends Component
         if (!$category) {
             abort(404);
         }
+        if (Gate::denies('view', $category)) {
+            abort(403);
+        }
         
         $this->user = $category->user->username;
 
@@ -52,6 +56,9 @@ class Edit extends Component
      */
     public function save(): void
     {
+        if (Gate::denies('create', BookCategory::class)) {
+            abort(403);
+        }
         $this->form->update();
         session()->flash('success', 'Book Category updated successfully.');
         $this->redirectRoute('book-categories');
@@ -64,6 +71,9 @@ class Edit extends Component
      */
     public function delete(): void
     {
+        if (Gate::denies('update', $this->form->bookCategory)) {
+            abort(403);
+        }
         $bookCategory = $this->form->bookCategory;
         $bookCategory->delete();
         session()->flash('success', 'Book Category deleted successfully.');

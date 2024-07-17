@@ -87,7 +87,9 @@
         window.addEventListener('closeModal', () => {
             $('div.modal').modal('hide');
         })
-
+        window.addEventListener('resetTooltip', () => {
+          $('[data-tooltip="tooltip"]').tooltip();
+        })
         $('[data-tooltip="tooltip"]').tooltip();
 
       });

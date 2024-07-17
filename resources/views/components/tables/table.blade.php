@@ -1,5 +1,3 @@
-
-
 <table class="table {{ $tableClass }}"> 
     
     <thead>

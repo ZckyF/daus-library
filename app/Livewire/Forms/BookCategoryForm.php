@@ -15,7 +15,7 @@ class BookCategoryForm extends Form
      * 
      * @var BookCategory|null
      */
-    public ?BookCategory $bookCategory;
+    public ?BookCategory $bookCategory = null;
 
     /**
      * Name of the book category.

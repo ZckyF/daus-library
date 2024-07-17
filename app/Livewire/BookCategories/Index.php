@@ -3,6 +3,8 @@
 namespace App\Livewire\BookCategories;
 
 use App\Models\BookCategory;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -82,6 +84,8 @@ class Index extends Component
     public function updatedPerPage(): void
     {
         $this->resetPage();
+        $this->dispatch('resetTooltip');
+        
     }
 
     /**
@@ -112,10 +116,17 @@ class Index extends Component
      */
     public function delete(): void
     {
-       BookCategory::destroy($this->bookCategoryId);
-       session()->flash('success', 'Book Category successfully deleted.');
-
-       $this->dispatch('closeModal');
+        $bookCategory = BookCategory::find($this->bookCategoryId);
+        if (Gate::denies('delete', $bookCategory)) {
+            abort(403);
+        }
+        $bookCategory->delete();
+        $bookCategory->update(['user_id' => Auth::user()->id]);
+            
+        session()->flash('success', 'Book successfully deleted');
+    
+        $this->dispatch('closeModal');
+        
     }
 
     /**
@@ -125,11 +136,17 @@ class Index extends Component
      */
     public function deleteSelected(): void
     {
-        BookCategory::whereIn('id', $this->selectedBookCategories)->delete();
-        session()->flash('success', 'Selected Book Categories successfully deleted.');
-        $this->selectedBookCategories = [];
+        $bookCategories = BookCategory::find($this->selectedBookCategories);
+        if (Gate::denies('delete', $bookCategories[0])) {
+            abort(403);
+        }
+        foreach ($bookCategories as $category) {
+            $category->delete();
+            $category->update(['user_id' => Auth::user()->id]);
+        }
 
-        $this->showDeleteSelected = false;
+        $this->selectedBookCategories = [];
+        session()->flash('success', 'Books successfully deleted');
         $this->dispatch('closeModal');
     }
 

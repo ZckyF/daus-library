@@ -25,7 +25,7 @@ class BookCategoryPolicy
      */
     public function view(User $user, BookCategory $bookCategory): bool
     {
-        return $user->can('book_category.any');
+        return $user->can('book_category.view');
     }
 
     /**

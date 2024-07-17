@@ -281,19 +281,15 @@ class Index extends Component
     {
         
         $book = Book::find($this->bookId);
-        if (Gate::denies('delete', $book)) {
+        if (!Gate::denies('delete', $book)) {
             abort(403);
         }
-        if ($book) {
-            $book->delete();
-            $book->update(['user_id' => Auth::user()]);
-            
-            session()->flash('success', 'Book successfully deleted and user_id updated.');
+        $book->delete();
+        $book->update(['user_id' => Auth::user()->id]);  
+        session()->flash('success', 'Book successfully deleted');
     
-            $this->dispatch('closeModal');
-        } else {
-            session()->flash('error', 'Book not found.');
-        }
+        
+        $this->dispatch('closeModal');
     }
 
     /**
@@ -309,11 +305,11 @@ class Index extends Component
         }
         foreach ($books as $book) {
             $book->delete();
-            $book->update(['user_id' => auth()->id()]);
+            $book->update(['user_id' => Auth::user()->id]);
         }
 
         $this->selectedBooks = [];
-        session()->flash('success', 'Books successfully deleted and user_id updated.');
+        session()->flash('success', 'Books successfully deleted');
         $this->dispatch('closeModal');
     }
 

@@ -40,11 +40,13 @@
                         @endforeach
                     </select>
                 </div>
-                <div class="button-add">
-                    <a wire:navigate href="{{ route('book-categories.create') }}" class="btn btn-outline-primary fw-bold shadow-sm text-center" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Add book category">
-                        <i class="bi bi-plus-lg"></i>
-                    </a>
-                </div>
+                @can('create', \App\Models\BookCategory::class)
+                    <div class="button-add">
+                        <a wire:navigate href="{{ route('book-categories.create') }}" class="btn btn-outline-primary fw-bold shadow-sm text-center" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Add book category">
+                            <i class="bi bi-plus-lg"></i>
+                        </a>
+                    </div>
+                @endcan
             </div>
         </div>
     </div>
@@ -52,7 +54,11 @@
         @if (session()->has('success'))
             <x-notifications.alert class="alert-success" :message="session('success')" />
         @endif
-        <x-tables.table tableClass="table-striped shadow-sm" :columns="$columns" :useCheckboxColumn="true">
+        @php
+           $columns = Auth::user()->cannot('delete',$categories[0]) ? Arr::except($columns,0) : $columns;
+        @endphp
+
+        <x-tables.table tableClass="table-striped shadow-sm" :columns="$columns">
             @if($categories->isEmpty())
                 <tr>
                     <td colspan="5" class="text-center">No data found.</td>
@@ -63,9 +69,12 @@
                         $categorySlug = str_replace(' ', '-', $category->category_name);
                     @endphp
                     <tr>
-                        <td>
-                            <input type="checkbox" class="form-check-input" wire:model.live="selectedBookCategories" wire:key="book-category-{{ $category->id }}" value="{{ $category->id }}">
-                        </td>
+                        @can('delete', $category)
+                            <td>
+                                <input type="checkbox" class="form-check-input" wire:model.live="selectedBookCategories" wire:key="book-category-{{ $category->id }}" value="{{ $category->id }}">
+                            </td> 
+                        @endcan
+                        
                         <td>{{ $categories->firstItem() + $index }}</td>
                         <td>{{ $category->category_name }}</td>
                         <td>{{ $category->user->username }}</td>
@@ -73,10 +82,11 @@
                                 <a wire:navigate href="{{ route('book-categories.edit',['category_name' => $categorySlug]) }}" class="btn btn-info btn-sm rounded-3 text-white" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Edit category">
                                     <span><i class="bi bi-info-circle"></i></span>
                                 </a>
-                            <button class="btn btn-danger btn-sm rounded-3" data-bs-toggle="modal" data-bs-target="#deleteModal" wire:click="setBookCategoryId({{ $category->id }})" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Delete category">
-                                    <span><i class="bi bi-trash"></i></span>
-                            </button>
-                            
+                            @can('delete', $category)
+                                <button class="btn btn-danger btn-sm rounded-3" data-bs-toggle="modal" data-bs-target="#deleteModal" wire:click="setBookCategoryId({{ $category->id }})" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Delete category">
+                                        <span><i class="bi bi-trash"></i></span>
+                                </button>
+                            @endcan
                         </td>
                     </tr>
                 @endforeach
