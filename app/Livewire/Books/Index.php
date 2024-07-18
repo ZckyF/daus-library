@@ -281,7 +281,7 @@ class Index extends Component
     {
         
         $book = Book::find($this->bookId);
-        if (!Gate::denies('delete', $book)) {
+        if (Gate::denies('delete', $book)) {
             abort(403);
         }
         $book->delete();

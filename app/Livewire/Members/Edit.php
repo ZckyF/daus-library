@@ -4,6 +4,8 @@ namespace App\Livewire\Members;
 
 use App\Livewire\Forms\MemberForm;
 use App\Models\Member;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Title;
 use Livewire\Component;
@@ -41,6 +43,9 @@ class Edit extends Component
         if (!$member) {
             abort(404);
         }
+        if(Gate::denies('update', $member)) {
+            abort(403);
+        }
 
         $this->user = $member->user->username;
 
@@ -54,6 +59,9 @@ class Edit extends Component
      */
     public function save(): void
     {
+        if(Gate::denies('update', $this->form->member)) {
+            abort(403);
+        }
         $this->form->update();
         $this->redirectRoute('members');
     }
@@ -65,11 +73,15 @@ class Edit extends Component
      */
     public function delete(): void
     {
+        if(Gate::denies('delete', $this->form->member)) {
+            abort(403);
+        }
         $member = $this->form->member;
     
         $coverImage = $member->cover_image_name;
     
         $member->delete();
+        $member->update(['user_id' => Auth::user()->id]);
     
         if ($coverImage && $coverImage !== 'default.jpg') {
             Storage::disk('public')->delete('members/' . $coverImage);

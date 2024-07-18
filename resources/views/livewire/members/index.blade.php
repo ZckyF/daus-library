@@ -63,12 +63,13 @@
                         @endforeach
                     </select>
                 </div>
-
-                <div class="button-add">
-                    <a wire:navigate href="{{ route('members.create') }}"  class="btn btn-outline-primary fw-bold shadow-sm" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Add member" >
-                        <i class="bi bi-plus-lg"></i>
-                    </a>
-                </div>
+                @can('create', \App\Models\Member::class)
+                    <div class="button-add">
+                        <a wire:navigate href="{{ route('members.create') }}"  class="btn btn-outline-primary fw-bold shadow-sm" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Add member" >
+                            <i class="bi bi-plus-lg"></i>
+                        </a>
+                    </div>
+                @endcan
             </div>
             
         </div> 
@@ -104,16 +105,25 @@
                       
                     </div>
                     <div class="card-footer bg-transparent border-0 d-flex justify-content-between align-items-center">
-                        <input type="checkbox" class="form-check-input" wire:model.live="selectedMembers" value="{{ $member->id }}">
+                        @can('delete', $member)
+                            <input type="checkbox" class="form-check-input" wire:model.live="selectedMembers" value="{{ $member->id }}">
+                        @else
+                        <span></span>
+                        @endcan
+                       
             
                         <div class="button-group">
-                            <button type="button" class="btn btn-danger btn-sm text-white rounded-3" data-bs-toggle="modal" data-bs-target="#deleteModal" wire:click="setMemberId({{ $member->id }})" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Delete member" >
+                            @can('delete', $member)
+                                <button type="button" class="btn btn-danger btn-sm text-white rounded-3" data-bs-toggle="modal" data-bs-target="#deleteModal" wire:click="setMemberId({{ $member->id }})" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Delete member" >
                                 <i class="bi bi-trash"></i>
-                            </button>
-                           
+                            </button>  
+                            @endcan
+                            @can('view', $member)
                             <a wire:navigate href="{{ route('members.edit', ['number_card' => $member->number_card]) }}" class="btn btn-info btn-sm text-white rounded-3" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Edit member">
                                 <i class="bi bi-info-circle"></i>
                             </a>
+                            @endcan
+                           
                         </div>
                     </div>
                 </div>
@@ -126,7 +136,7 @@
     </div>
     <div class="row">
         <div class="d-flex justify-content-center mt-3">
-            <div wire:loading wire:target="search,sortBy" class="spinner-border text-primary" role="status">
+            <div wire:loading wire:target="search,sortBy,perPage" class="spinner-border text-primary" role="status">
               <span class="visually-hidden">Loading...</span>
             </div>
         </div>

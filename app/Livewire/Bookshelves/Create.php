@@ -3,6 +3,8 @@
 namespace App\Livewire\Bookshelves;
 
 use App\Livewire\Forms\BookshelfForm;
+use App\Models\Bookshelf;
+use Illuminate\Support\Facades\Gate;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
@@ -23,6 +25,9 @@ class Create extends Component
      */
     public function save(): void
     {
+        if(Gate::denies('create', Bookshelf::class)) {
+            abort(403);
+        }
         $this->form->store();
         $this->redirectRoute('bookshelves');
     }

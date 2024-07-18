@@ -3,9 +3,11 @@
 namespace App\Livewire\Books;
 
 use App\Livewire\Forms\BookForm;
+use App\Models\Book;
 use App\Models\BookCategory;
 use App\Models\Bookshelf;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Gate;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -145,6 +147,9 @@ class Create extends Component
      */
     public function save(): void
     {
+        if(Gate::denies('create', Book::class)) {
+            abort(403);
+        }
         $this->form->store();
         $this->redirectRoute('books'); 
     }

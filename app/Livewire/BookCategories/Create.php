@@ -4,6 +4,8 @@ namespace App\Livewire\BookCategories;
 
 use App\Livewire\Forms\BookCategoryForm;
 use App\Livewire\Forms\BookForm;
+use App\Models\BookCategory;
+use Illuminate\Support\Facades\Gate;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
@@ -24,8 +26,10 @@ class Create extends Component
      */
     public function save(): void
     {
+        if(Gate::denies('create', BookCategory::class)) {
+            abort(403);
+        }
         $this->form->store();
-        session()->flash('success', 'Book Category created successfully.');
         $this->redirectRoute('book-categories');
     }
 

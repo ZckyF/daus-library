@@ -3,6 +3,8 @@
 namespace App\Livewire\Members;
 
 use App\Models\Member;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -136,8 +138,15 @@ class Index extends Component
      */
     public function delete(): void
     {
-        Member::destroy($this->memberId);
-        session()->flash('success', 'Member successfully deleted.');
+        $member = Member::find($this->memberId);
+        if (Gate::denies('delete', $member)) {
+            abort(403);
+        }
+        $member->delete();
+        $member->update(['user_id' => Auth::user()->id]);  
+        session()->flash('success', 'Member successfully deleted');
+    
+        
         $this->dispatch('closeModal');
     }
 
@@ -148,9 +157,18 @@ class Index extends Component
      */
     public function deleteSelected(): void
     {
-        Member::destroy($this->selectedMembers);
+        $members = Member::find($this->selectedMembers);
+        if (Gate::denies('delete', $members[0])) {
+            abort(403);
+        }
+        foreach ($members as $member) {
+            $member->delete();
+            $member->update(['user_id' => Auth::user()->id]);
+        }
+
         $this->selectedMembers = [];
-        session()->flash('success', 'Members successfully deleted.');
+        session()->flash('success', 'Members successfully deleted');
+        
         $this->dispatch('closeModal');
     }
 

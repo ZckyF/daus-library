@@ -3,6 +3,8 @@
 namespace App\Livewire\Members;
 
 use App\Livewire\Forms\MemberForm;
+use App\Models\Member;
+use Illuminate\Support\Facades\Gate;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -26,6 +28,9 @@ class Create extends Component
      */
     public function save(): void
     {
+        if(Gate::denies('create', Member::class)) {
+            abort(403);
+        }
         $this->form->store();
         $this->redirectRoute('members');
     }
