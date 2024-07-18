@@ -171,11 +171,11 @@
                                 <i class="bi bi-trash"></i>
                             </button> 
                             @endcan
-                            @can('view', $book)
-                                <a wire:navigate href="{{ route('books.edit', ['title' => $titleSlug, 'author' => $authorSlug]) }}" class="btn btn-info btn-sm text-white rounded-3" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Edit book">
-                                    <i class="bi bi-info-circle"></i>
-                                </a>   
-                            @endcan
+                          
+                            <a wire:navigate href="{{ route('books.edit', ['title' => $titleSlug, 'author' => $authorSlug]) }}" class="btn btn-info btn-sm text-white rounded-3" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Edit book">
+                                <i class="bi bi-info-circle"></i>
+                            </a>   
+                            
                             @can('create',\App\Models\BorrowBook::class)
                                 <button type="button" class="btn btn-primary btn-sm text-white rounded-3" wire:click="setBookModalId({{ $book->id }})" data-bs-toggle="modal" data-bs-target="#addCartModal" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Add to cart">
                                     <i class="bi bi-cart"></i>

@@ -7,6 +7,7 @@ use App\Models\Book;
 use App\Models\BookCategory;
 use App\Models\Bookshelf;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Title;
@@ -91,7 +92,7 @@ class Edit extends Component
             abort(404);
         }
         if (Gate::denies('view', $book)) {
-            abort(403);
+            abort(403,'This action is unauthorized.');
         }
 
         $this->user = $book->user->username;
@@ -177,7 +178,7 @@ class Edit extends Component
     public function save(): void
     {
         if (Gate::denies('create', Book::class)) {
-            abort(403);
+            abort(403,'This action is unauthorized.');
         }
         $this->form->update();
         $this->redirectRoute('books');
@@ -192,12 +193,13 @@ class Edit extends Component
     {
         $book = $this->form->book;
         if (Gate::denies('update', $book)) {
-            abort(403);
+            abort(403,'This action is unauthorized.');
         }
         if ($book) {
             $coverImage = $book->cover_image_name;
 
             $book->delete();
+            $book->update(['user_id' => Auth::user()->id]);
 
             if ($coverImage && $coverImage !== 'default.jpg') {
                 Storage::disk('public')->delete('covers/' . $coverImage);

@@ -15,7 +15,7 @@ class BookshelfForm extends Form
      * 
      * @var Bookshelf|null
      */
-    public ?Bookshelf $bookshelf;
+    public ?Bookshelf $bookshelf = null;
 
     /**
      * The bookshelf number for the form.

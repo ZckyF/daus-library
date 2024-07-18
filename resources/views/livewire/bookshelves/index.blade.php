@@ -40,11 +40,13 @@
                         @endforeach
                     </select>
                 </div>
-                <div class="button-add">
-                    <a wire:navigate href="{{ route('bookshelves.create') }}" class="btn btn-outline-primary fw-bold shadow-sm text-center" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Add bookshelf">
-                        <i class="bi bi-plus-lg"></i>
-                    </a>
-                </div>
+                @can('create', \App\Models\Bookshelf::class)
+                    <div class="button-add">
+                        <a wire:navigate href="{{ route('bookshelves.create') }}" class="btn btn-outline-primary fw-bold shadow-sm text-center" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Add bookshelf">
+                            <i class="bi bi-plus-lg"></i>
+                        </a>
+                    </div>
+                @endcan
             </div>
         </div>
     </div>
@@ -52,6 +54,9 @@
         @if (session()->has('success'))
             <x-notifications.alert class="alert-success" :message="session('success')" />
         @endif
+        @php
+            $columns = Auth::user()->cannot('delete',$bookshelves[0]) ? Arr::except($columns,0) : $columns;
+        @endphp
         <x-tables.table tableClass="table-striped shadow-sm" :columns="$columns" :useCheckboxColumn="true"> 
             @if($bookshelves->isEmpty())
                 <tr>
@@ -60,9 +65,11 @@
             @else
                 @foreach ($bookshelves as $index => $bookshelf)
                     <tr>
-                        <td>
-                            <input type="checkbox" class="form-check-input" wire:model.live="selectedBookshelves" value="{{ $bookshelf->id }}">
-                        </td>
+                        @can('delete', $bookshelf)
+                            <td>
+                                <input type="checkbox" class="form-check-input" wire:model.live="selectedBookshelves" value="{{ $bookshelf->id }}">
+                            </td>
+                        @endcan
                         <td>{{ $bookshelves->firstItem() + $index }}</td>
                         <td>{{ $bookshelf->bookshelf_number }}</td>
                         <td>{{ $bookshelf->user->username }}</td>
@@ -70,9 +77,12 @@
                             <a wire:navigate href="{{ route('bookshelves.edit', $bookshelf->bookshelf_number) }}" class="btn btn-info btn-sm rounded-3 text-white" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Edit bookshelf">
                                 <span><i class="bi bi-info-circle"></i></span>
                             </a>
-                            <button class="btn btn-danger btn-sm rounded-3" data-bs-toggle="modal" data-bs-target="#deleteModal" wire:click="setBookShelfId({{ $bookshelf->id }})" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Delete bookshelf">
-                                <span><i class="bi bi-trash"></i></span>
-                            </button>
+                            @can('delte', $bookshelf)
+                                <button class="btn btn-danger btn-sm rounded-3" data-bs-toggle="modal" data-bs-target="#deleteModal" wire:click="setBookShelfId({{ $bookshelf->id }})" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Delete bookshelf">
+                                    <span><i class="bi bi-trash"></i></span>
+                                </button> 
+                            @endcan
+                            
                         </td>
                     </tr>
                 @endforeach

@@ -4,6 +4,7 @@ namespace App\Livewire\BookCategories;
 
 use App\Livewire\Forms\BookCategoryForm;
 use App\Models\BookCategory;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Attributes\Title;
 use Livewire\Component;
@@ -41,7 +42,7 @@ class Edit extends Component
             abort(404);
         }
         if (Gate::denies('view', $category)) {
-            abort(403);
+            abort(403,'This action is unauthorized.');
         }
         
         $this->user = $category->user->username;
@@ -57,7 +58,7 @@ class Edit extends Component
     public function save(): void
     {
         if (Gate::denies('create', BookCategory::class)) {
-            abort(403);
+            abort(403,'This action is unauthorized.');
         }
         $this->form->update();
         session()->flash('success', 'Book Category updated successfully.');
@@ -71,13 +72,16 @@ class Edit extends Component
      */
     public function delete(): void
     {
-        if (Gate::denies('update', $this->form->bookCategory)) {
-            abort(403);
+        if(Gate::denies('update', $this->form->bookCategory)) {
+            abort(403,'This action is unauthorized.');
         }
-        $bookCategory = $this->form->bookCategory;
+        $bookCategory = BookCategory::find($this->form->bookCategory->id);
         $bookCategory->delete();
-        session()->flash('success', 'Book Category deleted successfully.');
-        $this->redirectRoute('book-categories');
+        $bookCategory->update(['user_id' => Auth::user()->id]);
+            
+        session()->flash('success', 'Bookshelf successfully deleted');
+    
+        $this->dispatch('closeModal');
     }
 
     /**

@@ -25,7 +25,7 @@ class BookshelfPolicy
      */
     public function view(User $user, Bookshelf $bookshelf): bool
     {
-        return $user->can('bookshelf.any');
+        return $user->can('bookshelf.view');
     }
 
     /**

@@ -3,6 +3,8 @@
 namespace App\Livewire\Bookshelves;
 
 use App\Models\Bookshelf;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -112,8 +114,15 @@ class Index extends Component
      */
     public function delete(): void
     {
-        Bookshelf::destroy($this->bookshelfId);
-        session()->flash('success', 'Bookshelf successfully deleted.');
+        $bookshelf = Bookshelf::find($this->bookshelfId);
+        if (Gate::denies('delete', $bookshelf)) {
+            abort(403);
+        }
+        $bookshelf->delete();
+        $bookshelf->update(['user_id' => Auth::user()->id]);
+            
+        session()->flash('success', 'Bookshelf successfully deleted');
+    
         $this->dispatch('closeModal');
     }
 
@@ -124,10 +133,17 @@ class Index extends Component
      */
     public function deleteSelected(): void
     {
-        Bookshelf::whereIn('id', $this->selectedBookshelves)->delete();
-        session()->flash('success', 'Selected bookshelves successfully deleted.');
+        $bookshelves = Bookshelf::find($this->selectedBookshelves);
+        if (Gate::denies('delete', $bookshelves[0])) {
+            abort(403);
+        }
+        foreach ($bookshelves as $bookshelf) {
+            $bookshelf->delete();
+            $bookshelf->update(['user_id' => Auth::user()->id]);
+        }
+
         $this->selectedBookshelves = [];
-        $this->showDeleteSelected = false;
+        session()->flash('success', 'Bookshelves successfully deleted');
         $this->dispatch('closeModal');
     }
 
