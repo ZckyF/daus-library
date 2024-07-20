@@ -121,7 +121,7 @@ class EmployeeTest extends TestCase
      *
      * @return void
      */
-    public function testMemberBelongsToUser() :void
+    public function testEmployeeHasOneToUser() :void
     {
         $employee = Employee::factory()->create();
 

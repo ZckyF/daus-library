@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Employee extends Model
@@ -28,11 +29,11 @@ class Employee extends Model
     /**
      * Retrieve the associated user for this employee.
      *
-     * @return BelongsTo The associated user.
+     * @return HasOne The associated user.
      */
-    public function user() : BelongsTo 
+    public function user() : HasOne 
     {
-        return $this->user(User::class);
+        return $this->hasOne(User::class);
     }
 
     

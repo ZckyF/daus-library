@@ -29,7 +29,7 @@ class UserPolicy
 
     public function profile(User $user, User $targetUser): bool
     {
-        return $user->id == $targetUser->id && $user->can('user.view');
+        return $user->id == $targetUser->id && $user->can('user.profile');
     }
 
     /**
@@ -53,13 +53,23 @@ class UserPolicy
     }
 
     /**
+     * Determine whether the user can inActive the model.
+     * 
+     * @return bool
+     */
+    public function inActive(User $user, User $targetUser): bool
+    {
+        return $user->id == $targetUser->id && $user->can('user.is_active');
+    }
+
+    /**
      * Determine whether the user can delete the model.
      * 
      * @return bool
      */
     public function delete(User $user, User $targetUser): bool
     {
-        return $user->can('user.delete');
+        return ($user->can('user.delete')) && !$targetUser->hasRole('admin') && !$targetUser->hasRole('super_admin');
     }
 
     /**

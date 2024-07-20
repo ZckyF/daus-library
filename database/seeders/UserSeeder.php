@@ -117,7 +117,7 @@ class UserSeeder extends Seeder
             'user.create',
             'user.view',
             'user.update',
-            'user.is_actived',
+            'user.is_active',
             'user.delete',
             
         ];

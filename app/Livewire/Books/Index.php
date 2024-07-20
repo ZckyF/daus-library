@@ -140,14 +140,19 @@ class Index extends Component
         }
         
 
-        if ($this->sortBy == 'title-asc') {
-            $query->orderBy('title', 'asc');
-        } elseif ($this->sortBy == 'title-desc') {
-            $query->orderBy('title', 'desc');
-        } elseif ($this->sortBy == 'newest') {
-            $query->orderBy('created_at', 'desc');
-        } elseif ($this->sortBy == 'oldest') {
-            $query->orderBy('created_at', 'asc');
+        switch ($this->sortBy) {
+            case 'title-asc':
+                $query->orderBy('title', 'asc');
+                break;
+            case 'title-desc':
+                $query->orderBy('title', 'desc');
+                break;
+            case 'newest':
+                $query->orderBy('created_at', 'desc');
+                break;
+            case 'oldest':
+                $query->orderBy('created_at', 'asc');
+                break;
         }
         return $query->paginate($this->perPage);
         

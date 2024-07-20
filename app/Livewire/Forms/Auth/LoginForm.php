@@ -41,12 +41,21 @@ class LoginForm extends Form
             if ($employee) {
                 $user = User::where('employee_id', $employee->id)->first();
                 
+                if ($user && $user->is_active == false) {
+                    session()->flash('error', 'Your account is inactive. Please contact support.');
+                    return null;
+                }
             } else {
                 session()->flash('error', 'The provided credentials do not match records.');
                 return null;
             }
         } else {
             $user = User::where('username', $this->usernameOrEmail)->first();
+            
+            if ($user && $user->is_active == false) {
+                session()->flash('error', 'Your account is inactive. Please contact support.');
+                return null;
+            }
         }
 
         if ($user && Auth::attempt(['username' => $user->username, 'password' => $this->password])) {

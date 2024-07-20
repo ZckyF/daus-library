@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('username')->unique();
             $table->string('password');
             $table->string('avatar_name')->nullable();
-            $table->boolean('is_actived')->default(1);
+            $table->boolean('is_active')->default(1);
             $table->foreignId('employee_id')->unique()->constrained('employees')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
             $table->softDeletes();

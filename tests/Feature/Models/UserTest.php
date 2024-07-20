@@ -20,7 +20,7 @@ class UserTest extends TestCase
         'username',
         'password',
         'avatar_name',
-        'is_actived',
+        'is_active',
         'employee_id',
         'quantity_now',
     ];
@@ -92,15 +92,15 @@ class UserTest extends TestCase
     }
 
     /**
-     * Test the default value of the is_actived field.
+     * Test the default value of the is_active field.
      *
      * This function creates an employee using the factory method, then creates a user
      * with the specified parameters. It saves the user and retrieves it from the database.
-     * Finally, it asserts that the is_actived field of the user is equal to 1.
+     * Finally, it asserts that the is_active field of the user is equal to 1.
      *
      * @return void
      */
-    public function testIsActivedFieldDefaultIsTrue() :void 
+    public function testIsActiveFieldDefaultIsTrue() :void 
     {
         $employee = Employee::factory()->create();
  
@@ -111,7 +111,7 @@ class UserTest extends TestCase
 
          $userFind = User::find($user->id);
         
-        $this->assertEquals(1,$userFind->is_actived);
+        $this->assertEquals(1,$userFind->is_active);
     }
 
     /**
@@ -192,8 +192,8 @@ class UserTest extends TestCase
     /**
      * Test the activation status of a user.
      *
-     * This function creates a user with the 'is_actived' attribute set to true,
-     * asserts that the user is activated, sets the 'is_actived' attribute to
+     * This function creates a user with the 'is_active' attribute set to true,
+     * asserts that the user is activated, sets the 'is_active' attribute to
      * false, saves the user, and finally asserts that the user is not activated.
      *
      * @return void
@@ -206,11 +206,11 @@ class UserTest extends TestCase
             'employee_id' => $employee->id,
         ]);
 
-        $user->is_actived = false;
+        $user->is_active = false;
 
         $user->save();
 
-        $this->assertFalse($user->is_actived);
+        $this->assertFalse($user->is_active);
     }
 }
 

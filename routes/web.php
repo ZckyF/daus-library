@@ -32,6 +32,7 @@ use App\Models\Book;
 use App\Models\BookCategory;
 use App\Models\Bookshelf;
 use App\Models\Member;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -64,8 +65,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/members/create', MemberCreate::class)->can('create', Member::class)->name('members.create');
     Route::get('/members/{number_card}', MemberEdit::class)->name('members.edit');
     
-    Route::get('/users', UserIndex::class)->name('users');
-    Route::get('/users/create', UserCreate::class)->name('users.create');
+    Route::get('/users', UserIndex::class)->can('viewAny', User::class)->name('users');
+    Route::get('/users/create', UserCreate::class)->can('create', User::class)->name('users.create');
     Route::get('/users/{username}', UserEdit::class)->name('users.edit');
 
     

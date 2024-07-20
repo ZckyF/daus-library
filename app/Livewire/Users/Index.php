@@ -3,6 +3,8 @@
 namespace App\Livewire\Users;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -112,8 +114,15 @@ class Index extends Component
      */
     public function delete(): void
     {
-        // User::destroy($this->userId);
-        session()->flash('success', 'User successfully deleted.');
+        $user = User::find($this->userId);
+        if (Gate::denies('delete', $user)) {
+            abort(403);
+        }
+        $user->delete();
+        $user->update(['user_id' => Auth::user()->id]);  
+        session()->flash('success', 'User successfully deleted');
+    
+        
         $this->dispatch('closeModal');
     }
 
@@ -125,11 +134,10 @@ class Index extends Component
     public function toggleActive(): void
     {
         $user = User::find($this->userId);
-        if ($user) {
-            $user->is_actived = !$user->is_actived;
-            $user->save();
-            session()->flash('success', $user->is_actived ? 'User activated successfully' : 'User deactivated successfully');
-        }
+        $user->is_active = !$user->is_active;
+        $user->save();
+        session()->flash('success', $user->is_active ? 'User activated successfully' : 'User deactivated successfully');
+        
         $this->dispatch('closeModal');
     }
 
@@ -140,10 +148,18 @@ class Index extends Component
      */
     public function deleteSelected(): void
     {
-        // User::whereIn('id', $this->selectedUsers)->delete();
-        session()->flash('success', 'Selected users successfully deleted.');
+        $users = User::find($this->selectedUsers);
+        if (Gate::denies('delete', $users[0])) {
+            abort(403);
+        }
+        foreach ($users as $user) {
+            $user->delete();
+            $user->update(['user_id' => Auth::user()->id]);
+        }
+
         $this->selectedUsers = [];
-        $this->showDeleteSelected = false;
+        session()->flash('success', 'Users successfully deleted');
+        
         $this->dispatch('closeModal');
     }
 
@@ -175,7 +191,9 @@ class Index extends Component
                 break;
         }
 
-        return $query->paginate($this->perPage);
+        return $query->where('id','!=', Auth::user()->id)
+                ->whereDoesntHave('roles',fn($query)=>$query->where('name','super_admin'))
+                ->paginate($this->perPage);
     }
 
     /**
