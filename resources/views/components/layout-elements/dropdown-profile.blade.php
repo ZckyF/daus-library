@@ -1,6 +1,6 @@
 <div class="dropdown dropdown-header">
     <button class=" btn dropdown-toggle d-flex align-items-center" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-      <img src="https://via.placeholder.com/40" alt="Avatar" class="avatar me-2 shadow-sm">
+    <img src="{{ Storage::url('avatars/' . Auth::user()->avatar_name) }}" alt="Avatar" class="avatar me-2 shadow-sm">
       <span class="me-2 fw-medium">{{ Auth::user()->username }}</span>
     
     </button>

@@ -5,7 +5,6 @@
         $readonlyForm = Auth::user()->cannot('create', App\Models\User::class) ? 'readonly' : '';
     }
     $roles = Auth::user()->hasRole('super_admin') ? $roles : $roles->reject(fn($role) => $role->name == 'admin')->values();
-    
 @endphp
 
 <div class="row">
@@ -41,11 +40,12 @@
         <select id="employee_id" class="form-select @error('form.employee_id') is-invalid @enderror" wire:model="form.employee_id">
             <option value="">Select Employee</option>
             @foreach ($employees as $employee)
+            
             <option value="{{ $employee->id }}" 
-                {{ $employee->user ? 'disabled' : '' }}>
+                {{ $employee->user && (isset($isEditPage) || (optional($form->user)->employee && optional($form->user)->employee->id !== $employee->id)) ? 'disabled' : '' }}>
                 {{ $employee->full_name }}
             </option>
-        @endforeach
+            @endforeach
         </select>
         @error('form.employee_id') <span class="text-danger">{{ $message }}</span> @enderror
     </div>
@@ -61,12 +61,6 @@
         </select>
         @error('form.role_id') <span class="text-danger">{{ $message }}</span> @enderror
     </div>
-    @if(isset($isEditPage) && $isEditPage)
-        <div class="mb-3 col-6">
-            <label for="user" class="form-label">Last Added Or Edited By</label>
-            <input type="text" class="form-control" value="{{ $user }}" disabled>
-        </div>
-    @endif
     <div class="d-flex justify-content-end gap-3 px-5">
         <a wire:navigate href="{{ route('users') }}" class="btn btn-outline-secondary shadow-sm">
             <span class="me-1"><i class="bi bi-arrow-left"></i></span>
@@ -88,7 +82,7 @@
     
         
     </div>
-    <x-notifications.modal title="Delete Confirmation" action="delete" targetModal="deleteModal">Are you sure you want to delete this book ? </x-notifications.modal>
+    <x-notifications.modal title="Delete Confirmation" action="delete" targetModal="deleteModal">Are you sure you want to delete this user ? </x-notifications.modal>
 
 
 </div>

@@ -1,5 +1,8 @@
 @php
-    $readonlyForm = Auth::user()->cannot('update', $form->bookCategory) ? 'readonly' : '';
+    if (isset($isEditPage) && $isEditPage)$readonlyForm = Auth::user()->cannot('update', $form->bookCategory) ? 'readonly' : '';
+    
+    else $readonlyForm = Auth::user()->cannot('create', App\Models\BookCategory::class) ? 'readonly' : '';
+
 @endphp
 
 <div class="row mt-3">

@@ -4,6 +4,7 @@ namespace App\Livewire\Forms;
 
 use App\Models\Member;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Livewire\Form;
 
@@ -139,6 +140,10 @@ class MemberForm extends Form
             
             $fileName = $this->image_name->hashName(); 
             $this->image_name->storeAs('members', $fileName, 'public');
+            
+            if ($member->image_name && $member->image_name !== 'default.jpg') {
+                Storage::disk('public')->delete('members/' . $member->image_name);
+            }
         } else {
             $fileName = $member->image_name;
         }

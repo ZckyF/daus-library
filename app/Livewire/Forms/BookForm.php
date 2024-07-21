@@ -4,6 +4,7 @@ namespace App\Livewire\Forms;
 
 use App\Models\Book;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
@@ -207,6 +208,10 @@ class BookForm extends Form
 
             $fileName = $this->cover_image_name->hashName(); 
             $this->cover_image_name->storeAs('covers', $fileName, 'public');
+
+            if ($book->cover_image_name && $book->cover_image_name !== 'default.jpg') {
+                Storage::disk('public')->delete('covers/' . $book->cover_image_name);
+            }
         } else {
             $fileName = $book->cover_image_name;
         }

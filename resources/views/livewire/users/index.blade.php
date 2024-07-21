@@ -92,9 +92,6 @@
                 </div>
             @else
             @foreach ($users as $user)
-            @php
-                $usernameSlug = str_replace(' ', '-', $user->username);
-            @endphp
             <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4 g-2 user-card">
                 <div class="card shadow-sm rounded-4 text-decoration-none">
                     <img loading="lazy" src="{{ asset('storage/avatars/' . $user->avatar_name) }}" class="card-img-top rounded-top-4" alt="{{ $user->username }}">
@@ -126,7 +123,7 @@
                             </button>   
                             @endcan
                         
-                            <a wire:navigate href="{{ route('users.edit', ['username' => $usernameSlug]) }}" class="btn btn-info btn-sm text-white rounded-3" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Edit user">
+                            <a wire:navigate href="{{ route('users.edit', ['username' => $user->username]) }}" class="btn btn-info btn-sm text-white rounded-3" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Edit user">
                                 <i class="bi bi-info-circle"></i>
                             </a>
                         </div>

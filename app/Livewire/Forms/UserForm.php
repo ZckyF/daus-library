@@ -3,6 +3,8 @@
 namespace App\Livewire\Forms;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 use Spatie\Permission\Models\Role;
@@ -75,6 +77,8 @@ class UserForm extends Form
             // 'employee_id.integer' => 'The employee must be an integer.',
             'avatar_name.required' => 'The avatar is required.',
             'avatar_name.max' => 'The avatar is required.',
+            'avatar_name.image' => 'The avatar must be an image.',
+            'avatar_name.mimes' => 'The avatar must be a file of type: jpeg, png, jpg, gif.',
         ];
     }
     /**
@@ -115,6 +119,31 @@ class UserForm extends Form
 
     public function update() 
     {
+        $user = $this->user;
+        $rules = $this->rules();
+        $rules['username'] .= '|'. Rule::unique('users', 'username')->ignore($this->user);
+        $rules['password'] .= '|nullable';
 
+        if ($this->avatar_name !== $user->avatar_name) {
+            $rules['avatar_name'] .= '|image|mimes:jpeg,png,jpg,gif|max:2048';
+            
+            $fileName = $this->avatar_name->hashName(); 
+            $this->avatar_name->storeAs('avatars', $fileName, 'public');
+            if ($user->avatar_name && $user->avatar_name !== 'default.jpg') {
+                Storage::disk('public')->delete('avatars/' . $user->avatar_name);
+            }
+        } else {
+            $fileName = $user->avatar_name;
+        }
+
+        $validatedData = $this->validate($rules);
+        $validatedData['password'] = empty($validatedData['password']) ? $user->password : $validatedData['password'];
+        $user->update(array_merge($validatedData, [
+            'avatar_name' => $fileName,
+        ]));
+        $role = Role::findOrFail($this->role_id);
+        $user->assignRole($role);
+        $this->reset();
+        session()->flash('success', 'User updated successfully.');
     }
 }

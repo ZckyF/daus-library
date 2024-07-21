@@ -1,5 +1,6 @@
 @php
-    $readonlyForm = Auth::user()->cannot('update', $form->book) ? 'readonly' : '';
+if (isset($isEditPage) && $isEditPage) $readonlyForm = Auth::user()->cannot('update', $form->book) ? 'readonly' : '';
+else $readonlyForm = Auth::user()->cannot('create', App\Models\Book::class) ? 'readonly' : '';
 @endphp
 
 <div class="row">
