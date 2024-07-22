@@ -59,7 +59,7 @@ class UserPolicy
      */
     public function inActive(User $user, User $targetUser): bool
     {
-        return $user->id == $targetUser->id && $user->can('user.is_active');
+        return $user->can('user.is_active') && !$targetUser->hasRole('admin') && !$targetUser->hasRole('super_admin');
     }
 
     /**
