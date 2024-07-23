@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Gate;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Spatie\Permission\Models\Role;
 
 #[Title('Users')]
 class Index extends Component
@@ -20,6 +21,12 @@ class Index extends Component
      * @var string
      */
     public string $search = '';
+    /**
+     * Search term for roles.
+     * 
+     * @var string
+     */
+    public string $searchRole = '';
 
     /**
      * Sort order.
@@ -41,6 +48,13 @@ class Index extends Component
      * @var int
      */
     public int $userId;
+
+    /**
+     * The role ID for filtering users.
+     * 
+     * @var int|null
+     */
+    public ?int $roleId = null;
 
     /**
      * List of selected users.
@@ -94,6 +108,18 @@ class Index extends Component
     public function updatedSelectedUsers(): void
     {
         $this->showDeleteSelected = !empty($this->selectedUsers);
+    }
+
+    /**
+     * Selects the bookshelf to filter books by.
+     * 
+     * @param int $roleId
+     * @return void
+     */
+    public function selectRole(int $roleId): void 
+    {
+        $this->roleId = $roleId;
+        $this->resetPage();
     }
 
     /**
@@ -171,12 +197,16 @@ class Index extends Component
      * 
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function fetchUsers()
+    public function fetchUsers(): \Illuminate\Contracts\Pagination\LengthAwarePaginator
     {
         $query = User::query();
 
         if ($this->search) {
             $query->where('username', 'like', '%' . $this->search . '%');
+        }
+
+        if ($this->roleId) {
+            $query->whereHas('roles', fn($query) => $query->where('id', $this->roleId));
         }
 
         switch ($this->sortBy) {
@@ -198,6 +228,19 @@ class Index extends Component
                 ->whereDoesntHave('roles',fn($query)=>$query->where('name','super_admin'))
                 ->paginate($this->perPage);
     }
+    /**
+     * Fetch roles based on search criteria.
+     * 
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function fetchRoles(): \Illuminate\Database\Eloquent\Collection
+    {
+        $query = Role::query();
+        if($this->searchRole){
+            $query->where('name', 'like', '%' . $this->searchRole . '%');
+        }
+        return $query->where('name','!=','super_admin')->get();
+    }
 
     /**
      * Render the component.
@@ -207,6 +250,7 @@ class Index extends Component
     public function render(): \Illuminate\View\View
     {
         $users = $this->fetchUsers();
+        $roles = $this->fetchRoles();
         $optionPages = [12, 24, 48, 84, 108];
         $optionSorts = [
             'newest' => 'Newest',
@@ -214,6 +258,6 @@ class Index extends Component
             'username-asc' => 'Username A-Z',
             'username-desc' => 'Username Z-A'
         ];
-        return view('livewire.users.index', compact('users', 'optionPages','optionSorts'));
+        return view('livewire.users.index', compact('users', 'optionPages','optionSorts','roles'));
     }
 }

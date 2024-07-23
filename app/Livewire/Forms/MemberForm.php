@@ -75,6 +75,17 @@ class MemberForm extends Form
         ];
     }
 
+    public function messages(): array
+    {
+        return [
+            'image_name.required' => 'Image is required.',
+            'image_name.max' => 'Image is too large, max 2MB.',
+            'image_name.image' => 'Image must be an image.',
+            'image_name.mimes' => 'Image must be jpeg, png, jpg, gif.',
+            
+        ];
+    }
+
     /**
      * Set the member instance and populate form fields.
      *

@@ -139,6 +139,21 @@ class BookForm extends Form
     }
 
     /**
+     * Validation messages for book creation/updation.
+     * 
+     * @return array
+     */
+    public function messages(): array
+    {
+        return [
+            'cover_image_name.required' => 'Cover is required.',
+            'cover_image_name.max' => 'Cover is too large, max 2MB.',
+            'cover_image_name.image' => 'Cover must be an image.',
+            'cover_image_name.mimes' => 'Cover must be jpeg, png, jpg, gif.',
+        ];
+    }
+
+    /**
      * Set the book instance for editing.
      * 
      * @param Book $book
@@ -172,7 +187,7 @@ class BookForm extends Form
     {
         $rules = $this->rules();
         $rules['isbn'] .= '|unique:books,isbn';
-        $rules['cover_image_name'] .= '|image|mimes:jpeg,png,jpg,gif|max:2048';
+        $rules['cover_image_name'] .= '|image|mimes:jpeg,png,jpg,gif';
         
         $validatedData = $this->validate($rules);
 
@@ -204,7 +219,7 @@ class BookForm extends Form
         $rules['isbn'] .= '|'.Rule::unique('books', 'isbn')->ignore($book);
         
         if ($this->cover_image_name !== $book->cover_image_name) {
-            $rules['cover_image_name'] .= '|image|mimes:jpeg,png,jpg,gif|max:2048';
+            $rules['cover_image_name'] .= '|image|mimes:jpeg,png,jpg,gif';
 
             $fileName = $this->cover_image_name->hashName(); 
             $this->cover_image_name->storeAs('covers', $fileName, 'public');
