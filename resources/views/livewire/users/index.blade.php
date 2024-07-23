@@ -112,8 +112,8 @@
                             <span></span>
                         @endcan
                         <div class="button-group">
-                            @can('inActive', $user)      
-                                <button type="button" class="btn btn-success btn-sm text-white rounded-3" data-bs-toggle="modal" data-bs-target="#isActiveModal" wire:click="setUserId({{ $user->id }})" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="{{ $user->is_actived ? 'Deactivate user' : 'Activate user' }}">
+                            @can('inactive', $user)      
+                                <button type="button" class="btn btn-success btn-sm text-white rounded-3" data-bs-toggle="modal" data-bs-target="#isActiveModal" wire:click="setUserId({{ $user->id }})" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="{{ $user->is_active ? 'Deactivate user' : 'Activate user' }}">
                                 <i class="bi {{ $user->is_active ? 'bi-x-circle' : 'bi-check-circle' }}"></i>
                             </button>
                             @endcan
@@ -145,15 +145,17 @@
             </div>
         </div>
     </div>
-    <x-notifications.modal title="Delete Confirmation" action="delete" targetModal="deleteModal"> 
-        Are you sure you want to delete this user?
-    </x-notifications.modal>
-    <x-notifications.modal title="Delete Selected Confirmation" action="deleteSelected" targetModal="deleteSelectedModal">
-        Are you sure you want to delete these users?    
-    </x-notifications.modal>
-    <x-notifications.modal title="{{ $user->is_active ? 'Deactivate' : 'Activate' }} Confirmation" action="toggleActive" targetModal="isActiveModal">
-        Are you sure you want to {{ $user->is_active ? 'deactivate' : 'activate' }} this users?
-    </x-notifications.modal>
+    @if($users->isNotEmpty())
+        <x-notifications.modal title="Delete Confirmation" action="delete" targetModal="deleteModal"> 
+            Are you sure you want to delete this user?
+        </x-notifications.modal>
+        <x-notifications.modal title="Delete Selected Confirmation" action="deleteSelected" targetModal="deleteSelectedModal">
+            Are you sure you want to delete these users?    
+        </x-notifications.modal>
+        <x-notifications.modal title="{{ $user->is_active ? 'Deactivate' : 'Activate' }} Confirmation" action="toggleActive" targetModal="isActiveModal">
+            Are you sure you want to {{ $user->is_active ? 'deactivate' : 'activate' }} this users?
+        </x-notifications.modal>
+    @endif
 
     
 </div>

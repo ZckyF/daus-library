@@ -44,7 +44,6 @@ class Edit extends Component
         }
         
         $this->user = $bookshelf->user->username;
-        
     }
 
     /**
@@ -77,7 +76,7 @@ class Edit extends Component
             
         session()->flash('success', 'Bookshelf successfully deleted');
     
-        $this->dispatch('closeModal');
+        $this->redirectRoute('bookshelves');
     }
 
     /**

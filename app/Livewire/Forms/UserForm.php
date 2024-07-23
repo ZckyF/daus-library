@@ -3,6 +3,7 @@
 namespace App\Livewire\Forms;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Validate;
@@ -56,13 +57,17 @@ class UserForm extends Form
      */
     public function rules(): array
     {
-        return [
+        $rules = [
             'username' => 'required|string|max:255|min:5|alpha_dash',
             'password' => 'string|max:255|min:8',
             'employee_id' => 'required|integer',
             'avatar_name' => 'required|max:2048',
-            'role_id' => 'required|integer',
+            'role_id' => 'required|integer'
         ];
+        if (Auth::user() && !Auth::user()->hasRole('super_admin')) {
+            $rules['role_id'] .= '|not_in:' . Role::whereIn('name', ['admin','super_admin'])->value('id');
+        }
+        return $rules;
     }
     /**
      * The validation messages
@@ -74,6 +79,8 @@ class UserForm extends Form
         return [
             'employee_id.required' => 'The employee is required.',
             'role_id.required' => 'The role is required.',
+            'role_id.not_in' => 'The role is not allowed.',
+
             // 'employee_id.integer' => 'The employee must be an integer.',
             'avatar_name.required' => 'The avatar is required.',
             'avatar_name.max' => 'The avatar is required.',

@@ -60,7 +60,7 @@
         <x-tables.table tableClass="table-striped shadow-sm" :columns="$columns" :useCheckboxColumn="true"> 
             @if($bookshelves->isEmpty())
                 <tr>
-                    <td colspan="5" class="text-center">No data found.</td>
+                    <td colspan="{{ count($columns) }}" class="text-center">No data found.</td>
                 </tr>
             @else
                 @foreach ($bookshelves as $index => $bookshelf)

@@ -81,7 +81,7 @@ class Edit extends Component
             
         session()->flash('success', 'Bookshelf successfully deleted');
     
-        $this->dispatch('closeModal');
+        $this->redirectRoute('book-categories');
     }
 
     /**

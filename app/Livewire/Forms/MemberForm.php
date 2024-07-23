@@ -69,8 +69,8 @@ class MemberForm extends Form
         return [
             'full_name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255',
-            'phone_number' => 'required|string|max:15',
-            'address' => 'required|string|max:255',
+            'phone_number' => 'required|numeric|digits_between:10,15',
+            'address' => 'required|string',
             'image_name' => 'required|max:2048',
         ];
     }

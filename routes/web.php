@@ -27,10 +27,15 @@ use App\Livewire\Users\Index as UserIndex;
 use App\Livewire\Users\Create as UserCreate;
 use App\Livewire\Users\Edit as UserEdit;
 
+use App\Livewire\Employees\Index as EmployeeIndex;
+use App\Livewire\Employees\Create as EmployeeCreate;
+use App\Livewire\Employees\Edit as EmployeeEdit;
+
 
 use App\Models\Book;
 use App\Models\BookCategory;
 use App\Models\Bookshelf;
+use App\Models\Employee;
 use App\Models\Member;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
@@ -69,6 +74,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/users/create', UserCreate::class)->can('create', User::class)->name('users.create');
     Route::get('/users/{username}', UserEdit::class)->name('users.edit');
 
+    Route::get('/employees', EmployeeIndex::class)->can('viewAny', Employee::class)->name('employees');
+    Route::get('/employees/create', EmployeeCreate::class)->can('create', Employee::class)->name('employees.create');
+    Route::get('/employees/{nik}', EmployeeEdit::class)->name('employees.edit');
     
     Route::post('/logout', [Logout::class,'logout'])->name('logout');
 });

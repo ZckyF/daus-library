@@ -134,7 +134,7 @@ class Index extends Component
     public function toggleActive(): void
     {
         $user = User::find($this->userId);
-        if (Gate::denies('inActive', $user)) {
+        if (Gate::denies('inactive', $user)) {
             abort(403);
         }
         $user->is_active = !$user->is_active;

@@ -25,6 +25,9 @@ class EmployeePolicy
      */
     public function view(User $user, Employee $employee): bool
     {
+        if ($employee->user) {
+            return $user->can('user.view') && !$employee->user->hasRole('admin') && !$employee->user->hasRole('super_admin');
+        }
         return $user->can('user.view');
     }
 
@@ -45,7 +48,7 @@ class EmployeePolicy
      */
     public function update(User $user, Employee $employee): bool
     {
-        return $user->can('user.update');
+        return $user->can('user.update') ;
     }
 
     /**
@@ -55,6 +58,10 @@ class EmployeePolicy
      */
     public function delete(User $user, Employee $employee): bool
     {
+        if ($employee->user) {
+            return $user->can('user.delete') && !$employee->user->hasRole('admin') && !$employee->user->hasRole('super_admin');
+        }
+        
         return $user->can('user.delete');
     }
 

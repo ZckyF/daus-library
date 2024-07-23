@@ -132,7 +132,7 @@
         <x-layout-elements.side-link :model="App\Models\Member::class" :active="request()->routeIs('members*')" href="/members" icon="person-vcard"> Members </x-layout-elements.side-link>
         <x-layout-elements.side-link :model="App\Models\User::class" :active="request()->routeIs('users*')" href="/users" icon="person"> Users </x-layout-elements.side-link>
         <x-layout-elements.side-link :model="App\Models\Employee::class" :active="request()->routeIs('employees*')" href="/employees" icon="people"> Employees </x-layout-elements.side-link>
-        @if(Auth::user()->hasRole('superadmin'))
+        @if(Auth::user()->hasRole('super_admin'))
           <x-layout-elements.side-link :model="App\Models\Employee::class" :active="request()->routeIs('roles*')" href="/roles" icon="person-gear"> Roles </x-layout-elements.side-link>
         @endif
       </ul>

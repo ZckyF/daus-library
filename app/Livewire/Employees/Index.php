@@ -1,21 +1,19 @@
 <?php
 
-namespace App\Livewire\Bookshelves;
+namespace App\Livewire\Employees;
 
-use App\Models\Bookshelf;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Employee;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-#[Title('Bookshelves')]
+#[Title('Employees')]
 class Index extends Component
 {
     use WithPagination;
-
     /**
-     * Search term for bookshelves.
+     * Search term for the employees.
      * 
      * @var string
      */
@@ -34,20 +32,19 @@ class Index extends Component
      * @var int
      */
     public int $perPage = 10;
-
     /**
-     * ID of the selected bookshelf.
+     * ID of the selected employee.
      * 
      * @var int
      */
-    public int $bookshelfId;
+    public int $employeeId;
 
     /**
-     * List of selected bookshelves.
+     * List of selected employees.
      * 
      * @var array
      */
-    public array $selectedBookshelves = [];
+    public array $selectedEmployees = [];
 
     /**
      * Flag to show or hide the delete selected button.
@@ -91,82 +88,91 @@ class Index extends Component
      * 
      * @return void
      */
-    public function updatedSelectedBookshelves(): void
+    public function updatedSelectedEmployees(): void
     {
-        $this->showDeleteSelected = !empty($this->selectedBookshelves);
+        $this->showDeleteSelected = !empty($this->selectedEmployees);
     }
 
     /**
-     * Set the bookshelf ID.
+     * Set the employee ID.
      * 
-     * @param int $bookshelfId
+     * @param int $employeeId
      * @return void
      */
-    public function setBookShelfId($bookshelfId): void
+    public function setEmployeeId($employeeId): void
     {
-        $this->bookshelfId = $bookshelfId;
+        $this->employeeId = $employeeId;
     }
 
     /**
-     * Delete a bookshelf by its ID.
+     * Delete a employee by its ID.
      * 
      * @return void
      */
     public function delete(): void
     {
-        $bookshelf = Bookshelf::find($this->bookshelfId);
-        if (Gate::denies('delete', $bookshelf)) {
+        $employee = Employee::find($this->employeeId);
+        if (Gate::denies('delete', $employee)) {
             abort(403);
         }
-        $bookshelf->delete();
-        $bookshelf->update(['user_id' => Auth::user()->id]);
+        $employee->delete();
             
-        session()->flash('success', 'Bookshelf successfully deleted');
+        session()->flash('success', 'Employee successfully deleted');
     
         $this->dispatch('closeModal');
     }
 
     /**
-     * Delete selected bookshelves.
+     * Delete selected employees.
      * 
      * @return void
      */
     public function deleteSelected(): void
     {
-        $bookshelves = Bookshelf::find($this->selectedBookshelves);
-        if (Gate::denies('delete', $bookshelves[0])) {
+        $employees = Employee::find($this->selectedEmployees);
+        if (Gate::denies('delete', $employees[0])) {
             abort(403);
         }
-        foreach ($bookshelves as $bookshelf) {
-            $bookshelf->delete();
-            $bookshelf->update(['user_id' => Auth::user()->id]);
+        foreach ($employees as $employee) {
+            $employee->delete();
         }
 
-        $this->selectedBookshelves = [];
-        session()->flash('success', 'Bookshelves successfully deleted');
+        $this->selectedEmployees = [];
+        session()->flash('success', 'Employee successfully deleted');
         $this->dispatch('closeModal');
     }
 
     /**
-     * Fetch bookshelves based on search and sort criteria.
+     * Fetch employees based on search and sort criteria.
      * 
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function fetchBookshelves()
+    public function fetchEmployees(): \Illuminate\Contracts\Pagination\LengthAwarePaginator
     {
-        $query = Bookshelf::query();
+        $query = Employee::query();
+
+
 
         if ($this->search) {
-            $query->where('bookshelf_number', 'like', '%' . $this->search . '%')
-                  ->orWhere('location', 'like', '%' . $this->search . '%');
+            $query->where(function ($query) {
+                $query->where('full_name', 'like', '%' . $this->search . '%')
+                    ->orWhere('email', 'like', '%' . $this->search . '%')
+                    ->orWhere('nik', 'like', '%' . $this->search . '%');
+            });
         }
+        $query->whereDoesntHave('user', function ($query) {
+            $query->whereHas('roles', function ($query) {
+                $query->where('name', 'super_admin');
+            });
+        });
+        
 
         switch ($this->sortBy) {
-            case 'bookshelf-asc':
-                $query->orderBy('bookshelf_number', 'asc');
+            case 'fullname-asc':
+                $query->orderBy('full_name', 'asc');
                 break;
-            case 'bookshelf-desc':
-                $query->orderBy('bookshelf_number', 'desc');
+            case 'fullname-desc':
+                $query->orderBy('full_name', 'desc');
                 break;
             case 'newest':
                 $query->orderBy('created_at', 'desc');
@@ -178,7 +184,6 @@ class Index extends Component
 
         return $query->paginate($this->perPage);
     }
-
     /**
      * Render the component.
      * 
@@ -186,15 +191,15 @@ class Index extends Component
      */
     public function render(): \Illuminate\View\View
     {
-        $bookshelves = $this->fetchBookshelves();
+        $employees = $this->fetchEmployees();
         $optionPages = [10, 20, 40, 50, 100];
-        $columns = ['','#','Bookshelf Number','Added or Edited','Actions'];
+        $columns = ['','#','NIK','Full Name','Email','Actions'];
         $optionSorts = [
             'newest' => 'Newest',
             'oldest' => 'Oldest',
-            'bookshelf-asc' => 'Bookshelf A-Z',
-            'bookshelf-desc' => 'Bookshelf Z-A'
+            'fullname-asc' => 'Full Name A-Z',
+            'fullname-desc' => 'Full Name Z-A'
         ];
-        return view('livewire.bookshelves.index', compact('bookshelves', 'optionPages', 'columns', 'optionSorts'));
+        return view('livewire.employees.index',compact('employees','optionPages','columns','optionSorts'));
     }
 }

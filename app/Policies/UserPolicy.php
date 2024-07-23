@@ -57,7 +57,7 @@ class UserPolicy
      * 
      * @return bool
      */
-    public function inActive(User $user, User $targetUser): bool
+    public function inactive(User $user, User $targetUser): bool
     {
         return $user->can('user.is_active') && !$targetUser->hasRole('admin') && !$targetUser->hasRole('super_admin');
     }
