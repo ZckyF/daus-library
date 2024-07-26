@@ -31,6 +31,7 @@ use App\Livewire\Employees\Index as EmployeeIndex;
 use App\Livewire\Employees\Create as EmployeeCreate;
 use App\Livewire\Employees\Edit as EmployeeEdit;
 
+use App\Livewire\Carts\Index as CartIndex;
 
 use App\Models\Book;
 use App\Models\BookCategory;
@@ -54,6 +55,10 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth')->group(function () {
     Route::get('/', Dashboard::class)->name('dashboard');
 
+    /**
+     * Master Data
+     * 
+     */
     Route::get('/books', BookIndex::class)->can('viewAny', Book::class)->name('books');
     Route::get('/books/create', BookCreate::class)->can('create', Book::class)->name('books.create');
     Route::get('/books/{title}/{author}', BookEdit::class)->name('books.edit');
@@ -77,7 +82,16 @@ Route::middleware('auth')->group(function () {
     Route::get('/employees', EmployeeIndex::class)->can('viewAny', Employee::class)->name('employees');
     Route::get('/employees/create', EmployeeCreate::class)->can('create', Employee::class)->name('employees.create');
     Route::get('/employees/{nik}', EmployeeEdit::class)->name('employees.edit');
-    
+    /**
+     * Transaction
+     * 
+     * 
+     */
+    Route::get('/carts',CartIndex::class)->can('viewAny', App\Models\Fine::class)->name('carts');
+     /**
+      * 
+
+      */
     Route::post('/logout', [Logout::class,'logout'])->name('logout');
 });
 

@@ -55,7 +55,7 @@ class BorrowBook extends Model
     public function books(): BelongsToMany
     {
         return $this->belongsToMany(Book::class, 'borrow_book_pivot')
-            ->using(BorrowBookPivot::class);
+            ->using(BorrowBookPivot::class)->withTimestamps();
     }
     
 }
