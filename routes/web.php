@@ -33,6 +33,9 @@ use App\Livewire\Employees\Edit as EmployeeEdit;
 
 use App\Livewire\Carts\Index as CartIndex;
 
+use App\Livewire\BorrowBook\Index as BorrowBookIndex;
+use App\Livewire\BorrowBook\Edit as BorrowBookEdit;
+
 use App\Models\Book;
 use App\Models\BookCategory;
 use App\Models\Bookshelf;
@@ -88,6 +91,9 @@ Route::middleware('auth')->group(function () {
      * 
      */
     Route::get('/carts',CartIndex::class)->can('viewAny', App\Models\Fine::class)->name('carts');
+
+    Route::get('/borrow-books', BorrowBookIndex::class)->can('viewAny', App\Models\BorrowBook::class)->name('borrow-books');
+    Route::get('/borrow-books/{borrow_number}', BorrowBookEdit::class)->name('borrow-books.edit');
      /**
       * 
 

@@ -11,26 +11,79 @@ use Livewire\Component;
 
 class Index extends Component
 {
+    /**
+     * Cart quantities for each book.
+     * 
+     * @var array
+     */
     public array $cartQuantities = [];
+    /**
+     * The search term for members.
+     * 
+     * @var string
+     */
     public string $searchMember = '';
+    /**
+     * The search term for books.
+     * 
+     * @var string
+     */
     public string $searchBooks = '';
-
+    /**
+     * The error message when adding more than 3 books to the cart.
+     * 
+     * @var string
+     */
     public string $messageError = 'You can only add up to 3 books to the cart.';
-
+    /**
+     * The number card of the member.
+     * 
+     * @var string
+     */
     public $number_card;
+    /**
+     * The full name of the member.
+     * 
+     * @var string
+     */
     public $full_name;
+    /**
+     * The email of the member.
+     * 
+     * @var string
+     */
     public $email;
+    /**
+     * The phone number of the member.
+     * 
+     * @var string
+     */
     public $phone_number;
+    /**
+     * The return date of the borrow.
+     * 
+     * @var string
+     */
     public $return_date;
 
-
-    public function fetchCarts(): \Illuminate\Database\Eloquent\Collection
+    /**
+     * Fetch the cart from session and return the books.
+     * 
+     * @return Illuminate\Support\Collection
+     */
+    public function fetchCarts(): \Illuminate\Support\Collection
     {
         $cart = session()->get('cart', []);
         $this->cartQuantities = $cart;
         return Book::whereIn('id', array_keys($cart))->get();
     }
-    public function incrementQuantity(int $bookId)
+    /**
+     * Increment the quantity of the book in the cart.
+     * 
+     * @param  int  $bookId
+     * @return void
+     */
+    public function incrementQuantity(int $bookId): void
     {
         $cart = session()->get('cart', []);
         $totalQuantity = array_sum(array_column($cart, 'quantity'));
@@ -42,8 +95,13 @@ class Index extends Component
             session()->flash('error', $this->messageError);
         }
     }
-
-    public function decrementQuantity(int $bookId)
+    /**
+     * Decrement the quantity of the book in the cart.
+     * 
+     * @param  int  $bookId
+     * @return void
+     */
+    public function decrementQuantity(int $bookId): void
     {
         $cart = session()->get('cart', []);
         if (isset($this->cartQuantities[$bookId])) {
@@ -52,8 +110,13 @@ class Index extends Component
             session()->put('cart', $cart);
         }
     }
-
-    public function addToCart(int $bookId)
+    /**
+     * Add the book to the cart.
+     * 
+     * @param  int  $bookId
+     * @return void
+     */
+    public function addToCart(int $bookId): void
     {
         $cart = session()->get('cart', []);
         $quantity = 1;
@@ -86,15 +149,24 @@ class Index extends Component
         session()->flash('success', 'Book added to cart successfully.');
     }
     
-
+    /**
+     * Delete the book from the cart.
+     * 
+     * @param  int  $bookId
+     * @return void
+     */
     public function deleteFromCart(int $bookId)
     {
         $cart = session()->get('cart', []);
         unset($cart[$bookId]);
         session()->put('cart', $cart);
     }
-
-    public function fetchSearchMember()
+    /**
+     * Fetch the search member and return the result.
+     * 
+     * @return Illuminate\Support\Collection
+     */
+    public function fetchSearchMember(): \Illuminate\Support\Collection
     {
         $result = collect();
         if($this->searchMember) {
@@ -105,8 +177,12 @@ class Index extends Component
         }
         return $result;
     }
-
-    public function fetchSearchBooks()
+    /**
+     * Fetch the search book and return the result.
+     * 
+     * @return Illuminate\Support\Collection
+     */
+    public function fetchSearchBooks(): \Illuminate\Support\Collection
     {
         $result = collect();
         if($this->searchBooks) {
@@ -117,8 +193,13 @@ class Index extends Component
         }
         return $result;
     }
-
-    public function chooseMember(int $memberId)
+    /**
+     * Choose the member for the borrow book.
+     * 
+     * @param  int  $memberId
+     * @return void
+     */
+    public function chooseMember(int $memberId): void
     {
         $member = Member::find($memberId);
 
@@ -129,8 +210,12 @@ class Index extends Component
 
         $this->searchMember = '';
     }
-
-    public function addBorrow()
+    /**
+     * Add the borrow book.
+     * 
+     * @return void
+     */
+    public function addBorrow(): void
     {
         $member = Member::where('number_card', $this->number_card)->first();
         $cart = session()->get('cart', []);
@@ -173,9 +258,12 @@ class Index extends Component
 
     }
 
-
-
-    public function render()
+    /**
+     * Render the livewire component.
+     * 
+     * @return \Illuminate\View\View
+     */
+    public function render(): \Illuminate\View\View
     {
         $carts = $this->fetchCarts();
         $members = $this->fetchSearchMember();
