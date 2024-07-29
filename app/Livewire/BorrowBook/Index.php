@@ -60,6 +60,7 @@ class Index extends Component
     public $returnDateTo = '';
     public $returnedDateFrom = '';
     public $returnedDateTo = '';
+    public $filterStatus = '';
 
     /**
      * Reset pagination when the search term is updated.
@@ -159,7 +160,7 @@ class Index extends Component
      * 
      * @return void
      */
-    public function filterDate(): void
+    public function filter(): void
     {
         $this->dispatch('closeModal');
     }
@@ -170,7 +171,7 @@ class Index extends Component
      */
     public function resetFilter(): void
     {
-        $this->reset(['borrowDateFrom','borrowDateTo','returnDateFrom','returnDateTo','returnedDateFrom','returnedDateTo']);
+        $this->reset(['borrowDateFrom','borrowDateTo','returnDateFrom','returnDateTo','returnedDateFrom','returnedDateTo','filterStatus']);
     }
     /**
      * Fetch borrow books based on search, sorting, and pagination criteria.
@@ -197,6 +198,10 @@ class Index extends Component
     
         if ($this->returnedDateFrom && $this->returnedDateTo) {
             $query->whereBetween('returned_date', [$this->returnedDateFrom, $this->returnedDateTo]);
+        }
+
+        if ($this->filterStatus) {
+            $query->where('status', $this->filterStatus);
         }
 
         switch ($this->sortBy) {
@@ -229,6 +234,13 @@ class Index extends Component
             'member-name-asc' => 'Member Name A-Z',
             'member-name-desc' => 'Member Name Z-A'
         ];
-        return view('livewire.borrow-book.index',compact('borrowBooks','optionPages','optionSorts','columns'));
+        $optionStatuses = [
+            'borrowed' => 'Borrowed',
+            'returned' => 'Returned',
+            'due' => 'Due',
+            'lost' => 'Lost',
+            'damaged' => 'Damaged'
+        ];
+        return view('livewire.borrow-book.index',compact('borrowBooks','optionPages','optionSorts','columns','optionStatuses'));
     }
 }

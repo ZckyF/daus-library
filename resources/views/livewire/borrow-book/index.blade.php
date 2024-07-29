@@ -25,10 +25,10 @@
                         </button>
                     </div>
                 @endif
-                <div class="filter-date">
-                    <button class="btn btn-primary bg-white shadow-sm border-0 rounded-4" data-bs-toggle="modal" data-bs-target="#filterDateModal">
+                <div class="filter">
+                    <button class="btn btn-primary bg-white shadow-sm border-0 rounded-4" data-bs-toggle="modal" data-bs-target="#filterModal">
                         <span><i class="bi bi-filter"></i></span>
-                        <span>Filter Date</span>
+                        <span>Filter</span>
                     </button>
                 </div>
                 <div class="select-sort">
@@ -113,7 +113,7 @@
     <x-notifications.modal title="Delete Selected Confirmation" action="deleteSelected" targetModal="deleteSelectedModal"> 
         Are you sure you want to delete these categories?
     </x-notifications.modal>
-    <x-notifications.modal title="Filter Date" action="filterDate" targetModal="filterDateModal" buttonText="Filter">
+    <x-notifications.modal title="Filter" action="filter" targetModal="filterModal" buttonText="Filter">
         <div class="d-flex justify-content-end">
             <div class="reset-form ">
                 <button class="btn btn-primary btn-sm rounded-3 text-white" wire:click="resetFilter">
@@ -144,6 +144,15 @@
                 <input type="date" id="returnedDateFrom" wire:model="returnedDateFrom" class="form-control me-2">
                 <input type="date" id="returnedDateTo" wire:model="returnedDateTo" class="form-control">
             </div>
+        </div>
+        <div class="form-group mb-3">
+            <label for="status">Status</label>
+            <select id="status" wire:model="filterStatus" class="form-select">
+                <option value="">All</option>
+                @foreach ($optionStatuses as $status)
+                    <option value="{{ $status }}">{{ $status }}</option>
+                @endforeach
+            </select>
         </div>
     </x-notifications.modal>
     
