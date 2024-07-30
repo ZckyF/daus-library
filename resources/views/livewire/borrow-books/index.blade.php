@@ -81,8 +81,8 @@
                         <td>{{ $borrowBook->borrow_number }}</td>
                         <td>{{ $borrowBook->member->full_name }}</td>
                         <td>{{ \Carbon\Carbon::parse($borrowBook->borrow_date)->format('Y-m-d') }}</td>
-                        <td>{{ \Carbon\Carbon::parse($borrowBook->due_date)->format('Y-m-d') }}</td>
                         <td>{{ \Carbon\Carbon::parse($borrowBook->return_date)->format('Y-m-d') }}</td>
+                        <td>{{ $borrowBook->returned_date ? \Carbon\Carbon::now()->format('Y-m-d') : '' }} </td>
                         <td>{{ $borrowBook->status }}</td>
                         <td>{{ $borrowBook->user->username }}</td>
                         <td>

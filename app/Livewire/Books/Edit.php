@@ -77,22 +77,19 @@ class Edit extends Component
     /**
      * Initialize the component with default values and fetch the book details.
      * 
-     * @param string $title
-     * @param string $author
+     * @param string $isbn
      * @return void
      */
-    public function mount(string $title, string $author): void
+    public function mount(string $isbn): void
     {
-        $title = str_replace('-', ' ', $title);
-        $author = str_replace('-', ' ', $author);
 
-        $book = Book::where('title', $title)->where('author', $author)->firstOrFail();
+        $book = Book::where('isbn', $isbn)->firstOrFail();
 
         if (!$book) {
             abort(404);
         }
         if (Gate::denies('view', $book)) {
-            abort(403,'This action is unauthorized.');
+            abort(403);
         }
 
         $this->user = $book->user->username;

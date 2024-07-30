@@ -129,7 +129,8 @@
                     <input type="text" wire:model="phone_number" class="form-control" placeholder="Phone Number" disabled>
                 </div>
                 <div class="col-12 mb-3">
-                    <input type="date" wire:model="return_date" class="form-control" placeholder="Return Date">
+                    <label for="return_date">Return Date</label>
+                    <input type="date" id="return_date" wire:model="return_date" class="form-control" placeholder="Return Date">
                 </div>
                 <div class="d-grid">
                     <button wire:click.prevent="addBorrow" class="btn btn-primary text-white" type="submit" @if(!$full_name && !$number_card && !$phone_number && !$email ) disabled @endif>

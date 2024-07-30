@@ -33,8 +33,8 @@ use App\Livewire\Employees\Edit as EmployeeEdit;
 
 use App\Livewire\Carts\Index as CartIndex;
 
-use App\Livewire\BorrowBook\Index as BorrowBookIndex;
-use App\Livewire\BorrowBook\Edit as BorrowBookEdit;
+use App\Livewire\BorrowBooks\Index as BorrowBookIndex;
+use App\Livewire\BorrowBooks\Edit as BorrowBookEdit;
 
 use App\Models\Book;
 use App\Models\BookCategory;
@@ -64,7 +64,7 @@ Route::middleware('auth')->group(function () {
      */
     Route::get('/books', BookIndex::class)->can('viewAny', Book::class)->name('books');
     Route::get('/books/create', BookCreate::class)->can('create', Book::class)->name('books.create');
-    Route::get('/books/{title}/{author}', BookEdit::class)->name('books.edit');
+    Route::get('/books/{isbn}', BookEdit::class)->name('books.edit');
 
     Route::get('/book-categories',BookCategoryIndex::class)->can('viewAny', BookCategory::class)->name('book-categories');
     Route::get('/book-categories/create',BookCategoryCreate::class)->can('create', BookCategory::class)->name('book-categories.create');

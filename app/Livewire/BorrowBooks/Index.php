@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\BorrowBook;
+namespace App\Livewire\BorrowBooks;
 
 use App\Models\BorrowBook;
 use Illuminate\Support\Facades\Auth;
@@ -241,6 +241,6 @@ class Index extends Component
             'lost' => 'Lost',
             'damaged' => 'Damaged'
         ];
-        return view('livewire.borrow-book.index',compact('borrowBooks','optionPages','optionSorts','columns','optionStatuses'));
+        return view('livewire.borrow-books.index',compact('borrowBooks','optionPages','optionSorts','columns','optionStatuses'));
     }
 }

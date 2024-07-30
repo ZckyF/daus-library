@@ -145,12 +145,8 @@
                 </div>
             @else
             @foreach ($books as $book)
-            @php
-                $titleSlug = str_replace(' ', '-', $book->title);
-                $authorSlug = str_replace(' ', '-', $book->author);
-            @endphp
             <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4 g-2 book-card">
-                <div class="card shadow-sm rounded-4 text-decoration-none" href="{{ route('books.edit', ['title' => $titleSlug, 'author' => $authorSlug]) }}">
+                <div class="card shadow-sm rounded-4 text-decoration-none">
                     <img loading="lazy" src="{{ asset('storage/covers/' . $book->cover_image_name) }}" class="card-img-top rounded-top-4" alt="{{ $book->title }}">
                     <div class="card-body">
                         <h5 class="card-title">{{ Str::limit($book->title, 20) }}</h5>
@@ -172,7 +168,7 @@
                             </button> 
                             @endcan
                           
-                            <a wire:navigate href="{{ route('books.edit', ['title' => $titleSlug, 'author' => $authorSlug]) }}" class="btn btn-info btn-sm text-white rounded-3" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Edit book">
+                            <a wire:navigate href="{{ route('books.edit', ['isbn' => $book->isbn]) }}" class="btn btn-info btn-sm text-white rounded-3" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Edit book">
                                 <i class="bi bi-info-circle"></i>
                             </a>   
                             
