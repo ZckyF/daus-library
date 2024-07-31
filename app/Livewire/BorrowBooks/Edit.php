@@ -27,6 +27,8 @@ class Edit extends Component
      */
     public BorrowBookForm $form;
 
+    public bool $returnedDateIsDisabled = true;
+
     /**
      * Initialize the component with a borrow number.
      * 
@@ -53,8 +55,16 @@ class Edit extends Component
      */
     public function updateReturnedDate(): void
     {
-        if($this->form->status !== 'Borrowed' && $this->form->status !== 'Due') $this->form->returned_date = Carbon::now()->format('Y-m-d');
-         else $this->form->returned_date = null;
+        if($this->form->status === 'due')  $this->returnedDateIsDisabled = false;
+        
+        if($this->form->status !== 'borrowed' && $this->form->status !== 'due') {
+            $this->form->returned_date = Carbon::now()->format('Y-m-d');
+            $this->returnedDateIsDisabled = true;
+        }
+        else {
+            $this->form->returned_date = null;
+            $this->returnedDateIsDisabled = $this->form->status === 'due' ? false : true;
+        }
     }
     /**
      * Save the updated borrow book.

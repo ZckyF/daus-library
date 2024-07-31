@@ -22,7 +22,7 @@
     </div>
     <div class="mb-3 col-md-4">
         <label for="returned_date" class="form-label">Returned Date</label>
-        <input disabled type="date" class="form-control @error('form.returned_date') is-invalid @enderror" id="returned_date" wire:model="form.returned_date">
+        <input {{ $returnedDateIsDisabled ? 'disabled' : '' }} type="date" class="form-control @error('form.returned_date') is-invalid @enderror" id="returned_date" wire:model="form.returned_date">
         @error('form.returned_date') <span class="text-danger">{{ $message }}</span> @enderror
     </div>
     <div class="mb-3 col-md-4">
@@ -34,8 +34,13 @@
         <label for="status" class="form-label">Status</label>
         <select class="form-select @error('form.status') is-invalid @enderror" id="status" wire:model="form.status" >
             @foreach ($statuses as $status => $value)
-                <option wire:click="updateReturnedDate" value="{{ $status }}">{{ $value }}</option>
-            @endforeach
+            @php
+                $isBorrowed = $status == 'borrowed';
+                $isReturnDatePassed = $form->return_date && $form->return_date < now();
+                $isDisabled = $isBorrowed && $isReturnDatePassed;
+            @endphp
+            <option wire:click="updateReturnedDate" value="{{ $status }}" {{ $isDisabled ? 'disabled' : '' }}>{{ $value }}</option>
+        @endforeach
         </select>
         @error('form.status') <span class="text-danger">{{ $message }}</span> @enderror
     </div>
