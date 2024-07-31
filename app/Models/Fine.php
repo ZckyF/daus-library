@@ -17,6 +17,7 @@ class Fine extends Model
      * @var array<int, string>
      */
     protected $fillable =[
+        'fine_number',
         'member_id',
         'non_member_name',
         'amount',

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('fines', function (Blueprint $table) {
             $table->id();
-            $table->string('fine_code')->unique();
+            $table->string('fine_number')->unique();
             $table->foreignId('member_id')->nullable()->constrained('members')->onDelete('cascade')->onUpdate('cascade');
             $table->string('non_member_name')->nullable(); 
             $table->decimal('amount', 10, 2);

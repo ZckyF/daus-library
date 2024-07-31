@@ -17,7 +17,7 @@ class FineFactory extends Factory
     public function definition(): array
     {
         return [
-            'fine_code' => $this->faker->unique()->numerify('FC##########'),
+            'fine_number' => $this->faker->unique()->numerify('FC##########'),
             'member_id'=> $this->faker->numberBetween(1, 10),
             'non_member_name' => null,
             'amount' => $this->faker->randomFloat(2,1,1000),
