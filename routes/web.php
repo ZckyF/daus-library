@@ -36,6 +36,10 @@ use App\Livewire\Carts\Index as CartIndex;
 use App\Livewire\BorrowBooks\Index as BorrowBookIndex;
 use App\Livewire\BorrowBooks\Edit as BorrowBookEdit;
 
+use App\Livewire\Fines\Index as FinesIndex;
+use App\Livewire\Fines\Create as FinesCreate;
+use App\Livewire\Fines\Edit as FinesEdit;
+
 use App\Models\Book;
 use App\Models\BookCategory;
 use App\Models\Bookshelf;
@@ -94,6 +98,10 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/borrow-books', BorrowBookIndex::class)->can('viewAny', App\Models\BorrowBook::class)->name('borrow-books');
     Route::get('/borrow-books/{borrow_number}', BorrowBookEdit::class)->name('borrow-books.edit');
+
+    Route::get('/fines', FinesIndex::class)->can('viewAny', App\Models\Fine::class)->name('fines');
+    Route::get('/fines/create', FinesCreate::class)->can('create', App\Models\Fine::class)->name('fines.create');
+    Route::get('/fines/{fine_code}', FinesEdit::class)->name('fines.edit');
      /**
       * 
 
