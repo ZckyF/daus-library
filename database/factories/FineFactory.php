@@ -20,7 +20,7 @@ class FineFactory extends Factory
             'fine_number' => $this->faker->unique()->numerify('FC##########'),
             'member_id'=> $this->faker->numberBetween(1, 10),
             'non_member_name' => null,
-            'amount' => $this->faker->randomFloat(2,1,1000),
+            'amount' => $this->faker->numberBetween(50000, 300000),
             'amount_paid' => 0,
             'change_amount' => 0,
             'reason' => $this->faker->text(),

@@ -77,7 +77,7 @@
                             <a wire:navigate href="{{ route('bookshelves.edit', $bookshelf->bookshelf_number) }}" class="btn btn-info btn-sm rounded-3 text-white" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Edit bookshelf">
                                 <span><i class="bi bi-info-circle"></i></span>
                             </a>
-                            @can('delte', $bookshelf)
+                            @can('delete', $bookshelf)
                                 <button class="btn btn-danger btn-sm rounded-3" data-bs-toggle="modal" data-bs-target="#deleteModal" wire:click="setBookShelfId({{ $bookshelf->id }})" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Delete bookshelf">
                                     <span><i class="bi bi-trash"></i></span>
                                 </button> 

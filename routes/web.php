@@ -101,7 +101,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/fines', FinesIndex::class)->can('viewAny', App\Models\Fine::class)->name('fines');
     Route::get('/fines/create', FinesCreate::class)->can('create', App\Models\Fine::class)->name('fines.create');
-    Route::get('/fines/{fine_code}', FinesEdit::class)->name('fines.edit');
+    Route::get('/fines/{fine_number}', FinesEdit::class)->name('fines.edit');
      /**
       * 
 
