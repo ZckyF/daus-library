@@ -42,7 +42,7 @@
                 </div>
                 @can('create', \App\Models\Fine::class)
                     <div class="button-add">
-                        <a wire:navigate href="{{ route('bookshelves.create') }}" class="btn btn-outline-primary fw-bold shadow-sm text-center" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Add fine">
+                        <a wire:navigate href="{{ route('fines.create') }}" class="btn btn-outline-primary fw-bold shadow-sm text-center" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Add fine">
                             <i class="bi bi-plus-lg"></i>
                         </a>
                     </div>
@@ -72,14 +72,14 @@
                         @endcan
                         <td>{{ $fines->firstItem() + $index }}</td>
                         <td>{{ $fine->fine_number }}</td>
-                        <td>{{ $fine->member->full_name}}</td>
-                        <td>{{ $fine->non_member_name }}</td>
+                        <td>{{ $fine->member ? Str::limit($fine->member->full_name, 40) : '' }}</td>
+                        <td>{{ Str::limit($fine->non_member_name, 40) }}</td>
                         <td>{{ 'Rp. ' . number_format($fine->amount, 2, ',', '.') }}</td>
                         <td>{{ 'Rp. ' . number_format($fine->amount_paid, 2, ',', '.') }}</td>
                         <td>{{ $fine->is_paid ? 'Yes' : 'No' }}</td>
                         <td>{{ $fine->user->username}}</td>
                         <td>
-                            <a wire:navigate href="{{ route('bookshelves.edit', $fine->fine_number) }}" class="btn btn-info btn-sm rounded-3 text-white" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Edit fine">
+                            <a wire:navigate href="{{ route('fines.edit', $fine->fine_number) }}" class="btn btn-info btn-sm rounded-3 text-white" data-tooltip="tooltip" data-bs-placement="top" data-bs-title="Edit fine">
                                 <span><i class="bi bi-info-circle"></i></span>
                             </a>
                             @can('delete', $fine)

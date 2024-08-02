@@ -165,8 +165,8 @@ class Index extends Component
                     });
         }
         
-        $query->join('members', 'fines.member_id', '=', 'members.id')
-             ->select('fines.*', 'members.full_name as member_full_name');
+        $query->leftJoin('members', 'fines.member_id', '=', 'members.id')
+            ->select('fines.*', 'members.full_name as member_full_name');
   
         switch ($this->sortBy) {
             case 'member-asc':

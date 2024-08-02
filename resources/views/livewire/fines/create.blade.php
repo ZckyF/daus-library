@@ -1,3 +1,8 @@
-<div>
-    {{-- Do your work, then step back. --}}
+
+<div class="mt-5">
+    <h3 class="mb-4">Create New Fines</h3>
+    <form wire:submit.prevent="save">
+        @csrf
+        @include('livewire.fines.form')
+    </form>
 </div>
