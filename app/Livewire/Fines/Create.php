@@ -29,7 +29,7 @@ class Create extends Component
      * 
      * @var string
      */
-    public string $nonMemberName = '';
+    public $nonMemberName = '';
     /**
      * Save the new fine.
      * 

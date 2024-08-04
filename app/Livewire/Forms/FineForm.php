@@ -3,6 +3,7 @@
 namespace App\Livewire\Forms;
 
 use App\Models\Fine;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
@@ -15,6 +16,12 @@ class FineForm extends Form
      * @var Fine|null
      */
     public ?Fine $fine = null;
+    /**
+     * The fine number for the current fine.
+     * 
+     * @var string
+     */
+    public $fine_number;
     /**
      * The selected member for the current fine.
      * 
@@ -84,6 +91,20 @@ class FineForm extends Form
 
         ];
     }
+    public function setFine(Fine $fine): void
+    {
+        $this->fine = $fine;
+        $this->fine_number = $fine->fine_number;
+        $this->member_id = $fine->member_id;
+        $this->selectedMember = $fine->member ? $fine->member->full_name : '';
+        $this->non_member_name = $fine->non_member_name;
+        $this->amount = $fine->amount;
+        $this->amount_paid = $fine->amount_paid;
+        $this->change_amount = $fine->change_amount;
+        $this->reason = $fine->reason;
+        $this->charged_at = Carbon::parse($fine->charged_at)->format('Y-m-d');
+        $this->is_paid = $fine->is_paid;
+    }
     public function store(): void
     {
         $validatedData = $this->validate();
@@ -102,6 +123,15 @@ class FineForm extends Form
 
     public function update(): void
     {
+        $this->validate();
+        $fine = $this->fine;
+        $fine->update(array_merge($this->validate(), [
+            'fine_number' => $fine->fine_number,
+            'member_id' => $this->member_id,
+            'user_id' => Auth::user()->id
+        ]));
+        session()->flash('success', 'Fine successfully updated');
 
+        $this->reset();
     }
 }

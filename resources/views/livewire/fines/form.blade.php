@@ -8,13 +8,13 @@
 
 <div class="row mt-3">
     @if(isset($isEditPage) && $isEditPage)
-        <div class="mb-3 col-md-4">
+        <div class="mb-3 col-md-12">
             <label for="fine_number" class="form-label">Fine Number</label>
             <input type="text" id="fine_number" class="form-control @error('form.fine_number') is-invalid @enderror" wire:model="form.fine_number" disabled>
             @error('form.fine_number') <span class="text-danger">{{ $message }}</span> @enderror
         </div>
     @endif
-    <div class="mb-3 {{ isset($isEditPage) && $isEditPage ? 'col-md-4' : 'col-md-6' }}">
+    <div class="mb-3 col-md-6">
         <label for="selected_member">Select Member</label>
         <div class="d-flex align-item-cente gap-4">
             <input type="text" class="form-control @error('form.selectedMember') is-invalid @enderror" id="selected_member" wire:model="form.selectedMember" readonly/>
@@ -41,7 +41,7 @@
         </div>
         @error('form.selectedMember') <span class="text-danger">{{ $message }}</span> @enderror
     </div>
-    <div class="mb-3 {{ isset($isEditPage) && $isEditPage ? 'col-md-4' : 'col-md-6' }}">
+    <div class="mb-3 col-md-6">
         <label for="non_member_name" class="form-label">Non Member Name</label>
         <input type="text" class="form-control @error('form.non_member_name') is-invalid @enderror" id="non_member_name" wire:model.live="nonMemberName">
         @error('form.non_member_name') <span class="text-danger">{{ $message }}</span> @enderror

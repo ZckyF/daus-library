@@ -166,20 +166,20 @@ class Index extends Component
         }
         
         $query->leftJoin('members', 'fines.member_id', '=', 'members.id')
-            ->select('fines.*', 'members.full_name as member_full_name');
-  
+        ->select('fines.*', 'members.full_name as member_full_name');
+
         switch ($this->sortBy) {
             case 'member-asc':
-                $query->orderBy('member_full_name', 'asc');
+                $query->orderByRaw("CASE WHEN members.full_name IS NULL THEN 1 ELSE 0 END, members.full_name ASC");
                 break;
             case 'member-desc':
-                $query->orderBy('member_full_name', 'desc');
+                $query->orderByRaw("members.full_name DESC, CASE WHEN members.full_name IS NULL THEN 1 ELSE 0 END");
                 break;
             case 'non-member-asc':
-                $query->orderBy('non_member_name', 'asc');
+                $query->orderByRaw("CASE WHEN non_member_name IS NULL THEN 1 ELSE 0 END, non_member_name ASC");
                 break;
             case 'non-member-desc':
-                $query->orderBy('non_member_name', 'desc');
+                $query->orderByRaw("CASE WHEN non_member_name IS NULL THEN 1 ELSE 0 END, non_member_name DESC");
                 break;
             case 'newest':
                 $query->orderBy('created_at', 'desc');
