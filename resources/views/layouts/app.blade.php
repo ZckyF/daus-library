@@ -62,7 +62,29 @@
           <x-layout-elements.footer />
         </div>
     </div>
-
+    <div wire:ignore.self class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Delete Confirmation</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Are you sure want to logout ?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <form action="{{ route('logout') }}" method="POST">
+              @csrf
+              <button type="submit" class="btn btn-primary text-white ">
+                <span>Yes</span>  
+              </button>
+            </form>
+           
+          </div>
+        </div>
+      </div>
+  </div>
     
     <script>
       $(document).ready(function() {

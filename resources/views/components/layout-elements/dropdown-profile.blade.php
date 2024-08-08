@@ -6,11 +6,10 @@
     </button>
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
       <li><a class="dropdown-item" href="#">Profile</a></li>
-      <li> <form action="{{ route('logout') }}" method="post">
-        @csrf
-          <button type="submit" class="dropdown-item">
+      <li data-bs-toggle="modal" data-bs-target="#logoutModal"> 
+          <button class="dropdown-item">
             Logout
           </button>
-      </form></li>
+      </li>
     </ul>
 </div>

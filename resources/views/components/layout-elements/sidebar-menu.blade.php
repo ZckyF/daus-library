@@ -153,7 +153,12 @@
       <ul class="nav flex-column mb-2">
         <x-layout-elements.side-link :model="App\Models\Book::class" :active="request()->routeIs('settings*')" href="/settings" icon="gear"> Settings </x-layout-elements.side-link>
         <x-layout-elements.side-link :model="App\Models\Book::class" :active="request()->routeIs('notification*')" href="/notification" icon="bell"> Notification </x-layout-elements.side-link>
-        <x-layout-elements.side-link :model="App\Models\Book::class" :active="request()->routeIs('logout*')" href="/logout" icon="box-arrow-left"> Logout </x-layout-elements.side-link>
+        <li class="nav-item logout" data-bs-target="#logoutModal" data-bs-toggle="modal" >
+          <a class="nav-link {{ request()->routeIs('logout') === true ? 'active' : ''}}" style="cursor: pointer">
+            <i class="bi bi-box-arrow-right me-1 {{ request()->routeIs('logout') === true ? 'active' : ''}}"></i>
+            Logout
+          </a>
+        </li>
       </ul>
     </div>
 </aside>

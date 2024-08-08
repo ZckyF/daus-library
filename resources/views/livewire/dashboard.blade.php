@@ -83,51 +83,72 @@
     @assets
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     @endassets
-<script>
-  $(document).ready(function() {
+    <script>
+        $(document).ready(function() {
+            const ctx = $('#borrowBookChart');
+            let chart;
     
-      const ctx = $('#borrowBookChart');
-      let chart;
+            function renderChart(data) {
+                if (chart) {
+                    chart.destroy();
+                }
+    
+                const datasets = [];
+                const colors = {
+                    borrowed: 'rgba(147, 112, 219, 0.2)',
+                    returned: 'rgba(75, 192, 192, 0.2)',
+                    lost: 'rgba(255, 99, 132, 0.2)',
+                    damaged: 'rgba(255, 206, 86, 0.2)',
+                    due: 'rgba(255, 192, 203, 0.2)'
+                };
+    
+                Object.keys(data).forEach(status => {
+                    datasets.push({
+                        label: status.charAt(0).toUpperCase() + status.slice(1),
+                        data: Object.values(data[status]),
+                        backgroundColor: colors[status],
+                        borderColor: colors[status].replace('0.2', '1'),
+                        borderWidth: 2,
+                        tension: 0.4,
+                        pointBackgroundColor: colors[status].replace('0.2', '1'),
+                        pointBorderColor: colors[status].replace('0.2', '1'),
+                        pointRadius: 5,
+                        pointHoverRadius: 7,
+                    });
+                });
+    
+                chart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                        datasets: datasets
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: function(value) {
+                                        if (Number.isInteger(value)) {
+                                            return value;
+                                        }
+                                    },
+                                    stepSize: 1 
+                                }
+                            }
+                        }
+                    }
 
-      function renderChart(data) {
-
-          if (chart) {
-              chart.destroy();
-          }
-          chart = new Chart(ctx, {
-              type: 'line',
-              data: {
-                  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-                  datasets: [{
-                      label: 'Books Borrowed',
-                      data: Object.values(data),
-                      backgroundColor: 'rgba(147, 112, 219, 0.2)', 
-                      borderColor: '#9370db', 
-                      borderWidth: 2,
-                      tension: 0.4, 
-                      pointBackgroundColor: '#9370db', 
-                      pointBorderColor: '#9370db', 
-                      pointRadius: 5, 
-                      pointHoverRadius: 7, 
-                  }]
-              },
-              options: {
-                  scales: {
-                      y: {
-                          beginAtZero: true
-                      }
-                  }
-              }
-          });
-      }
-
-      window.addEventListener('updateChart', function(event) {
-            
-          renderChart(event.detail[0]);
-      });
-
-      renderChart(@json($borrowData));
-  });
-</script>
+                });
+            }
+    
+            window.addEventListener('updateChart', function(event) {
+                renderChart(event.detail[0].data);
+            });
+    
+            renderChart(@json($borrowData));
+        });
+    </script>
+    
 @endpush
 

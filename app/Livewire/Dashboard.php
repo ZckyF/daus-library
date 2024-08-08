@@ -49,19 +49,26 @@ class Dashboard extends Component
     {
         $borrowRecords = BorrowBook::whereYear('borrow_date', $this->selectedYear)->get();
 
-        $borrowData = $borrowRecords->groupBy(function ($item) {
-            return Carbon::parse($item->borrow_date)->format('m');
-        })->map(function ($month) {
-            return $month->count();
-        });
+        $statuses = ['borrowed', 'returned', 'lost', 'damaged', 'due'];
+        $borrowData = [];
 
-        $monthlyCount = [];
-        for ($i = 1; $i <= 12; $i++) {
-            $month = str_pad($i, 2, '0', STR_PAD_LEFT);
-            $monthlyCount[$month] = $borrowData->get($month, 0);
+        foreach ($statuses as $status) {
+            $statusData = $borrowRecords->where('status', $status)->groupBy(function ($item) {
+                return Carbon::parse($item->borrow_date)->format('m');
+            })->map(function ($month) {
+                return $month->count();
+            });
+
+            $monthlyCount = [];
+            for ($i = 1; $i <= 12; $i++) {
+                $month = str_pad($i, 2, '0', STR_PAD_LEFT);
+                $monthlyCount[$month] = $statusData->get($month, 0);
+            }
+
+            $borrowData[$status] = $monthlyCount;
         }
 
-        return $monthlyCount;
+        return $borrowData;
     }
 
     /**
@@ -102,7 +109,18 @@ class Dashboard extends Component
     public function updatedSelectedYear(): void
     {
         $this->borrowData = $this->fetchBorrowBook();
-        $this->dispatch('updateChart', $this->borrowData);
+        $this->dispatch('updateChart', ['data' => $this->borrowData]);
+    }
+
+    /**
+     * Log the user out and redirect to the logout route.
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function logout(): \Illuminate\Http\RedirectResponse
+    {
+        dd('halo');
+        return redirect()->route('logout')->withCookie(cookie()->forget('remember_token'))->post();
     }
 
     /**
