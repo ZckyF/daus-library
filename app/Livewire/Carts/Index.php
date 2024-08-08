@@ -217,6 +217,9 @@ class Index extends Component
      */
     public function addBorrow(): void
     {
+        $this->validate([
+           'return_date' => 'required|date',
+        ]);
         $member = Member::where('number_card', $this->number_card)->first();
         $cart = session()->get('cart', []);
         $totalBooksInCart = array_sum(array_column($cart, 'quantity'));

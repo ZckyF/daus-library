@@ -32,14 +32,14 @@
     </div>
     <div class="mb-3 col-md-4">
         <label for="status" class="form-label">Status</label>
-        <select class="form-select @error('form.status') is-invalid @enderror" id="status" wire:model="form.status" >
+        <select class="form-select @error('form.status') is-invalid @enderror" id="status" wire:model="form.status" wire:change="updateReturnedDate">
             @foreach ($statuses as $status => $value)
             @php
                 $isBorrowed = $status == 'borrowed';
                 $isReturnDatePassed = $form->return_date && $form->return_date < now();
                 $isDisabled = $isBorrowed && $isReturnDatePassed;
             @endphp
-            <option wire:click="updateReturnedDate" value="{{ $status }}" {{ $isDisabled ? 'disabled' : '' }}>{{ $value }}</option>
+            <option value="{{ $status }}" {{ $isDisabled ? 'disabled' : '' }}>{{ $value }}</option>
         @endforeach
         </select>
         @error('form.status') <span class="text-danger">{{ $message }}</span> @enderror

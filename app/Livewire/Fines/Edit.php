@@ -132,7 +132,12 @@ class Edit extends Component
 
         return $query->get();
     }
-    public function render()
+    /**
+     * Render the component
+     * 
+     * @return \Illuminate\View\View
+     */
+    public function render(): \Illuminate\View\View
     {
         $isEditPage = true;
         $members= $this->fetchMembers();

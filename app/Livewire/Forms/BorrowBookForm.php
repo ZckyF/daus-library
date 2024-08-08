@@ -2,7 +2,9 @@
 
 namespace App\Livewire\Forms;
 
+use App\Models\Book;
 use App\Models\BorrowBook;
+use App\Models\BorrowBookPivot;
 use Carbon\Carbon;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
@@ -96,6 +98,23 @@ class BorrowBookForm extends Form
             'status' => $this->status,
             'returned_date' => $this->returned_date
         ]);
+
+        if ($this->status === 'returned') {
+            $borrowedBooks = BorrowBookPivot::where('borrow_book_id', $this->borrowBook->id)->get();
+
+            $bookQuantities = $borrowedBooks->groupBy('book_id')->map(function ($group) {
+                return $group->count();
+            });
+
+            foreach ($bookQuantities as $bookId => $quantity) {
+                $book = Book::find($bookId);
+                if ($book) {
+                    $book->quantity_now += $quantity;
+                    $book->save();
+                }
+            }
+        }
+        
         session()->flash('success', 'Borrow book updated successfully');
 
         $this->reset();

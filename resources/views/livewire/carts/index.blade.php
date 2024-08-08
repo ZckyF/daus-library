@@ -130,10 +130,11 @@
                 </div>
                 <div class="col-12 mb-3">
                     <label for="return_date">Return Date</label>
-                    <input type="date" id="return_date" wire:model="return_date" class="form-control" placeholder="Return Date">
+                    <input type="date" id="return_date" wire:model="return_date" class="form-control @error('return_date') is-invalid @enderror">
+                    @error('return_date') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
                 <div class="d-grid">
-                    <button wire:click.prevent="addBorrow" class="btn btn-primary text-white" type="submit" @if(!$full_name && !$number_card && !$phone_number && !$email ) disabled @endif>
+                    <button wire:click.prevent="addBorrow" class="btn btn-primary text-white" type="submit" @if(!$full_name && !$number_card && !$phone_number && !$email && !$return_date ) disabled @endif>
                         <span class="spinner-border spinner-border-sm" wire:loading wire:target="addBorrow"></span>
                         <span class="me-1" wire:loading.remove wire:target="addBorrow"><i class="bi bi-plus"></i></span>
                         <span>Add Borrow</span>
