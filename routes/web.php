@@ -40,6 +40,8 @@ use App\Livewire\Fines\Index as FinesIndex;
 use App\Livewire\Fines\Create as FinesCreate;
 use App\Livewire\Fines\Edit as FinesEdit;
 
+use App\Livewire\Settings\Index as SettingIndex;
+
 use App\Models\Book;
 use App\Models\BookCategory;
 use App\Models\Bookshelf;
@@ -103,9 +105,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/fines/create', FinesCreate::class)->can('create', App\Models\Fine::class)->name('fines.create');
     Route::get('/fines/{fine_number}', FinesEdit::class)->name('fines.edit');
      /**
-      * 
-
+      * Other Options
       */
+    Route::get('/settings',SettingIndex::class)->name('settings');
     Route::post('/logout', [Logout::class,'logout'])->name('logout');
 });
 
