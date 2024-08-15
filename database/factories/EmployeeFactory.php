@@ -19,7 +19,7 @@ class EmployeeFactory extends Factory
         return [
             'full_name' => $this->faker->name,
             'email' => $this->faker->unique()->safeEmail,
-            'number_phone' => $this->faker->phoneNumber,
+            'phone_number' => $this->faker->numerify('08#########'),
             'address' => $this->faker->address,
             'nik' => $this->faker->unique()->nik(),
             // 'user_id' =>  2,

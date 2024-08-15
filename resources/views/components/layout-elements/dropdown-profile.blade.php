@@ -5,7 +5,7 @@
     
     </button>
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-      <li><a class="dropdown-item" href="#">Profile</a></li>
+      <li><a wire:navigate class="dropdown-item" href="{{ route('settings.profile') }}">Profile</a></li>
       <li data-bs-toggle="modal" data-bs-target="#logoutModal"> 
           <button class="dropdown-item">
             Logout

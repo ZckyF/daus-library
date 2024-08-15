@@ -18,7 +18,7 @@ class EmployeeSeeder extends Seeder
                 [
                     'full_name' => 'John Lawson',
                     'email' => 'johnlawson333@example.com',
-                    'number_phone' => '123-456-7770',
+                    'phone_number' => '0812345678900',
                     'address' => '123 Main St',
                     'nik' => '1234567',
                     // 'user_id' => 1
@@ -26,7 +26,7 @@ class EmployeeSeeder extends Seeder
                 [
                     'full_name' => 'Johnny',
                     'email' => 'johny8877@example.com',
-                    'number_phone' => '123-456-7880',
+                    'phone_number' => '083846173333',
                     'address' => '124 Main St',
                     'nik' => '1233567',
                     // 'user_id' => 1
@@ -34,7 +34,7 @@ class EmployeeSeeder extends Seeder
                 [
                     'full_name' => 'Jamal',
                     'email' => 'jamal22@example.com',
-                    'number_phone' => '123-456-9990',
+                    'phone_number' => '081350158222',
                     'address' => '125 Main St',
                     'nik' => '1235567',
                     // 'user_id' => 1
@@ -42,7 +42,7 @@ class EmployeeSeeder extends Seeder
                 [
                     'full_name' => 'Rio',
                     'email' => 'rio33@example.com',
-                    'number_phone' => '123-456-8888',
+                    'phone_number' => '08776655443322',
                     'address' => '126 Main St',
                     'nik' => '1224567',
                     // 'user_id' => 1

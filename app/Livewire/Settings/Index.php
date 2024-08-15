@@ -8,22 +8,30 @@ use Livewire\Component;
 #[Title('Settings')]
 class Index extends Component
 {
-    public function render()
+    /**
+     * Render the component.
+     * 
+     * @return \Illuminate\View\View
+     */
+    public function render(): \Illuminate\View\View
     {
         $settings = [
             [
+                'route' => 'profile',
                 'icon' => 'bi-person-fill',
                 'icon_color' => 'text-primary',
                 'title' => 'Profile',
                 'subtitle' => 'Change your profile to be better',
             ],
             [
+                'route' => 'reset-password',
                 'icon' => 'bi-lock-fill',
                 'icon_color' => 'text-warning',
                 'title' => 'Reset Password',
                 'subtitle' => 'Update your password regularly',
             ],
             [
+                'route' => 'language',
                 'icon' => 'bi-translate',
                 'icon_color' => 'text-success',
                 'title' => 'Language',

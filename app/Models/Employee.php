@@ -20,7 +20,7 @@ class Employee extends Model
     protected $fillable = [
         'full_name',
         'email',
-        'number_phone',
+        'phone_number',
         'address',
         'nik',
         'user_id'

@@ -18,7 +18,7 @@ class EmployeeTest extends TestCase
     private array $requiredFields = [  
         'full_name',
         'email',
-        'number_phone',
+        'phone_number',
         'address',
         'nik',
         'quantity_now',

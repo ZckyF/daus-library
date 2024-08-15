@@ -39,11 +39,11 @@ class EmployeeForm extends Form
      */
     public $nik;
     /**
-     * The number_phone for the form
+     * The phone_number for the form
      * 
      * @var string
      */
-    public $number_phone;
+    public $phone_number;
 
     /**
      * Rules for the form validation.
@@ -57,7 +57,7 @@ class EmployeeForm extends Form
             'email' => 'required|email|string|max:255',
             'address' => 'required|string',
             'nik' => 'required|numeric|digits:16',
-            'number_phone' => 'required|numeric|digits_between:10,15|alpha_dash',
+            'phone_number' => 'required|numeric|digits_between:10,15|alpha_dash',
         ];
     }
 
@@ -75,7 +75,7 @@ class EmployeeForm extends Form
         $this->email = $employee->email;
         $this->address = $employee->address;
         $this->nik = $employee->nik;
-        $this->number_phone = $employee->number_phone;
+        $this->phone_number = $employee->phone_number;
     }
 
 
@@ -84,7 +84,7 @@ class EmployeeForm extends Form
         $rules = $this->rules();
         $rules['email'] .= '|unique:employees,email';
         $rules['nik'] .= '|unique:employees,nik';
-        $rules['number_phone'] .= '|unique:employees,number_phone';
+        $rules['phone_number'] .= '|unique:employees,phone_number';
 
         Employee::create($this->validate($rules));
 
@@ -99,7 +99,7 @@ class EmployeeForm extends Form
         $rules = $this->rules();
         $rules['email'] .= '|'. Rule::unique('employees', 'email')->ignore($employee);
         $rules['nik'] .= '|'.Rule::unique('employees', 'nik')->ignore($employee);
-        $rules['number_phone'] .= '|'.Rule::unique('employees', 'number_phone')->ignore($employee);
+        $rules['phone_number'] .= '|'.Rule::unique('employees', 'phone_number')->ignore($employee);
 
         $employee->update($this->validate($rules));
         $this->reset();

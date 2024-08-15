@@ -18,9 +18,9 @@
         @error('form.email') <span class="text-danger">{{ $message }}</span> @enderror
     </div>
     <div class="mb-3 col-md-6">
-        <label for="number_phone" class="form-label">Number Phone</label>
-         <input {{ $readonlyForm }} type="text" class="form-control @error('form.number_phone') is-invalid @enderror" id="number_phone" wire:model="form.number_phone" >
-        @error('form.number_phone') <span class="text-danger">{{ $message }}</span> @enderror
+        <label for="phone_number" class="form-label">Phone Number</label>
+         <input {{ $readonlyForm }} type="text" class="form-control @error('form.phone_number') is-invalid @enderror" id="phone_number" wire:model="form.phone_number" >
+        @error('form.phone_number') <span class="text-danger">{{ $message }}</span> @enderror
     </div>
     <div class="mb-3 col-md-6">
         <label for="nik" class="form-label">NIK</label>
