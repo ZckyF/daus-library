@@ -10,15 +10,55 @@ use Livewire\Form;
 
 class ProfileForm extends Form
 {
+    /**
+     * The profile(user) instance for the form.
+     * 
+     * @var User
+     */
     public User $profile;
 
+    /**
+     * The avatar_name of the profile.
+     * 
+     * @var \Livewire\Features\SupportFileUploads\TemporaryUploadedFile|string
+     */
     public $avatar_name;
+    /**
+     * The username of the profile.
+     * 
+     * @var string
+     */
     public $username;
+    /**
+     * The full_name of the profile.
+     * 
+     * @var string
+     */
     public $full_name;
+    /**
+     * The email of the profile.
+     * 
+     * @var string
+     */
     public $email;
+    /**
+     * The phone_number of the profile.
+     * 
+     * @var string
+     */
     public $phone_number;
+    /**
+     * The address of the profile.
+     * 
+     * @var string
+     */
     public $address;
 
+    /**
+     * Get the validation rules that apply to the request.
+     * 
+     * @return array
+     */
     public function rules(): array
     {
         return[
@@ -26,7 +66,11 @@ class ProfileForm extends Form
             'username' => 'required|max:255|min:3|alpha_dash|'.Rule::unique('users', 'username')->ignore($this->profile->id),
         ];
     }
-
+    /**
+     * Get the validation messages that apply to the request.
+     * 
+     * @return array
+     */
     public function messages(): array
     {
         return[
@@ -36,7 +80,12 @@ class ProfileForm extends Form
             'avatar_name.mimes' => 'The avatar must be a file of type: jpeg, png, jpg, gif.',
         ];
     }
-
+    /**
+     * Set the profile for the form.
+     * 
+     * @param User $profile
+     * @return void
+     */
     public function setProfile(User $profile): void
     {
         $this->profile = $profile;
@@ -47,7 +96,11 @@ class ProfileForm extends Form
         $this->phone_number = $profile->employee->phone_number;
         $this->address = $profile->employee->address;
     }
-
+    /**
+     * Update the profile.
+     * 
+     * @return void
+     */
     public function update(): void
     {
         $profile = $this->profile;

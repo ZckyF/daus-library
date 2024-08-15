@@ -12,19 +12,38 @@ use Livewire\WithFileUploads;
 class Profile extends Component
 {
     use WithFileUploads;
-
+    /**
+     * The form instance.
+     * 
+     * @var ProfileForm
+     */
     public ProfileForm $form;
+    /**
+     * Mount the component with the user's profile data.
+     * 
+     * @return void
+     */
     public function mount(): void
     {
         $user = Auth::user();
         $this->form->setProfile($user);
     }
+    /**
+     * Save the profile data
+     * 
+     * @return void
+     */
     public function save(): void
     {
         $this->form->update();
         $this->redirectRoute('settings.profile');
     }
-    public function render()
+    /**
+     * Render the profile view
+     * 
+     * @return \Illuminate\View\View
+     */
+    public function render(): \Illuminate\View\View
     {
         return view('livewire.settings.profile');
     }

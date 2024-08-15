@@ -53,11 +53,12 @@
     </style>
 @endpush
 <div>
-    <h2>Profile</h2>
+    <h3 class="mb-4">Profile</h3>
     @if (session()->has('success'))
         <x-notifications.alert class="alert-success" :message="session('success')" />
     @endif
     <form wire:submit.prevent="save">
+        @csrf
         <div class="row">
             <div class="mb-3 col-md-12">
                 <label for="image" class="form-label py-5 image-avatar">

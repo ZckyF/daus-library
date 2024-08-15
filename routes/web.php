@@ -42,7 +42,7 @@ use App\Livewire\Fines\Edit as FinesEdit;
 
 use App\Livewire\Settings\Index as SettingIndex;
 use App\Livewire\Settings\Profile as SettingProfile;
-use App\Livewire\Settings\ResetPassword as SettingResetPassword;
+use App\Livewire\Settings\ChangePassword as SettingChangePassword;
 use App\Livewire\Settings\Language as SettingLanguage;
 
 
@@ -113,7 +113,7 @@ Route::middleware('auth')->group(function () {
       */
     Route::get('/settings',SettingIndex::class)->name('settings');
     Route::get('/settings/profile',SettingProfile::class)->name('settings.profile');
-    Route::get('/settings/reset-password',SettingResetPassword::class)->name('settings.reset-password');
+    Route::get('/settings/change-password',SettingChangePassword::class)->name('settings.change-password');
     Route::get('/settings/language',SettingLanguage::class)->name('settings.language');
     Route::post('/logout', [Logout::class,'logout'])->name('logout');
 });

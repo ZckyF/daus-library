@@ -24,10 +24,10 @@ class Index extends Component
                 'subtitle' => 'Change your profile to be better',
             ],
             [
-                'route' => 'reset-password',
+                'route' => 'change-password',
                 'icon' => 'bi-lock-fill',
                 'icon_color' => 'text-warning',
-                'title' => 'Reset Password',
+                'title' => 'Change Password',
                 'subtitle' => 'Update your password regularly',
             ],
             [
