@@ -48,7 +48,7 @@ class ResetPasswordForm extends Form
      * 
      * @param string $email
      * @param string $token
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\RedirectResponse 
      * @throws ValidationException
      */
     public function update(string $email, string $token): \Illuminate\Http\RedirectResponse
@@ -76,7 +76,7 @@ class ResetPasswordForm extends Form
         DB::table('password_reset_tokens')->where('email', $this->email)->delete();
 
         session()->flash('success', 'Your password has been reset. You can log in with the new password.');
-        return redirect()->route('login');
+        return redirect()->to('login');
     }
 }
 

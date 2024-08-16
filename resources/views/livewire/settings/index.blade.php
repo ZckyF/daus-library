@@ -11,7 +11,7 @@
 
  <div class="row mt-5">
     @foreach ($settings as $setting)
-        <div class="col-md-4">
+        <div class="col-md-6">
             <a wire:navigate href="{{ route('settings.' . $setting['route']) }}" class="card d-flex flex-row align-items-center p-3 rounded-4 text-decoration-none">
                 <i class="bi {{ $setting['icon'] }} {{ $setting['icon_color'] }}" style="font-size: 24px;"></i>
                 <div class="ms-3">

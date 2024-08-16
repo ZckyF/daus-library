@@ -30,13 +30,6 @@ class Index extends Component
                 'title' => 'Change Password',
                 'subtitle' => 'Update your password regularly',
             ],
-            [
-                'route' => 'language',
-                'icon' => 'bi-translate',
-                'icon_color' => 'text-success',
-                'title' => 'Language',
-                'subtitle' => 'Change application language',
-            ],
         ];
         
         return view('livewire.settings.index',compact('settings'));

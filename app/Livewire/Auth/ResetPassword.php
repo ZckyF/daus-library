@@ -3,8 +3,12 @@
 namespace App\Livewire\Auth;
 
 use App\Livewire\Forms\Auth\ResetPasswordForm;
+use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
+#[Title('Reset Password')]
+#[Layout('layouts.auth')]
 class ResetPassword extends Component
 {
     /**
