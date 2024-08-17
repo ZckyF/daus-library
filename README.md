@@ -1,6 +1,7 @@
 <h1 style="border-bottom: 0px">🚀 Daus Library</h1>
 
 ## ✏ Description
+![Dashboard Daus Library](https://drive.google.com/uc?export=view&id=1Hy21wj0Do_tweVcCvUjrCAdP3ntNJqXC)
 
 Daus Library is a web application specifically designed for library management personnel. It provides a comprehensive platform for librarians to efficiently manage library resources, track borrowing activities, and maintain user records.
 
@@ -15,8 +16,6 @@ Daus Library is a web application specifically designed for library management p
 -   **Borrowing Records:** Track borrowing history and manage book availability.
 
 -   **Search Functionality:** Advanced search capabilities for librarians to quickly find books based on various criteria.
-
--   **Reports and Analytics:** Generate reports on library activity, book availability, and user engagement.
 
 ## ⚙ Technologies Used:
 
@@ -134,46 +133,100 @@ Before you begin, ensure you have met the following requirements:
 
 This project will run at http://127.0.0.1:8000 (if not changed the default port). You can access it through your web browser.
 
-## 🖥 Usage:
+## 🖥 How to Use the Project:
 
--   Super admin creates librarian accounts with appropriate permissions.
+This guide will help you understand how to use the project effectively, including the roles and permissions available, and how to manage different aspects of the library system.
 
--   Librarians log in to the application to manage library resources, user accounts, and borrowing activities.
+### 1. Getting Started
+After cloning the repository and installing the necessary dependencies, start the application using the following command:
 
--   Add, edit, or remove books from the catalog as needed.
+```bash
+php artisan serve
+```
 
--   Register new librarian accounts and update permissions as necessary.
-    Track borrowing history and manage book availability.
 
--   Utilize search functionality to quickly find books based on various criteria.
+### 2. Roles and Permissions
+The system has four roles, each with specific permissions:
 
-## 🤝 Contributing to Daus Library
+- **Super Admin**:
+  - Has full control over the entire application.
+  - Can create, update, and delete users, including admins, librarians, and staff.
 
-Thank you for your interest in contributing! We appreciate every contribution you make to improve this project.
+- **Admin**:
+  - Also has full control but **cannot create users with the admin role**.
+  - Manages employees, members, and user accounts.
 
-To contribute to this project, follow these steps:
+- **Librarian**:
+  - Manages books, book categories, and bookshelves.
+  - Can create, update, and delete records in these sections.
 
-1. Fork this repository and clone the fork to your local machine.
-2. Create a new branch with the feature or fix you will be working on.
-3. Make the necessary changes within your branch.
-4. Make sure to test your changes.
-5. Commit your changes with a clear and descriptive message.
-6. Push your branch to your forked repository on GitHub.
-7. Create a pull request (PR) to the main repository.
+- **Staff**:
+  - Focuses on managing carts, borrowed books, and fines.
+  - Can create, update, and delete records in these areas.
 
-## 📝 Code Style Guidelines
+### 3. Logging In
+Use the following credentials based on your role:
 
-To maintain consistency in the project's code, please adhere to the code style guidelines established in this project. Make sure to follow the established coding style and maintain consistency in the code structure.
+- **Super Admin**
+  - **Username**: `superadmin`
+  - **Password**: `password123`
 
-## 🐞 Bug Reports
+- **Admin**
+  - **Username**: `admin`
+  - **Password**: `password123`
 
-If you find a bug in this project, please create a bug report in the Issues section. Make sure to provide clear information about the bug, including steps to reproduce the bug if possible.
+- **Librarian**
+  - **Username**: `librarian`
+  - **Password**: `password123`
+
+- **Staff**
+  - **Username**: `staff`
+  - **Password**: `password123`
+
+### 4. Managing Library Resources
+
+- **Books**: Librarians can add, edit, and delete books. Navigate to the "Books" section, select an action, and fill out the required details.
+
+- **Book Categories**: Librarians can manage categories by adding, editing, or deleting them under the "Book Categories" section.
+
+- **Bookshelves**: Librarians can organize books by assigning them to shelves in the "Bookshelves" section.
+
+### 5. Handling Borrowing and Returns
+
+- **Carts**: Staff can create and manage carts for borrowing books. Go to the "Carts" section, select the books, and process the borrowing.
+
+- **Borrowed Books**: Track and update the status of borrowed books in the "Borrowed Books" section.
+
+- **Fines**: Staff can manage fines by viewing, creating, updating, or deleting them in the "Fines" section.
+
+### 6. Dashboard Overview
+The dashboard provides insights into library activities:
+
+- **Charts**: View statistics on borrowed, returned, lost, damaged, and due books.
+
+- **Top 10 Lists**: The dashboard also shows the top 10 borrowed books and the top 10 most borrowed books.
+
+### 7. Settings and Profile Management
+Users can manage their profiles and change their passwords through the "Settings" section. It's important to keep your credentials secure.
+
+### 8. Troubleshooting
+If you encounter any issues, refer to the troubleshooting guide in the Wiki or contact the project maintainers.
+
+### Visual Aids
+Here are some screenshots to help you understand the layout and design:
+
+![Dashboard Screenshot](https://drive.google.com/uc?export=view&id=13scHAX89_oVpl4uVKKXHA1insWfkxPBB)
+
+*The main dashboard provides an overview of library activities.*
+
+![Books and Categories Management Screenshot](https://drive.google.com/uc?export=view&id=1G_myyhk2gr5FcJdFw5Az_Qh6O73fXNd2)
+![Bookshelves Management Screenshot](https://drive.google.com/uc?export=view&id=1q7Wl-XExjx9IxwxuK2kKoQsZEbgR5p5C)
+
+*Manage books, categories, and shelves easily through the interface.*
+
+
+
 
 ## 💡 Suggestions and Questions
 
 If you have suggestions or questions about this project, feel free to make them in the Issues section. We are always open to feedback and suggestions from users of this project.
-
-
-## 📄 License
-
-Daus Library is open-sourced software licensed under the [MIT license]('https://github.com/ZckyF/daus-library/blob/main/LICENSE').
